@@ -2,5 +2,6 @@
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <menu id="application-kdp" insertBefore="administration" caption="mainMsg://menu_config.application-kdp">
         <item screen="kdp_Employee.browse" caption="mainMsg://menu_config.kdp_Employee.browse"/>
+        <item screen="kdp_Streets.browse" caption="mainMsg://menu_config.kdp_Streets.browse"/>
     </menu>
 </menu-config>

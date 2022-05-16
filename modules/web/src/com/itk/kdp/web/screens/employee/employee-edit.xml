@@ -8,6 +8,7 @@
                   class="com.itk.kdp.entity.Employee">
             <view extends="_local">
                 <property name="company" view="_minimal"/>
+                <property name="street" view="_minimal"/>
             </view>
             <loader/>
         </instance>
@@ -39,6 +40,7 @@
                         <action id="clear" type="picker_clear"/>
                     </actions>
                 </lookupPickerField>
+                <pickerField id="streetField" property="street"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

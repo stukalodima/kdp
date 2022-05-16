@@ -49,6 +49,21 @@ public class Employee extends StandardEntity {
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     private Company company;
 
+    @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.DENY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STREET_ID")
+    private Streets street;
+
+    public Streets getStreet() {
+        return street;
+    }
+
+    public void setStreet(Streets street) {
+        this.street = street;
+    }
+
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
