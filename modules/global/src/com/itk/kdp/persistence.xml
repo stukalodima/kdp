@@ -4,5 +4,6 @@
 
         <class>com.itk.kdp.entity.Employee</class>
         <class>com.itk.kdp.entity.Company</class>
+        <class>com.itk.kdp.entity.PurposeBusinessTrip</class>
     </persistence-unit>
 </persistence>
