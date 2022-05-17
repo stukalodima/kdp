@@ -36,3 +36,36 @@ create table KDP_COMPANY (
     primary key (ID)
 )^
 -- end KDP_COMPANY
+-- begin KDP_CITY
+create table KDP_CITY (
+    ID varchar(36) not null,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    REGION_ID varchar(36),
+    NAME_CITY varchar(255) not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_CITY
+-- begin KDP_REGION
+create table KDP_REGION (
+    ID varchar(36) not null,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME_REGION varchar(255) not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_REGION

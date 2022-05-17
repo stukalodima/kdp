@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://cityEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.city">
+    <data>
+        <instance id="cityDc"
+                  class="com.itk.kdp.entity.City">
+            <view extends="_local">
+                <property name="region" view="_minimal"/>
+            </view>
+            <loader/>
+        </instance>
+        <collection id="regionsDc" class="com.itk.kdp.entity.Region" view="_minimal">
+            <loader id="regionsDl">
+                <query>
+                    <![CDATA[select e from kdp_Region e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="cityDc">
+            <column width="400px">
+                <lookupPickerField id="regionField" optionsContainer="regionsDc" property="region">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="open" type="picker_open"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </lookupPickerField>
+                <textField id="nameCityField" property="nameCity"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="commitBtn" action="windowCommit"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
