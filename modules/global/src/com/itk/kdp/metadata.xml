@@ -3,8 +3,8 @@
 
     <metadata-model root-package="com.itk.kdp" namespace="kdp"/>
 
-    <datatypes>
-        <datatype id="positionPresentation" class="com.itk.kdp.entity.PositionPresentation"/>
-    </datatypes>
+<!--    <datatypes>-->
+<!--        <datatype id="positionPresentation" class="com.itk.kdp.entity.PositionPresentation"/>-->
+<!--    </datatypes>-->
 
 </metadata>
