@@ -47,7 +47,7 @@ create table KDP_POSITION (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NAME varchar not null,
+    NAME varchar(255) not null,
     --
     primary key (ID)
 )^
