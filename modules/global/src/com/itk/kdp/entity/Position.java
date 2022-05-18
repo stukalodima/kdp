@@ -16,7 +16,7 @@ public class Position extends StandardEntity {
     private static final long serialVersionUID = 6282166328827621264L;
 
     @NotNull
-    @MetaProperty(datatype = "positionPresentation", mandatory = true)
+    //@MetaProperty(datatype = "positionPresentation", mandatory = true)
     @Column(name = "NAME", nullable = false)
     private String name;
 
