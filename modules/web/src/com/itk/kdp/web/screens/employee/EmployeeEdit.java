@@ -8,4 +8,5 @@ import com.itk.kdp.entity.Employee;
 @EditedEntityContainer("employeeDc")
 @LoadDataBeforeShow
 public class EmployeeEdit extends StandardEditor<Employee> {
+
 }
