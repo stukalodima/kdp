@@ -15,8 +15,8 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="600"
-                width="800"/>
+    <dialogMode
+            width="600" height="800"/>
     <layout expand="streetsesTable"
             spacing="true">
         <filter id="filter"
