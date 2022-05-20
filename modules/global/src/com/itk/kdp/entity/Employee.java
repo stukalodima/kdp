@@ -41,21 +41,13 @@ public class Employee extends StandardEntity {
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    @JoinColumn(name = "COMPANY_ID")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @NotNull
     @OnDelete(DeletePolicy.DENY)
     @OnDeleteInverse(DeletePolicy.UNLINK)
+    @JoinColumn(name = "COMPANY_ID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    @NotNull
     private Company company;
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
 
     public void setCompany(Company company) {
         this.company = company;
@@ -63,6 +55,14 @@ public class Employee extends StandardEntity {
 
     public Company getCompany() {
         return company;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
     }
 
     public String getLastName() {
