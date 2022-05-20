@@ -1,4 +1,4 @@
-create table KDP_COMPANY (
+create table KDP_STREETS (
     ID varchar(36) not null,
     VERSION integer not null,
     CREATE_TS timestamp,
@@ -8,7 +8,9 @@ create table KDP_COMPANY (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NAME varchar(255) not null,
+    CODE varchar(10) not null,
+    NAME varchar(50) not null,
+    NOTE varchar(255),
     --
     primary key (ID)
 );
