@@ -4,6 +4,7 @@
 
         <class>com.itk.kdp.entity.Employee</class>
         <class>com.itk.kdp.entity.Company</class>
+        <class>com.itk.kdp.entity.PurposeBusinessTrip</class>
         <class>com.itk.kdp.entity.City</class>
         <class>com.itk.kdp.entity.Region</class>
         <class>com.itk.kdp.entity.Country</class>
