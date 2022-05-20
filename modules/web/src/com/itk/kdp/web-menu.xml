@@ -4,5 +4,7 @@
         <item screen="kdp_Employee.browse" caption="mainMsg://menu_config.kdp_Employee.browse"/>
         <item screen="kdp_City.browse" caption="mainMsg://menu_config.kdp_City.browse"/>
         <item screen="kdp_Region.browse" caption="mainMsg://menu_config.kdp_Region.browse"/>
+        <item screen="kdp_Country.browse" caption="mainMsg://menu_config.kdp_Country.browse"/>
+        <item screen="kdp_Position.browse" caption="mainMsg://menu_config.kdp_Position.browse"/>
     </menu>
 </menu-config>
