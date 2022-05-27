@@ -1,1 +1,0 @@
-create unique index IDX_KDP_STREETS_UNIQ_CODE on KDP_STREETS (CODE);
