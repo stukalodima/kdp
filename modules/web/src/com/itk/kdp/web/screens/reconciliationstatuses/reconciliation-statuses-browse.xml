@@ -15,15 +15,10 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="600"
-                width="800"/>
+    <dialogMode height="100%"
+                width="100%"/>
     <layout expand="reconciliationStatusesesTable"
             spacing="true">
-        <filter id="filter"
-                applyTo="reconciliationStatusesesTable"
-                dataLoader="reconciliationStatusesesDl">
-            <properties include=".*"/>
-        </filter>
         <groupTable id="reconciliationStatusesesTable"
                     width="100%"
                     dataContainer="reconciliationStatusesesDc">
