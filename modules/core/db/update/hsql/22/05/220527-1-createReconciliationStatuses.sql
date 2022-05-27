@@ -1,4 +1,3 @@
--- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
     ID varchar(36) not null,
     VERSION integer not null,
@@ -12,5 +11,4 @@ create table KDP_RECONCILIATION_STATUSES (
     NAME varchar(255) not null,
     --
     primary key (ID)
-)^
--- end KDP_RECONCILIATION_STATUSES
+);

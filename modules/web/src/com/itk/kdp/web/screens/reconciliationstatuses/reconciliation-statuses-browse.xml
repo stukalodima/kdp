@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://reconciliationStatusesBrowse.caption"
+        focusComponent="reconciliationStatusesesTable"
+        messagesPack="com.itk.kdp.web.screens.reconciliationstatuses">
+    <data readOnly="true">
+        <collection id="reconciliationStatusesesDc"
+                    class="com.itk.kdp.entity.ReconciliationStatuses">
+            <view extends="_local"/>
+            <loader id="reconciliationStatusesesDl">
+                <query>
+                    <![CDATA[select e from kdp_ReconciliationStatuses e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="reconciliationStatusesesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="reconciliationStatusesesTable"
+                dataLoader="reconciliationStatusesesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="reconciliationStatusesesTable"
+                    width="100%"
+                    dataContainer="reconciliationStatusesesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="reconciliationStatusesesTable.create"/>
+                <button id="editBtn" action="reconciliationStatusesesTable.edit"/>
+                <button id="removeBtn" action="reconciliationStatusesesTable.remove"/>
+                <button id="excelBtn" action="reconciliationStatusesesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

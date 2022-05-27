@@ -1,0 +1,1 @@
+alter table KDP_SUBDIVISIONS rename to KDP_SUBDIVISIONS__U81698 ;
