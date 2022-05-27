@@ -2,5 +2,6 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="kdp" transaction-type="RESOURCE_LOCAL">
 
+        <class>com.itk.kdp.entity.Organizations</class>
     </persistence-unit>
 </persistence>
