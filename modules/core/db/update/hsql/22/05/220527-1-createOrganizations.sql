@@ -1,4 +1,3 @@
--- begin KDP_ORGANIZATIONS
 create table KDP_ORGANIZATIONS (
     ID varchar(36) not null,
     VERSION integer not null,
@@ -12,5 +11,4 @@ create table KDP_ORGANIZATIONS (
     SHORT_NAME varchar(255) not null,
     --
     primary key (ID)
-)^
--- end KDP_ORGANIZATIONS
+);
