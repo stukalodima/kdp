@@ -1,1 +1,1 @@
-drop table KDP_EMPLOYEE__U57006 if exists cascade ;
+drop table KDP_EMPLOYEE__U06989 if exists cascade ;

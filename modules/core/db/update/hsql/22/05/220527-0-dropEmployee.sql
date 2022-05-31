@@ -1,1 +1,1 @@
-alter table KDP_EMPLOYEE rename to KDP_EMPLOYEE__U57006 ;
+alter table KDP_EMPLOYEE rename to KDP_EMPLOYEE__U06989 ;

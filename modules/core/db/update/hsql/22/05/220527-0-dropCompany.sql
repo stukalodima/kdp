@@ -1,1 +1,1 @@
-alter table KDP_COMPANY rename to KDP_COMPANY__U45446 ;
+alter table KDP_COMPANY rename to KDP_COMPANY__U76057 ;
