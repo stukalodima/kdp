@@ -1,4 +1,3 @@
--- begin KDP_VACATION_TYPE
 create table KDP_VACATION_TYPE (
     ID varchar(36) not null,
     VERSION integer not null,
@@ -13,5 +12,4 @@ create table KDP_VACATION_TYPE (
     NAME varchar(255) not null,
     --
     primary key (ID)
-)^
--- end KDP_VACATION_TYPE
+);
