@@ -1,4 +1,4 @@
-create table KDP_ORGANIZATIONS (
+create table KDP_POSITION (
     ID varchar(36) not null,
     VERSION integer not null,
     CREATE_TS timestamp,
@@ -8,7 +8,7 @@ create table KDP_ORGANIZATIONS (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    SHORT_NAME varchar(255) not null,
+    NAME varchar(255),
     --
     primary key (ID)
 );

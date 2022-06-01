@@ -1,1 +1,0 @@
-drop table KDP_COMPANY__U45446 if exists cascade ;
