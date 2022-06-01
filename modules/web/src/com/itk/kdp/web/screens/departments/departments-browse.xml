@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://departmentsBrowse.caption"
+        focusComponent="departmentsesTable"
+        messagesPack="com.itk.kdp.web.screens.departments">
+    <data readOnly="true">
+        <collection id="departmentsesDc"
+                    class="com.itk.kdp.entity.Departments">
+            <view extends="_local">
+                <property name="organization" view="_minimal">
+                    <property name="shortName"/>
+                </property>
+            </view>
+            <loader id="departmentsesDl">
+                <query>
+                    <![CDATA[select e from kdp_Department e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="departmentsesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="departmentsesTable"
+                dataLoader="departmentsesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="departmentsesTable"
+                    width="100%"
+                    dataContainer="departmentsesDc"
+                    multiselect="true"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="name"/>
+                <column id="organization"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="departmentsesTable.create"/>
+                <button id="editBtn" action="departmentsesTable.edit"/>
+                <button id="removeBtn" action="departmentsesTable.remove"/>
+                <button id="excelBtn" action="departmentsesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
