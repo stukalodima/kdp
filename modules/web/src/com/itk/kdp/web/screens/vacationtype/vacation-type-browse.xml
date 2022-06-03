@@ -15,8 +15,8 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="600"
-                width="800"/>
+    <dialogMode height="100%"
+                width="100%"/>
     <layout expand="vacationTypesTable"
             spacing="true">
         <filter id="filter"
