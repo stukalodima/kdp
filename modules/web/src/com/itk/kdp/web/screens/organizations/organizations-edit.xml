@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://organizationsEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.organizations">
+    <data>
+        <instance id="organizationsDc"
+                  class="com.itk.kdp.entity.Organizations">
+            <view extends="_local"/>
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="organizationsDc">
+            <column width="350px">
+                <textField id="codeField" property="code"/>
+                <textField id="prefixField" property="prefix"/>
+                <textField id="shortNameField" property="shortName"/>
+                <textField id="fullNameField" property="fullName"/>
+                <dateField id="dateRegistrationField" property="dateRegistration"/>
+                <textField id="countryRegistrationField" property="countryRegistration"/>
+                <checkBox id="entityField" property="entity"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
