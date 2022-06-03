@@ -10,18 +10,19 @@
             <loader/>
         </instance>
     </data>
-    <dialogMode height="600"
-                width="800"/>
-    <layout expand="editActions" spacing="true">
-        <form id="form" dataContainer="organizationsDc">
-            <column width="350px">
-                <textField id="codeField" property="code"/>
-                <textField id="prefixField" property="prefix"/>
-                <textField id="shortNameField" property="shortName"/>
-                <textField id="fullNameField" property="fullName"/>
-                <dateField id="dateRegistrationField" property="dateRegistration"/>
-                <textField id="countryRegistrationField" property="countryRegistration"/>
-                <checkBox id="entityField" property="entity"/>
+    <dialogMode
+            width="50%" forceDialog="true" height="AUTO" resizable="true"/>
+    <layout expand="editActions" spacing="true" width="100%">
+        <form id="form" dataContainer="organizationsDc" width="100%">
+            <column width="100%">
+                <textField id="codeField" property="code" width="100%"/>
+                <textField id="prefixField" property="prefix" width="100%"/>
+                <textField id="shortNameField" property="shortName" width="100%"/>
+                <textField id="fullNameField" property="fullName" width="100%"/>
+                <textField id="codeRegistrationField" property="codeRegistration" width="100%"/>
+                <dateField id="dateRegistrationField" property="dateRegistration" width="100%"/>
+                <textField id="countryRegistrationField" property="countryRegistration" width="100%"/>
+                <checkBox id="entityField" property="entity" width="100%"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

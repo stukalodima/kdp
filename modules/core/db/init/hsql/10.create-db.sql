@@ -13,6 +13,7 @@ create table KDP_ORGANIZATIONS (
     PREFIX varchar(3) not null,
     SHORT_NAME varchar(255) not null,
     FULL_NAME varchar(255) not null,
+    CODE_OCPO varchar(12) not null,
     DATE_REGISTRATION date,
     COUNTRY_REGISTRATION varchar(255),
     ENTITY boolean,

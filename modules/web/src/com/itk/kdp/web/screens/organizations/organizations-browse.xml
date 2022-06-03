@@ -15,8 +15,8 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="600"
-                width="800"/>
+    <dialogMode height="100%"
+                width="100%"/>
     <layout expand="organizationsesTable"
             spacing="true">
         <filter id="filter"
@@ -40,6 +40,7 @@
                 <column id="prefix"/>
                 <column id="shortName"/>
                 <column id="fullName"/>
+                <column id="codeRegistration"/>
                 <column id="dateRegistration"/>
                 <column id="countryRegistration"/>
                 <column id="entity"/>
@@ -50,8 +51,7 @@
                 <button id="createBtn" action="organizationsesTable.create"/>
                 <button id="editBtn" action="organizationsesTable.edit"/>
                 <button id="removeBtn" action="organizationsesTable.remove"/>
-                <button id="refreshBtn" action="organizationsesTable.refresh"/>
-                <button id="addBtn" action="organizationsesTable.add"/>
+                <button id="refreshBtn" action="organizationsesTable.refresh" align="TOP_LEFT"/>
                 <button id="excelBtn" action="organizationsesTable.excel"/>
             </buttonsPanel>
         </groupTable>
