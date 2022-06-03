@@ -17,7 +17,6 @@ public class ReconciliationStatuses extends StandardEntity {
     @Column(name = "NAME", nullable = false)
     @NotNull
     private String name;
-
     public String getName() {
         return name;
     }
