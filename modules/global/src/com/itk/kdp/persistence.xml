@@ -6,5 +6,6 @@
         <class>com.itk.kdp.entity.VacationType</class>
         <class>com.itk.kdp.entity.Organizations</class>
         <class>com.itk.kdp.entity.Position</class>
+        <class>com.itk.kdp.entity.Departments</class>
     </persistence-unit>
 </persistence>
