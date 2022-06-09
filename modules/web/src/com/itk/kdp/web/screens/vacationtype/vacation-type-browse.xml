@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://vacationTypeBrowse.caption"
+        focusComponent="vacationTypesTable"
+        messagesPack="com.itk.kdp.web.screens.vacationtype">
+    <data readOnly="true">
+        <collection id="vacationTypesDc"
+                    class="com.itk.kdp.entity.VacationType">
+            <view extends="_local"/>
+            <loader id="vacationTypesDl">
+                <query>
+                    <![CDATA[select e from kdp_VacationType e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="100%"
+                width="100%"/>
+    <layout expand="vacationTypesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="vacationTypesTable"
+                dataLoader="vacationTypesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="vacationTypesTable"
+                    width="100%"
+                    dataContainer="vacationTypesDc"
+                    multiselect="true"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="name"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="vacationTypesTable.create"/>
+                <button id="editBtn" action="vacationTypesTable.edit"/>
+                <button id="removeBtn" action="vacationTypesTable.remove"/>
+                <button id="excelBtn" action="vacationTypesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

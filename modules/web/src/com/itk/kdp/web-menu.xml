@@ -3,5 +3,6 @@
     <menu id="application-kdp" insertBefore="administration" caption="mainMsg://menu_config.application-kdp">
         <item screen="kdp_ReconciliationStatuses.browse"
               caption="mainMsg://menu_config.kdp_ReconciliationStatuses.browse"/>
+        <item screen="kdp_VacationType.browse" caption="mainMsg://menu_config.kdp_VacationType.browse"/>
     </menu>
 </menu-config>
