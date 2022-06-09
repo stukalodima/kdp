@@ -18,6 +18,11 @@
         <form id="form" dataContainer="positionDc">
             <column width="350px">
                 <textField id="nameField" property="name"/>
+                <textField id="positionEnField" property="positionEn"/>
+                <textField id="positionUaField" property="positionUa"/>
+                <textField id="positionRuField" property="positionRu"/>
+                <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="positionIdField" property="positionId"/>
+                <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="companyIdField" property="companyId"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

@@ -40,6 +40,11 @@
             </actions>
             <columns>
                 <column id="name"/>
+                <column id="positionEn"/>
+                <column id="positionUa"/>
+                <column id="positionRu"/>
+                <column id="positionId"/>
+                <column id="companyId"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
