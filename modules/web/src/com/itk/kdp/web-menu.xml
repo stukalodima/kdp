@@ -5,5 +5,6 @@
               caption="mainMsg://menu_config.kdp_ReconciliationStatuses.browse"/>
         <item screen="kdp_VacationType.browse" caption="mainMsg://menu_config.kdp_VacationType.browse"/>
         <item screen="kdp_Position.browse" caption="mainMsg://menu_config.kdp_Position.browse"/>
+        <item screen="kdp_Organizations.browse" caption="mainMsg://menu_config.kdp_Organizations.browse"/>
     </menu>
 </menu-config>
