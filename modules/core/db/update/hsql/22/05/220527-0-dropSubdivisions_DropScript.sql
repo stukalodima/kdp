@@ -1,1 +1,0 @@
-drop table KDP_SUBDIVISIONS__U81698 if exists cascade ;
