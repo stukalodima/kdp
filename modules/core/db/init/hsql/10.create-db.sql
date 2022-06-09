@@ -1,6 +1,5 @@
--- begin KDP_RECONCILIATION_STATUSES
-create table KDP_RECONCILIATION_STATUSES (
-
+-- begin KDP_ORGANIZATIONS
+create table KDP_ORGANIZATIONS (
     ID varchar(36) not null,
     VERSION integer not null,
     CREATE_TS timestamp,
@@ -10,10 +9,27 @@ create table KDP_RECONCILIATION_STATUSES (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NAME varchar(255) not null,
+    SHORT_NAME varchar(255) not null,
     --
     primary key (ID)
 )^
+-- end KDP_ORGANIZATIONS
+-- begin KDP_POSITION
+create table KDP_POSITION (
+    ID varchar(36) not null,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255),
+    --
+    primary key (ID)
+)^
+-- end KDP_POSITION
 -- end KDP_RECONCILIATION_STATUSES
 -- begin KDP_VACATION_TYPE
 create table KDP_VACATION_TYPE (

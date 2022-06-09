@@ -4,5 +4,7 @@
 
         <class>com.itk.kdp.entity.ReconciliationStatuses</class>
         <class>com.itk.kdp.entity.VacationType</class>
+        <class>com.itk.kdp.entity.Organizations</class>
+        <class>com.itk.kdp.entity.Position</class>
     </persistence-unit>
 </persistence>

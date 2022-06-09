@@ -1,1 +1,0 @@
-drop table KDP_STREETS__U03161 if exists cascade ;
