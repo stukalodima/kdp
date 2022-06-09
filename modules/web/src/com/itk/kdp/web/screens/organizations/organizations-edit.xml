@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://organizationsEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.organizations">
+    <data>
+        <instance id="organizationsDc"
+                  class="com.itk.kdp.entity.Organizations">
+            <view extends="_local"/>
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode
+            width="50%" forceDialog="true" height="AUTO" resizable="true"/>
+    <layout expand="editActions" spacing="true" width="100%">
+        <form id="form" dataContainer="organizationsDc" width="100%">
+            <column width="100%">
+                <textField id="codeField" property="code" width="100%"/>
+                <textField id="prefixField" property="prefix" width="100%"/>
+                <textField id="shortNameField" property="shortName" width="100%"/>
+                <textField id="fullNameField" property="fullName" width="100%"/>
+                <textField id="codeRegistrationField" property="codeRegistration" width="100%"/>
+                <dateField id="dateRegistrationField" property="dateRegistration" width="100%"/>
+                <textField id="countryRegistrationField" property="countryRegistration" width="100%"/>
+                <checkBox id="entityField" property="entity" width="100%"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

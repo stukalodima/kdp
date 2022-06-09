@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://organizationsBrowse.caption"
+        focusComponent="organizationsesTable"
+        messagesPack="com.itk.kdp.web.screens.organizations">
+    <data readOnly="true">
+        <collection id="organizationsesDc"
+                    class="com.itk.kdp.entity.Organizations">
+            <view extends="_local"/>
+            <loader id="organizationsesDl">
+                <query>
+                    <![CDATA[select e from kdp_Organizations e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="100%"
+                width="100%"/>
+    <layout expand="organizationsesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="organizationsesTable"
+                dataLoader="organizationsesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="organizationsesTable"
+                    width="100%"
+                    dataContainer="organizationsesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="refresh" type="refresh"/>
+                <action id="add" type="add"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="prefix"/>
+                <column id="shortName"/>
+                <column id="fullName"/>
+                <column id="codeRegistration"/>
+                <column id="dateRegistration"/>
+                <column id="countryRegistration"/>
+                <column id="entity"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="organizationsesTable.create"/>
+                <button id="editBtn" action="organizationsesTable.edit"/>
+                <button id="removeBtn" action="organizationsesTable.remove"/>
+                <button id="refreshBtn" action="organizationsesTable.refresh" align="TOP_LEFT"/>
+                <button id="excelBtn" action="organizationsesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
