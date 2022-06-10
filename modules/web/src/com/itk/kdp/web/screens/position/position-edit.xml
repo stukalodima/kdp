@@ -6,9 +6,16 @@
     <data>
         <instance id="positionDc"
                   class="com.itk.kdp.entity.Position">
-            <view extends="_local"/>
+            <view extends="_local">
+                <property name="companyId" view="_minimal"/>
+            </view>
             <loader/>
         </instance>
+        <collection id="companyIdsDc" class="com.itk.kdp.entity.Organizations" view="_minimal">
+            <loader>
+                <query>select e from kdp_Organizations e</query>
+            </loader>
+        </collection>
     </data>
     <dialogMode height="AUTO"
                 width="AUTO"
@@ -21,8 +28,7 @@
                 <textField id="positionEnField" property="positionEn"/>
                 <textField id="positionUaField" property="positionUa"/>
                 <textField id="positionRuField" property="positionRu"/>
-                <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="positionIdField" property="positionId"/>
-                <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="companyIdField" property="companyId"/>
+                <lookupField id="companyIdField" property="companyId" optionsContainer="companyIdsDc"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

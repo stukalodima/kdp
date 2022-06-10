@@ -7,7 +7,9 @@
     <data readOnly="true">
         <collection id="positionsDc"
                     class="com.itk.kdp.entity.Position">
-            <view extends="_local"/>
+            <view extends="_local">
+                <property name="companyId" view="_minimal"/>
+            </view>
             <loader id="positionsDl">
                 <query>
                     <![CDATA[select e from kdp_Position e]]>
@@ -43,7 +45,6 @@
                 <column id="positionEn"/>
                 <column id="positionUa"/>
                 <column id="positionRu"/>
-                <column id="positionId"/>
                 <column id="companyId"/>
             </columns>
             <rowsCount/>
@@ -52,10 +53,6 @@
                 <button id="createBtn" action="positionsTable.create"/>
                 <button id="editBtn" action="positionsTable.edit"/>
                 <button id="removeBtn" action="positionsTable.remove"/>
-                <button id="refreshBtn" action="positionsTable.refresh"/>
-                <button id="addBtn" action="positionsTable.add"/>
-                <button id="excludeBtn" action="positionsTable.exclude"/>
-                <button id="excelBtn" action="positionsTable.excel"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">

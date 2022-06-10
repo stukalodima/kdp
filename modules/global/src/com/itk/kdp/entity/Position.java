@@ -2,11 +2,13 @@ package com.itk.kdp.entity;
 
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Lookup;
+import com.haulmont.cuba.core.entity.annotation.LookupType;
+import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
+import com.haulmont.cuba.core.global.DeletePolicy;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.UUID;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Table(name = "KDP_POSITION")
 @Entity(name = "kdp_Position")
@@ -16,31 +18,29 @@ public class Position extends StandardEntity {
 
     @Column(name = "NAME")
     private String name;
+
     @Column(name = "POSITION_EN", nullable = false)
     private String positionEn;
+
     @Column(name = "POSITION_UA", nullable = false)
     private String positionUa;
+
     @Column(name = "POSITION_RU", nullable = false)
     private String positionRu;
-    @Column(name = "POSITION_ID", nullable = false)
-    private UUID positionId;
-    @Column(name = "COMPANY_ID", nullable = false)
-    private UUID companyId;
 
-    public UUID getCompanyId() {
-        return companyId;
-    }
+    @JoinColumn(name = "COMPANY_ID_ID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @NotNull
+    @Lookup(type = LookupType.DROPDOWN, actions = {"open", "clear"})
+    private Organizations companyId;
 
-    public void setCompanyId(UUID companyId) {
+    public void setCompanyId(Organizations companyId) {
         this.companyId = companyId;
     }
 
-    public UUID getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(UUID positionId) {
-        this.positionId = positionId;
+    public Organizations getCompanyId() {
+        return companyId;
     }
 
     public String getPositionRu() {
