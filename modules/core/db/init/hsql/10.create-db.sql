@@ -35,7 +35,7 @@ create table KDP_POSITION (
     NAME varchar(255),
     --
     primary key (ID)
-);
+)^
 -- end KDP_POSITION
 -- end KDP_RECONCILIATION_STATUSES
 -- begin KDP_VACATION_TYPE
@@ -55,24 +55,7 @@ create table KDP_VACATION_TYPE (
     primary key (ID)
 );
 -- end KDP_VACATION_TYPE
--- begin KDP_DEPARTMENT
-create table KDP_DEPARTMENT (
-    ID varchar(36) not null,
-    VERSION integer not null,
-    CREATE_TS timestamp,
-    CREATED_BY varchar(50),
-    UPDATE_TS timestamp,
-    UPDATED_BY varchar(50),
-    DELETE_TS timestamp,
-    DELETED_BY varchar(50),
-    --
-    CODE integer not null,
-    NAME varchar(255) not null,
-    ORGANIZATION_ID varchar(36) not null,
-    --
-    primary key (ID)
-);
--- end KDP_DEPARTMENT
+
 -- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
     ID varchar(36) not null,
@@ -89,3 +72,28 @@ create table KDP_RECONCILIATION_STATUSES (
     primary key (ID)
 );
 -- end KDP_RECONCILIATION_STATUSES
+-- begin KDP_DEPARTMENTS
+create table KDP_DEPARTMENTS (
+    ID varchar(36) not null,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    CODE integer not null,
+    APPROVAL_MANAGER_ID varchar(36),
+    NAME varchar(255) not null,
+    DEPARTMENT_EN varchar(255) not null,
+    DEPARTMENT_UA varchar(255) not null,
+    DEPARTMENT_RU varchar(255) not null,
+    DEPARTMENT_ID varchar(36),
+    ORGANIZATION_ID varchar(36) not null,
+    P_ID_ID varchar(36),
+    MANAGER_ID_ID varchar(36),
+    --
+    primary key (ID)
+)^
+-- end KDP_DEPARTMENTS
