@@ -19,7 +19,7 @@ create table KDP_ORGANIZATIONS (
     ENTITY boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_POSITION
 create table KDP_POSITION (
@@ -36,7 +36,7 @@ create table KDP_POSITION (
     POSITION_EN varchar(255) not null,
     POSITION_UA varchar(255) not null,
     POSITION_RU varchar(255) not null,
-    COMPANY_ID_ID varchar(36) not null,
+    ORGANIZATIONS_ID_ID varchar(36) not null,
     --
     primary key (ID)
 )^

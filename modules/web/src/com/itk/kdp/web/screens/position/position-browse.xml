@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://positionBrowse.caption"
         focusComponent="positionsTable"
         messagesPack="com.itk.kdp.web.screens.position">
@@ -8,7 +7,7 @@
         <collection id="positionsDc"
                     class="com.itk.kdp.entity.Position">
             <view extends="_local">
-                <property name="companyId" view="_minimal"/>
+                <property name="organizationsId" view="_minimal"/>
             </view>
             <loader id="positionsDl">
                 <query>
@@ -45,7 +44,7 @@
                 <column id="positionEn"/>
                 <column id="positionUa"/>
                 <column id="positionRu"/>
-                <column id="companyId"/>
+                <column id="organizationsId"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

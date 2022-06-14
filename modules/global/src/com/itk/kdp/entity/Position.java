@@ -4,6 +4,7 @@ import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
+import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
@@ -28,27 +29,28 @@ public class Position extends StandardEntity {
     @Column(name = "POSITION_RU", nullable = false)
     private String positionRu;
 
-    @JoinColumn(name = "COMPANY_ID_ID")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDeleteInverse(DeletePolicy.DENY)
+    @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
     @NotNull
-    @Lookup(type = LookupType.DROPDOWN, actions = {"open", "clear"})
-    private Organizations companyId;
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.UNLINK)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ORGANIZATIONS_ID_ID")
+    private Organizations organizationsId;
 
-    public void setCompanyId(Organizations companyId) {
-        this.companyId = companyId;
+    public Organizations getOrganizationsId() {
+        return organizationsId;
     }
 
-    public Organizations getCompanyId() {
-        return companyId;
-    }
-
-    public String getPositionRu() {
-        return positionRu;
+    public void setOrganizationsId(Organizations organizationsId) {
+        this.organizationsId = organizationsId;
     }
 
     public void setPositionRu(String positionRu) {
         this.positionRu = positionRu;
+    }
+
+    public String getPositionRu() {
+        return positionRu;
     }
 
     public String getPositionUa() {
