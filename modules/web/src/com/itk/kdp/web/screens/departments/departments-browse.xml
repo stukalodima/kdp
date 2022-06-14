@@ -9,8 +9,8 @@
             <view extends="_local">
                 <property name="approvalManager" view="_minimal"/>
                 <property name="managerId" view="_minimal"/>
-                <property name="pId" view="_minimal"/>
-                <property name="companyId" view="_minimal"/>
+                <property name="parentId" view="_minimal"/>
+                <property name="organizationsId" view="_minimal"/>
             </view>
             <loader id="departmentsesDl">
                 <query>
@@ -31,7 +31,7 @@
         <treeTable id="departmentsesTable"
                    width="100%"
                    dataContainer="departmentsesDc"
-                   hierarchyProperty="pId">
+                   hierarchyProperty="parentId">
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
@@ -47,8 +47,8 @@
                 <column id="departmentRu"/>
                 <column id="departmentId"/>
                 <column id="managerId"/>
-                <column id="pId"/>
-                <column id="companyId"/>
+                <column id="parentId"/>
+                <column id="organizationsId"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

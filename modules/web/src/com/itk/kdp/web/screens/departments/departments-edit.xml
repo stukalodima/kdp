@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://departmentsEdit.caption"
         focusComponent="form"
         messagesPack="com.itk.kdp.web.screens.departments">
@@ -8,8 +9,8 @@
                   class="com.itk.kdp.entity.Departments">
             <view extends="_local">
                 <property name="approvalManager" view="_minimal"/>
-                <property name="companyId" view="_minimal"/>
-                <property name="pId" view="_minimal"/>
+                <property name="organizationsId" view="_minimal"/>
+                <property name="parentId" view="_minimal"/>
                 <property name="managerId" view="_minimal"/>
             </view>
             <loader/>
@@ -21,46 +22,60 @@
                 </query>
             </loader>
         </collection>
+        <collection id="departmentsesDc" class="com.itk.kdp.entity.Departments">
+            <view extends="_local"/>
+            <loader id="departmentsesDl">
+                <query>
+                    <![CDATA[select e from kdp_Departments e]]>
+<!--                    <condition>-->
+<!--                        <and>-->
+<!--                            <c:jpql>-->
+<!--                                <c:where> e.kdp_Departments != :kdp_Departments</c:where>-->
+<!--                            </c:jpql>-->
+<!--                        </and>-->
+<!--                    </condition>-->
+                </query>
+            </loader>
+        </collection>
     </data>
-    <dialogMode height="AUTO"
-                width="AUTO"
-                modal="true"
-                forceDialog="true"/>
-    <layout expand="editActions" spacing="true">
-        <form id="form" dataContainer="departmentsDc">
+    <dialogMode
+            width="50%" forceDialog="true" height="AUTO" resizable="true"/>
+    <layout expand="editActions" spacing="true" width="100%">
+        <form id="form" dataContainer="departmentsDc" width="100%" childrenCaptionWidth="AUTO">
             <column width="350px">
-                <textField id="codeField" property="code"/>
-                <textField id="nameField" property="name"/>
-                <textField id="departmentEnField" property="departmentEn"/>
-                <textField id="departmentUaField" property="departmentUa"/>
-                <textField id="departmentRuField" property="departmentRu"/>
-                <lookupPickerField id="companyIdField" optionsContainer="companyIdsDc" property="companyId">
+                <textField id="codeField" property="code" width="100%"/>
+                <textField id="nameField" property="name" width="100%"/>
+                <textField id="departmentEnField" property="departmentEn" width="100%"/>
+                <textField id="departmentUaField" property="departmentUa" width="100%"/>
+                <textField id="departmentRuField" property="departmentRu" width="100%"/>
+                <lookupPickerField id="companyIdField" optionsContainer="companyIdsDc" property="organizationsId" width="100%">
                     <actions>
                         <action id="lookup" type="picker_lookup"/>
                         <action id="open" type="picker_open"/>
                         <action id="clear" type="picker_clear"/>
                     </actions>
                 </lookupPickerField>
-                <pickerField id="approvalManagerField" property="approvalManager">
+                <pickerField id="approvalManagerField" property="approvalManager" width="100%">
                     <actions>
                         <action id="lookup" type="picker_lookup"/>
                         <action id="clear" type="picker_clear"/>
                     </actions>
                 </pickerField>
-                <pickerField id="pIdField" property="pId">
+                <lookupPickerField id="pIdField" property="parentId" optionsContainer="departmentsesDc" width="100%">
                     <actions>
                         <action id="lookup" type="picker_lookup"/>
+                        <action id="open" type="picker_open"/>
                         <action id="clear" type="picker_clear"/>
                     </actions>
-                </pickerField>
-                <pickerField id="managerIdField" property="managerId">
+                </lookupPickerField>
+                <pickerField id="managerIdField" property="managerId" width="100%">
                     <actions>
                         <action id="lookup" type="picker_lookup"/>
                         <action id="clear" type="picker_clear"/>
                     </actions>
                 </pickerField>
                 <maskedField id="departmentIdField" mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh"
-                             property="departmentId"/>
+                             property="departmentId" width="100%"/>
             </column>
         </form>
         <hbox id="editActions" spacing="true">

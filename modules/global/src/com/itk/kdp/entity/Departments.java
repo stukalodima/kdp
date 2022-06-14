@@ -17,7 +17,6 @@ import java.util.UUID;
 @Table(name = "KDP_DEPARTMENTS")
 @Entity(name = "kdp_Departments")
 @NamePattern("%s|name")
-
 public class Departments extends StandardEntity {
     private static final long serialVersionUID = -179585123169757061L;
 
@@ -55,25 +54,26 @@ public class Departments extends StandardEntity {
     @OnDeleteInverse(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ORGANIZATION_ID")
-    private Organizations companyId;
+    private Organizations organizationsId;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "P_ID_ID")
     @OnDelete(DeletePolicy.UNLINK)
-    private Departments pId;
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    private Departments parentId;
 
     @OnDeleteInverse(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MANAGER_ID_ID")
     private User managerId;
 
-    public void setpId(Departments pId) {
-        this.pId = pId;
+    public void setParentId(Departments parentId) {
+        this.parentId = parentId;
     }
 
-    public Departments getpId() {
-        return pId;
+    public Departments getParentId() {
+        return parentId;
     }
 
     public User getApprovalManager() {
@@ -124,12 +124,12 @@ public class Departments extends StandardEntity {
         this.departmentEn = departmentEn;
     }
 
-    public Organizations getCompanyId() {
-        return companyId;
+    public Organizations getOrganizationsId() {
+        return organizationsId;
     }
 
-    public void setCompanyId(Organizations companyId) {
-        this.companyId = companyId;
+    public void setOrganizationsId(Organizations organizationsId) {
+        this.organizationsId = organizationsId;
     }
 
     public Integer getCode() {
