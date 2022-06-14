@@ -13,13 +13,18 @@ create table KDP_ORGANIZATIONS (
     PREFIX varchar(3) not null,
     SHORT_NAME varchar(255) not null,
     FULL_NAME varchar(255) not null,
+    ORGANIZATIONS_EN varchar(255) not null,
+    ORGANIZATIONS_UA varchar(255) not null,
+    ORGANIZATIONS_RU varchar(255) not null,
     CODE_OCPO varchar(12) not null,
     DATE_REGISTRATION date,
     COUNTRY_REGISTRATION varchar(255),
+    ORGANIZATIONS1C_ID varchar(36),
     ENTITY boolean,
+    ACTIVE boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_POSITION
 create table KDP_POSITION (
@@ -71,7 +76,7 @@ create table KDP_DEPARTMENT (
     ORGANIZATION_ID varchar(36) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_DEPARTMENT
 -- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
