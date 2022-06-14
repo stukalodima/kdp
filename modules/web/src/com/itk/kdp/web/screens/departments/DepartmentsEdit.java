@@ -16,11 +16,10 @@ public class DepartmentsEdit extends StandardEditor<Departments> {
     @Inject
     private CollectionLoader<Departments> departmentsesDl;
 
-    @Subscribe("pIdField")
-    public void onPIdFieldValueChange(HasValue.ValueChangeEvent<Departments> event) {
+    @Subscribe
+    public void onAfterShow(AfterShowEvent event) {
 
-//        departmentsesDl.setParameter("kdp_Departments", Departments.class);
-//        departmentsesDl.load();
-
+        departmentsesDl.setParameter("department", getEditedEntity());
+        departmentsesDl.load();
     }
 }
