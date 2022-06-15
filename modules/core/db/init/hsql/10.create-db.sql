@@ -19,7 +19,7 @@ create table KDP_ORGANIZATIONS (
     ENTITY boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_POSITION
 create table KDP_POSITION (
@@ -35,7 +35,7 @@ create table KDP_POSITION (
     NAME varchar(255),
     --
     primary key (ID)
-);
+)^
 -- end KDP_POSITION
 -- end KDP_RECONCILIATION_STATUSES
 -- begin KDP_VACATION_TYPE
@@ -53,7 +53,7 @@ create table KDP_VACATION_TYPE (
     NAME varchar(255) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_TYPE
 -- begin KDP_DEPARTMENT
 create table KDP_DEPARTMENT (
@@ -71,7 +71,7 @@ create table KDP_DEPARTMENT (
     ORGANIZATION_ID varchar(36) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_DEPARTMENT
 -- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
@@ -87,5 +87,42 @@ create table KDP_RECONCILIATION_STATUSES (
     NAME varchar(255) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_RECONCILIATION_STATUSES
+-- begin KDP_EMPLOYEES
+create table KDP_EMPLOYEES (
+    ID varchar(36) not null,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    SURNAME_UA varchar(250) not null,
+    NAME_UA varchar(250) not null,
+    MIDDLE_NAME_UA varchar(250) not null,
+    SURNAME_RU varchar(250) not null,
+    NAME_RU varchar(250) not null,
+    MIDDLE_NAME_RU varchar(250) not null,
+    SURNAME_EN varchar(250) not null,
+    NAME_EN varchar(250) not null,
+    MIDDLE_NAME_EN varchar(250) not null,
+    WORK_EMAIL varchar(100) not null,
+    OTHER_EMAIL varchar(100),
+    WORK_PHONE varchar(15),
+    MOBILE_PHONE varchar(15),
+    COMPANY_ID varchar(36) not null,
+    DEPARTMENT_ID varchar(36) not null,
+    POSITION_ID varchar(36) not null,
+    MANAGER_ID varchar(36),
+    BIRTHDAY date,
+    EMPLOYMENT_DATE date,
+    LOGIN_NAME varchar(250) not null,
+    FORM_EMPLOYMENT boolean,
+    PHOTO_ID varchar(36),
+    --
+    primary key (ID)
+)^
+-- end KDP_EMPLOYEES

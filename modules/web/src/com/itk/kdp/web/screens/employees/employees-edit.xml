@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://employeesEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.employees">
+    <data>
+        <instance id="employeesDc"
+                  class="com.itk.kdp.entity.Employees">
+            <view extends="_local">
+                <property name="company" view="_minimal">
+                    <property name="code"/>
+                    <property name="shortName"/>
+                </property>
+                <property name="department" view="_minimal">
+                    <property name="code"/>
+                </property>
+                <property name="position" view="_minimal"/>
+                <property name="manager" view="_minimal">
+                    <property name="surnameUa"/>
+                    <property name="nameUa"/>
+                    <property name="middleNameUa"/>
+                </property>
+                <property name="photo" view="_minimal"/>
+            </view>
+            <loader/>
+            <instance id="photoDc" property="photo"/>
+        </instance>
+        <collection id="companiesDc" class="com.itk.kdp.entity.Organizations" view="_minimal">
+            <loader id="companiesDl">
+                <query>
+                    <![CDATA[select e from kdp_Organizations e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="departmentsesDc" class="com.itk.kdp.entity.Departments">
+            <view extends="_local"/>
+            <loader id="departmentsesDl">
+                <query>
+                    <![CDATA[select e from kdp_Department e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where> e.organization = :organization </c:where>
+                        </c:jpql>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="AUTO"
+                width="50%" forceDialog="true" resizable="true"/>
+    <layout expand="scrollBox" spacing="true" width="100%">
+        <scrollBox id="scrollBox" spacing="true">
+            <form id="form" dataContainer="employeesDc" width="100%">
+
+                <column width="100%">
+                    <textField id="surnameUaField" property="surnameUa" colspan="2" width="20%"/>
+                    <textField id="nameUaField" property="nameUa" colspan="2" width="20%"/>
+                    <textField id="middleNameUaField" property="middleNameUa" colspan="2" width="20%"/>
+                    <textField id="surnameRuField" property="surnameRu" width="100%"/>
+                    <textField id="nameRuField" property="nameRu" width="100%"/>
+                    <textField id="middleNameRuField" property="middleNameRu" width="100%"/>
+                    <textField id="workEmailField" property="workEmail" colspan="2" width="100%"/>
+                    <textField id="otherEmailField" property="otherEmail" colspan="2" width="100%"/>
+                    <textField id="workPhoneField" property="workPhone" width="100%"/>
+
+                    <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="2" width="100%">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
+                    <lookupPickerField id="departmentField" optionsContainer="departmentsesDc" property="department" colspan="2" width="100%">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
+                    <lookupPickerField id="positionField" property="position" colspan="2" width="100%">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
+                    <lookupPickerField id="managerField" property="manager" colspan="2" width="100%">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
+                    <dateField id="employmentDateField" property="employmentDate" width="50%"/>
+                    <dateField id="birthdayField" property="birthday" width="50%"/>
+                    <textField id="loginNameField" property="loginName" colspan="2" width="100%"/>
+                    <upload id="photoField" fileStoragePutMode="IMMEDIATE" property="photo" showFileName="true" colspan="2" width="100%"/>
+                </column>
+                <column width="100%">
+                    <textField id="surnameEnField" property="surnameEn" width="100%"/>
+                    <textField id="nameEnField" property="nameEn" width="100%"/>
+                    <textField id="middleNameEnField" property="middleNameEn" width="100%"/>
+                    <textField id="mobilePhoneField" property="mobilePhone" width="100%"/>
+                    <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
+                </column>
+            </form>
+        </scrollBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
