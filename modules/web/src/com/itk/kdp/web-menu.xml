@@ -7,5 +7,6 @@
         <item screen="kdp_Position.browse" caption="mainMsg://menu_config.kdp_Position.browse"/>
         <item screen="kdp_Organizations.browse" caption="mainMsg://menu_config.kdp_Organizations.browse"/>
         <item screen="kdp_Department.browse" caption="mainMsg://menu_config.kdp_Department.browse"/>
+        <item screen="kdp_Contract.browse" caption="mainMsg://menu_config.kdp_Contract.browse"/>
     </menu>
 </menu-config>

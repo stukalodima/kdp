@@ -19,7 +19,7 @@ create table KDP_ORGANIZATIONS (
     ENTITY boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_POSITION
 create table KDP_POSITION (
@@ -53,7 +53,7 @@ create table KDP_VACATION_TYPE (
     NAME varchar(255) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_TYPE
 -- begin KDP_DEPARTMENT
 create table KDP_DEPARTMENT (
@@ -71,7 +71,7 @@ create table KDP_DEPARTMENT (
     ORGANIZATION_ID varchar(36) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_DEPARTMENT
 -- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
@@ -87,5 +87,23 @@ create table KDP_RECONCILIATION_STATUSES (
     NAME varchar(255) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_RECONCILIATION_STATUSES
+-- begin KDP_CONTRACT
+create table KDP_CONTRACT (
+    ID varchar(36) not null,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NUMBER varchar(255) not null,
+    STATE varchar(255) not null,
+    DATE timestamp not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_CONTRACT
