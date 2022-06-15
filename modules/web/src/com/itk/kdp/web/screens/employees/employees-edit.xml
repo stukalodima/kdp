@@ -49,21 +49,50 @@
     </data>
     <dialogMode height="AUTO"
                 width="50%" forceDialog="true" resizable="true"/>
-    <layout expand="scrollBox" spacing="true" width="100%">
-        <scrollBox id="scrollBox" spacing="true">
-            <form id="form" dataContainer="employeesDc" width="100%">
+    <layout spacing="true" width="100%">
+<!--    <layout expand="scrollBox" spacing="true" width="100%">-->
+<!--        <scrollBox id="scrollBox" spacing="true">-->
+<!--        <hbox spacing="true" stylename="card" width="100%">-->
+          <hbox spacing="true" margin="true" width="100%">
+            <form id="form" dataContainer="employeesDc" captionPosition="TOP">
+                <column width="100%">
+                    <textField property="surnameUa"/>
+                </column>
+                <column width="100%">
+                    <textField property="nameUa"/>
+                </column>
+                <column width="100%">
+                    <textField property="middleNameUa"/>
+                </column>
+            </form>
+          </hbox>
+<!--        </hbox>-->
+        <groupBox caption=" ПРЕДСТАВЛЕНИЕ НА ДРУГИХ ЯЗЫКАХ " outerMargin="true, false, true, false" spacing="true" width="AUTO">
+            <form dataContainer="employeesDc">
+                <column width="100%">
+                    <textField property="surnameRu" width="AUTO"/>
+                    <textField property="nameRu" width="AUTO"/>
+                    <textField property="middleNameRu" width="AUTO"/>
+                </column>
+                <column width="100%">
+                    <textField property="surnameEn" width="AUTO"/>
+                    <textField property="nameEn" width="AUTO"/>
+                    <textField property="middleNameEn" width="AUTO"/>
+                </column>
+
+            </form>
+        </groupBox>
+        <hbox spacing="true" width="100%">
+            <form dataContainer="employeesDc" width="100%" captionPosition="LEFT">
 
                 <column width="100%">
-                    <textField id="surnameUaField" property="surnameUa" colspan="2" width="20%"/>
-                    <textField id="nameUaField" property="nameUa" colspan="2" width="20%"/>
-                    <textField id="middleNameUaField" property="middleNameUa" colspan="2" width="20%"/>
-                    <textField id="surnameRuField" property="surnameRu" width="100%"/>
-                    <textField id="nameRuField" property="nameRu" width="100%"/>
-                    <textField id="middleNameRuField" property="middleNameRu" width="100%"/>
-                    <textField id="workEmailField" property="workEmail" colspan="2" width="100%"/>
-                    <textField id="otherEmailField" property="otherEmail" colspan="2" width="100%"/>
+                    <label value="  ---  КОНТАКТНАЯ ИНФОРМАЦИЯ  ---  " width="100%" colspan="2" stylename="colored"/>
+                    <label value="msg://" colspan="2" height="5px" width="100%"/>
+                    <textField id="workEmailField" property="workEmail" colspan="1" width="100%"/>
                     <textField id="workPhoneField" property="workPhone" width="100%"/>
-
+                    <label value="msg://" height="10px" width="100%" colspan="2"/>
+                    <label value="  ---  КАДРОВЫЕ ДАННЫЕ  ---  " width="100%" colspan="2" stylename="colored"/>
+                    <label value="msg://" height="5px" width="100%" colspan="2"/>
                     <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="2" width="100%">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
@@ -93,20 +122,25 @@
                         </actions>
                     </lookupPickerField>
                     <dateField id="employmentDateField" property="employmentDate" width="50%"/>
+                    <label value="msg://" colspan="2" height="10px" width="100%"/>
+                    <label value="  ---  ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ  ---  " width="100%" colspan="2" stylename="colored"/>
+                    <label value="msg://" height="5px" width="100%" colspan="2"/>
                     <dateField id="birthdayField" property="birthday" width="50%"/>
                     <textField id="loginNameField" property="loginName" colspan="2" width="100%"/>
-                    <upload id="photoField" fileStoragePutMode="IMMEDIATE" property="photo" showFileName="true" colspan="2" width="100%"/>
+                    <label value="msg://" height="5px" width="100%" colspan="2"/>
+                    <upload id="photoField" fileStoragePutMode="IMMEDIATE" dataContainer="employeesDc"
+                           showClearButton="true" fileSizeLimit="5000" property="photo" showFileName="true" colspan="2" width="AUTO"/>
+                    <label value="msg://" colspan="2" height="10px" width="100%"/>
                 </column>
                 <column width="100%">
-                    <textField id="surnameEnField" property="surnameEn" width="100%"/>
-                    <textField id="nameEnField" property="nameEn" width="100%"/>
-                    <textField id="middleNameEnField" property="middleNameEn" width="100%"/>
-                    <textField id="mobilePhoneField" property="mobilePhone" width="100%"/>
+                    <textField id="otherEmailField" property="otherEmail" width="100%"/>
+                    <maskedField mask="(###)###-##-##" id="mobilePhoneField" property="mobilePhone" valueMode="masked" width="100%"/>
                     <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
                 </column>
             </form>
-        </scrollBox>
-        <hbox id="editActions" spacing="true">
+        </hbox>
+<!--        </scrollBox>-->
+        <hbox id="editActions" margin="true" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>
         </hbox>
