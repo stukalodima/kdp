@@ -1,5 +1,6 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Date;
 
 @Table(name = "KDP_ORGANIZATIONS")
 @Entity(name = "kdp_Organizations")
+@NamePattern("%s|shortName")
 public class Organizations extends StandardEntity {
     private static final long serialVersionUID = -7946626287646661870L;
 
