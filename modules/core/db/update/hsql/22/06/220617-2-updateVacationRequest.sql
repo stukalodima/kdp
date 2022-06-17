@@ -1,6 +1,0 @@
-alter table KDP_VACATION_REQUEST alter column VACATIONTYPE_ID rename to VACATIONTYPE_ID__U98577 ^
-alter table KDP_VACATION_REQUEST drop constraint FK_KDP_VACATION_REQUEST_ON_VACATIONTYPE ;
-drop index IDX_KDP_VACATION_REQUEST_ON_VACATIONTYPE ;
-alter table KDP_VACATION_REQUEST add column CONSENT_TO_BILLING boolean ;
-alter table KDP_VACATION_REQUEST add column VACATION_TYPE_ID varchar(36) ;
-alter table KDP_VACATION_REQUEST add column UPLOAD_TO_1C boolean ;
