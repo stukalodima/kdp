@@ -38,7 +38,7 @@
         </filter>
         <groupTable id="employeesesTable"
                     width="100%"
-                    dataContainer="employeesesDc">
+                    dataContainer="employeesesDc" presentations="true">
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
@@ -47,27 +47,27 @@
                 <action id="excel" type="excel"/>
             </actions>
             <columns>
-                <column id="surnameUa"/>
-                <column id="nameUa"/>
-                <column id="middleNameUa"/>
-                <column id="surnameRu"/>
-                <column id="nameRu"/>
-                <column id="middleNameRu"/>
-                <column id="surnameEn"/>
-                <column id="nameEn"/>
-                <column id="middleNameEn"/>
-                <column id="workEmail"/>
-                <column id="otherEmail"/>
-                <column id="workPhone"/>
-                <column id="mobilePhone"/>
-                <column id="company"/>
-                <column id="department"/>
-                <column id="position"/>
-                <column id="manager"/>
-                <column id="birthday"/>
-                <column id="employmentDate"/>
-                <column id="loginName"/>
-                <column id="formEmployment"/>
+                <column id="surnameUa" expandRatio="5" sort="ASCENDING" align="CENTER"/>
+                <column id="nameUa" expandRatio="3" align="CENTER"/>
+                <column id="middleNameUa" expandRatio="6" align="CENTER"/>
+                <column id="surnameRu" expandRatio="5" align="CENTER"/>
+                <column id="nameRu" expandRatio="3" align="CENTER"/>
+                <column id="middleNameRu" expandRatio="6" align="CENTER"/>
+                <column id="surnameEn" expandRatio="5" align="CENTER"/>
+                <column id="nameEn" expandRatio="3" align="CENTER"/>
+                <column id="middleNameEn" expandRatio="6" align="CENTER"/>
+                <column id="workEmail" expandRatio="4" align="CENTER"/>
+                <column id="otherEmail" expandRatio="4" align="CENTER"/>
+                <column id="workPhone" expandRatio="3" align="CENTER"/>
+                <column id="mobilePhone" expandRatio="3" align="CENTER"/>
+                <column id="company" expandRatio="4" align="CENTER"/>
+                <column id="department" expandRatio="6" align="CENTER"/>
+                <column id="position" expandRatio="5" align="CENTER"/>
+                <column id="manager" expandRatio="6" align="CENTER"/>
+                <column id="birthday" expandRatio="3" align="CENTER"/>
+                <column id="employmentDate" expandRatio="3" align="CENTER"/>
+                <column id="loginName" expandRatio="4" align="CENTER"/>
+                <column id="formEmployment" expandRatio="2" align="CENTER"/>
                 <column id="photo"/>
             </columns>
             <rowsCount/>
@@ -80,6 +80,7 @@
                 <button id="excelBtn" action="employeesesTable.excel"/>
             </buttonsPanel>
         </groupTable>
+
         <hbox id="lookupActions" spacing="true" visible="false">
             <button action="lookupSelectAction"/>
             <button action="lookupCancelAction"/>
