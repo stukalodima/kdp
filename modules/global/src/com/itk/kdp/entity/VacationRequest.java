@@ -1,6 +1,7 @@
 package com.itk.kdp.entity;
 
 import com.haulmont.chile.core.annotations.Composition;
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 @Table(name = "KDP_VACATION_REQUEST")
 @Entity(name = "kdp_VacationRequest")
+@NamePattern("%s %s|applicationNumber,applicationDate")
 public class VacationRequest extends StandardEntity {
     private static final long serialVersionUID = 379968912838652266L;
 
@@ -74,7 +76,7 @@ public class VacationRequest extends StandardEntity {
     @JoinColumn(name = "VACATION_TYPE_ID")
     private VacationType vacationType;
 
-    @Column(name = "REMAINING_VACATION_DAYS", nullable = true, unique = false)
+    @Column(name = "REMAINING_VACATION_DAYS")
     private Integer remainingVacationDays;
 
     @NotNull
@@ -87,13 +89,13 @@ public class VacationRequest extends StandardEntity {
     @Column(name = "DATE_BY")
     private Date dateBy;
 
-    @Column(name = "VACATION_DAYS", nullable = true, unique = false)
+    @Column(name = "VACATION_DAYS")
     private Integer vacationDays;
 
-    @Column(name = "INFORMATION_FOR_CONSULTATIONS", nullable = true, unique = false)
+    @Column(name = "INFORMATION_FOR_CONSULTATIONS")
     private String informationForConsultations;
 
-    @Column(name = "NOTE", nullable = true, unique = false)
+    @Column(name = "NOTE")
     private String note;
 
     @Column(name = "CONSENT_TO_BILLING")
@@ -116,7 +118,7 @@ public class VacationRequest extends StandardEntity {
     @Column(name = "UPLOAD_TO_1C")
     private Boolean uploadTo1C;
 
-    @Column(name = "STATUS", nullable = true, unique = false)
+    @Column(name = "STATUS")
     private String status;
 
     @Column(name = "COMMENT")
