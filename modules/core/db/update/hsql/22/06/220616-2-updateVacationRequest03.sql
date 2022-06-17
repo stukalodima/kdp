@@ -1,0 +1,5 @@
+alter table KDP_VACATION_REQUEST alter column MANAGER_ID rename to MANAGER_ID__U67743 ^
+alter table KDP_VACATION_REQUEST drop constraint FK_KDP_VACATION_REQUEST_ON_MANAGER ;
+drop index IDX_KDP_VACATION_REQUEST_ON_MANAGER ;
+alter table KDP_VACATION_REQUEST add column APPLICATION_DATE date ;
+alter table KDP_VACATION_REQUEST add column COORDINATOR_ID varchar(36) ;

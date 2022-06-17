@@ -8,5 +8,6 @@
         <class>com.itk.kdp.entity.Position</class>
         <class>com.itk.kdp.entity.Departments</class>
         <class>com.itk.kdp.entity.Employees</class>
+        <class>com.itk.kdp.entity.VacationRequest</class>
     </persistence-unit>
 </persistence>
