@@ -100,7 +100,7 @@ create table KDP_CONTRACT (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NUMBER varchar(255) not null,
+    NUMBER varchar(255),
     STATE varchar(255) not null,
     DATE timestamp not null,
     --

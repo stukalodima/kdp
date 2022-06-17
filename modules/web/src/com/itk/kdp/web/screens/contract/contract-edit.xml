@@ -2,7 +2,7 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="Договор"
         focusComponent="form"
-        messagesPack="com.company.bpmdemo.web.screens.contract">
+        messagesPack="com.itk.kdp.web.screens.departments">
     <data>
         <instance id="contractDc"
                   class="com.itk.kdp.entity.Contract"
@@ -35,31 +35,40 @@
                            property="state"/>
             </column>
         </form>
-        <groupBox id="procActionsBox"
-                  caption="msg://process"
+        <groupBox id="groupActionsBox"
+                  caption=""
                   spacing="true"
                   width="AUTO"
-                  orientation="vertical">
-            <fragment id="procActionsFragment"
-                      screen="bpm_ProcActionsFragment"/>
+                  orientation="horizontal"
+                  outerMargin="false, false, false, false">
+            <groupBox caption="msg://attachments"
+                      height="300px"
+                      spacing="true"
+                      width="700px">
+                <table id="attachmentsTable"
+                       dataContainer="procAttachmentsDc"
+                       height="100%"
+                       width="100%">
+                    <columns>
+                        <column id="file.name"/>
+                        <column id="author"/>
+                        <column id="type"/>
+                        <column id="comment"
+                                maxTextLength="50"/>
+                    </columns>
+                </table>
+            </groupBox>
+            <groupBox id="procActionsBox"
+                      caption="msg://process"
+                      spacing="true"
+                      width="AUTO"
+                      orientation="vertical">
+                <fragment id="procActionsFragment"
+                          screen="bpm_ProcActionsFragment"/>
+            </groupBox>
         </groupBox>
-        <groupBox caption="msg://attachments"
-                  height="300px"
-                  spacing="true"
-                  width="700px">
-            <table id="attachmentsTable"
-                   dataContainer="procAttachmentsDc"
-                   height="100%"
-                   width="100%">
-                <columns>
-                    <column id="file.name"/>
-                    <column id="author"/>
-                    <column id="type"/>
-                    <column id="comment"
-                            maxTextLength="50"/>
-                </columns>
-            </table>
-        </groupBox>
+
+
         <hbox id="editActions"
               spacing="true">
             <button action="windowCommitAndClose"/>

@@ -14,11 +14,11 @@ public class Contract extends StandardEntity {
     private static final long serialVersionUID = -5218496934155734949L;
 
     @NotNull
-    @Column(name = "NUMBER", nullable = false, unique = true)
+    @Column(name = "NUMBER")
     private String number;
 
     @NotNull
-    @Column(name = "STATE", nullable = false, unique = true)
+    @Column(name = "STATE", nullable = false)
     private String state;
 
     @NotNull
@@ -32,8 +32,8 @@ public class Contract extends StandardEntity {
     }
 
     public Contract() {
-        this.number = "number";
-        this.state = "state";
+        this.number = "";
+        this.state = "new";
         this.date = new Date();
     }
 
