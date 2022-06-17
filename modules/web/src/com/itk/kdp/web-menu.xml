@@ -8,5 +8,6 @@
         <item screen="kdp_Organizations.browse" caption="mainMsg://menu_config.kdp_Organizations.browse"/>
         <item screen="kdp_Department.browse" caption="mainMsg://menu_config.kdp_Department.browse"/>
         <item screen="kdp_Employees.browse" caption="mainMsg://menu_config.kdp_Employees.browse"/>
+        <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
     </menu>
 </menu-config>

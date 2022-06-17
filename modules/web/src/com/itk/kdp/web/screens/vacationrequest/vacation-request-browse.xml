@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://vacationRequestBrowse.caption"
+        focusComponent="vacationRequestsTable"
+        messagesPack="com.itk.kdp.web.screens.vacationrequest">
+    <data readOnly="true">
+        <collection id="vacationRequestsDc"
+                    class="com.itk.kdp.entity.VacationRequest">
+            <view extends="_local">
+                <property name="employee" view="_minimal"/>
+                <property name="company" view="_minimal"/>
+                <property name="department" view="_minimal"/>
+                <property name="position" view="_minimal"/>
+                <property name="coordinator" view="_minimal"/>
+                <property name="vacationType" view="_minimal"/>
+                <property name="initiator" view="_minimal"/>
+            </view>
+            <loader id="vacationRequestsDl">
+                <query>
+                    <![CDATA[select e from kdp_VacationRequest e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="100%"
+                width="100%"/>
+    <layout expand="vacationRequestsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="vacationRequestsTable"
+                dataLoader="vacationRequestsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="vacationRequestsTable"
+                    width="100%"
+                    dataContainer="vacationRequestsDc"
+                    multiselect="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="applicationNumber"/>
+                <column id="employee"/>
+                <column id="company"/>
+                <column id="department"/>
+                <column id="position"/>
+                <column id="coordinator"/>
+                <column id="vacationType"/>
+                <column id="remainingVacationDays"/>
+                <column id="dateFrom"/>
+                <column id="dateBy"/>
+                <column id="vacationDays"/>
+                <column id="informationForConsultations"/>
+                <column id="note"/>
+                <column id="consentToBilling"/>
+                <column id="document"/>
+                <column id="initiator"/>
+                <column id="uploadTo1C"/>
+                <column id="status"/>
+                <column id="comment"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="vacationRequestsTable.create"/>
+                <button id="editBtn" action="vacationRequestsTable.edit"/>
+                <button id="removeBtn" action="vacationRequestsTable.remove"/>
+                <button id="excelBtn" action="vacationRequestsTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
