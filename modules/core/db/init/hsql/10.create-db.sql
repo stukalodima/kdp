@@ -38,6 +38,10 @@ create table KDP_POSITION (
     DELETED_BY varchar(50),
     --
     NAME varchar(255),
+    POSITION_EN varchar(255) not null,
+    POSITION_UA varchar(255) not null,
+    POSITION_RU varchar(255) not null,
+    ORGANIZATIONS_ID_ID varchar(36) not null,
     --
     primary key (ID)
 )^

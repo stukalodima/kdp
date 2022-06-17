@@ -1,0 +1,8 @@
+alter table KDP_ORGANIZATIONS alter column ORGANIZATIONS_UA rename to ORGANIZATIONS_UA__U33525 ^
+alter table KDP_ORGANIZATIONS alter column ORGANIZATIONS_UA__U33525 set null ;
+alter table KDP_ORGANIZATIONS alter column ORGANIZATIONS_RU rename to ORGANIZATIONS_RU__U26274 ^
+alter table KDP_ORGANIZATIONS alter column ORGANIZATIONS_RU__U26274 set null ;
+alter table KDP_ORGANIZATIONS alter column ORGANIZATIONS1C_ID rename to ORGANIZATIONS1C_ID__U98832 ^
+alter table KDP_ORGANIZATIONS alter column ORGANIZATIONS_EN rename to ORGANIZATIONS_EN__U68936 ^
+alter table KDP_ORGANIZATIONS alter column ORGANIZATIONS_EN__U68936 set null ;
+alter table KDP_ORGANIZATIONS alter column ACTIVE rename to ACTIVE__U95887 ^
