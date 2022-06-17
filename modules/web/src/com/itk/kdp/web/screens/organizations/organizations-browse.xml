@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://organizationsBrowse.caption"
         focusComponent="organizationsesTable"
         messagesPack="com.itk.kdp.web.screens.organizations">
@@ -40,10 +39,14 @@
                 <column id="prefix"/>
                 <column id="shortName"/>
                 <column id="fullName"/>
+                <column id="organizationsEn"/>
+                <column id="organizationsUa"/>
+                <column id="organizationsRu"/>
                 <column id="codeRegistration"/>
                 <column id="dateRegistration"/>
                 <column id="countryRegistration"/>
                 <column id="entity"/>
+                <column id="active"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

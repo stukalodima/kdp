@@ -1,13 +1,16 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.UUID;
 
 @Table(name = "KDP_ORGANIZATIONS")
 @Entity(name = "kdp_Organizations")
+@NamePattern("%s|shortName")
 public class Organizations extends StandardEntity {
     private static final long serialVersionUID = -7946626287646661870L;
 
@@ -28,6 +31,18 @@ public class Organizations extends StandardEntity {
     private String fullName;
 
     @NotNull
+    @Column(name = "ORGANIZATIONS_EN", nullable = false)
+    private String organizationsEn;
+
+    @NotNull
+    @Column(name = "ORGANIZATIONS_UA", nullable = false)
+    private String organizationsUa;
+
+    @NotNull
+    @Column(name = "ORGANIZATIONS_RU", nullable = false)
+    private String organizationsRu;
+
+    @NotNull
     @Column(name = "CODE_OCPO", nullable = false, length = 12)
     private String codeRegistration;
 
@@ -38,8 +53,54 @@ public class Organizations extends StandardEntity {
     @Column(name = "COUNTRY_REGISTRATION")
     private String countryRegistration;
 
+    @Column(name = "ORGANIZATIONS1C_ID")
+    private UUID organizations1cId;
+
     @Column(name = "ENTITY")
     private Boolean entity;
+
+    @Column(name = "ACTIVE")
+    private Boolean active;
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public UUID getOrganizations1cId() {
+        return organizations1cId;
+    }
+
+    public void setOrganizations1cId(UUID organizations1cId) {
+        this.organizations1cId = organizations1cId;
+    }
+
+    public String getOrganizationsRu() {
+        return organizationsRu;
+    }
+
+    public void setOrganizationsRu(String organizationsRu) {
+        this.organizationsRu = organizationsRu;
+    }
+
+    public String getOrganizationsUa() {
+        return organizationsUa;
+    }
+
+    public void setOrganizationsUa(String organizationsUa) {
+        this.organizationsUa = organizationsUa;
+    }
+
+    public String getOrganizationsEn() {
+        return organizationsEn;
+    }
+
+    public void setOrganizationsEn(String organizationsEn) {
+        this.organizationsEn = organizationsEn;
+    }
 
     public String getCodeRegistration() {
         return codeRegistration;
