@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://employeesEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.employees">
+    <data>
+        <instance id="employeesDc"
+                  class="com.itk.kdp.entity.Employees">
+            <view extends="_local">
+                <property name="company" view="_minimal">
+                    <property name="code"/>
+                    <property name="shortName"/>
+                </property>
+                <property name="department" view="_minimal">
+                    <property name="code"/>
+                </property>
+                <property name="position" view="_minimal"/>
+                <property name="manager" view="_minimal">
+                    <property name="surnameUa"/>
+                    <property name="nameUa"/>
+                    <property name="middleNameUa"/>
+                </property>
+                <property name="photo" view="_minimal"/>
+            </view>
+            <loader/>
+            <instance id="photoDc" property="photo"/>
+        </instance>
+        <collection id="companiesDc" class="com.itk.kdp.entity.Organizations" view="_minimal">
+            <loader id="companiesDl">
+                <query>
+                    <![CDATA[select e from kdp_Organizations e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="departmentsesDc" class="com.itk.kdp.entity.Departments">
+            <view extends="_local"/>
+            <loader id="departmentsesDl">
+                <query>
+                    <![CDATA[select e from kdp_Departments e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where> e.organizationsId = :organization </c:where>
+                        </c:jpql>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="90%"
+                width="75%" forceDialog="true" resizable="true"/>
+    <layout spacing="true" width="100%" expand="body">
+        <scrollBox id="body">
+            <hbox spacing="true" margin="true" width="100%">
+                <form id="form" dataContainer="employeesDc" captionPosition="TOP" width="100%">
+                    <column width="100%">
+                        <textField property="surnameUa"/>
+                    </column>
+                    <column width="100%">
+                        <textField property="nameUa"/>
+                    </column>
+                    <column width="100%">
+                        <textField property="middleNameUa"/>
+                    </column>
+                </form>
+              </hbox>
+            <groupBox caption="msg://groupBox.caption" outerMargin="true, false, true, false" spacing="true" width="100%">
+                <form dataContainer="employeesDc" width="100%">
+                    <column width="100%">
+                        <textField property="surnameRu" width="100%"/>
+                        <textField property="nameRu" width="100%"/>
+                        <textField property="middleNameRu" width="100%"/>
+                    </column>
+                    <column width="100%">
+                        <textField property="surnameEn" width="100%"/>
+                        <textField property="nameEn" width="100%"/>
+                        <textField property="middleNameEn" width="100%"/>
+                    </column>
+                </form>
+            </groupBox>
+            <groupBox spacing="true" caption="msg://hbox.caption" width="100%"
+                          captionAsHtml="true">
+                <form dataContainer="employeesDc" width="100%">
+                    <column>
+                        <textField id="workEmailField" property="workEmail" colspan="1" width="100%"/>
+                        <textField id="workPhoneField" property="workPhone" width="100%"/>
+                    </column>
+                    <column>
+                        <textField id="otherEmailField" property="otherEmail" width="100%"/>
+                        <maskedField mask="(###)###-##-##" id="mobilePhoneField" property="mobilePhone" valueMode="masked" width="100%"/>
+                    </column>
+                </form>
+            </groupBox>
+            <hbox spacing="true" width="100%">
+
+                <form dataContainer="employeesDc" width="100%" captionPosition="LEFT">
+                    <column width="100%">
+<!--                        <label value="msg://label.value" width="100%" colspan="2" stylename="colored"/>-->
+<!--                        <label value="msg://" height="10px" width="100%" colspan="2"/>-->
+                        <label value="  ---  КАДРОВЫЕ ДАННЫЕ  ---  " width="100%" colspan="2" stylename="colored"/>
+                        <label value="msg://" height="5px" width="100%" colspan="2"/>
+                        <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="2" width="100%">
+                            <actions>
+                                <action id="lookup" type="picker_lookup"/>
+                                <action id="open" type="picker_open"/>
+                                <action id="clear" type="picker_clear"/>
+                            </actions>
+                        </lookupPickerField>
+                        <lookupPickerField id="departmentField" optionsContainer="departmentsesDc" property="department" colspan="2" width="100%">
+                            <actions>
+                                <action id="lookup" type="picker_lookup"/>
+                                <action id="open" type="picker_open"/>
+                                <action id="clear" type="picker_clear"/>
+                            </actions>
+                        </lookupPickerField>
+                        <lookupPickerField id="positionField" property="position" colspan="2" width="100%">
+                            <actions>
+                                <action id="lookup" type="picker_lookup"/>
+                                <action id="open" type="picker_open"/>
+                                <action id="clear" type="picker_clear"/>
+                            </actions>
+                        </lookupPickerField>
+                        <lookupPickerField id="managerField" property="manager" colspan="2" width="100%">
+                            <actions>
+                                <action id="lookup" type="picker_lookup"/>
+                                <action id="open" type="picker_open"/>
+                                <action id="clear" type="picker_clear"/>
+                            </actions>
+                        </lookupPickerField>
+                        <dateField id="employmentDateField" property="employmentDate" width="50%"/>
+                        <label value="msg://" colspan="2" height="10px" width="100%"/>
+                        <label value="  ---  ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ  ---  " width="100%" colspan="2" stylename="colored"/>
+                        <label value="msg://" height="5px" width="100%" colspan="2"/>
+                        <dateField id="birthdayField" property="birthday" width="50%"/>
+                        <textField id="loginNameField" property="loginName" colspan="2" width="100%"/>
+                        <label value="msg://" height="5px" width="100%" colspan="2"/>
+                        <upload id="photoField" fileStoragePutMode="IMMEDIATE" dataContainer="employeesDc"
+                               showClearButton="true" fileSizeLimit="5000" property="photo" showFileName="true" colspan="2" width="AUTO"/>
+                        <label value="msg://" colspan="2" height="10px" width="100%"/>
+                    </column>
+                    <column width="100%">
+                        <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
+                    </column>
+                </form>
+            </hbox>
+        </scrollBox>
+        <hbox id="editActions" margin="true" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

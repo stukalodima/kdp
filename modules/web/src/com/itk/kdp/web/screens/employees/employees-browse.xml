@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://employeesBrowse.caption"
+        focusComponent="employeesesTable"
+        messagesPack="com.itk.kdp.web.screens.employees">
+    <data readOnly="true">
+        <collection id="employeesesDc"
+                    class="com.itk.kdp.entity.Employees">
+            <view extends="_local">
+                <property name="company" view="_minimal">
+                    <property name="shortName"/>
+                </property>
+                <property name="department" view="_minimal"/>
+                <property name="position" view="_minimal"/>
+                <property name="manager" view="_minimal">
+                    <property name="surnameUa"/>
+                    <property name="nameUa"/>
+                    <property name="middleNameUa"/>
+                </property>
+                <property name="photo" view="_minimal"/>
+            </view>
+            <loader id="employeesesDl">
+                <query>
+                    <![CDATA[select e from kdp_Employees e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="100%"
+                width="100%"/>
+    <layout expand="employeesesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="employeesesTable"
+                dataLoader="employeesesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="employeesesTable"
+                    width="100%"
+                    dataContainer="employeesesDc" presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="refresh" type="refresh"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="surnameUa" expandRatio="5" sort="ASCENDING" align="CENTER"/>
+                <column id="nameUa" expandRatio="3" align="CENTER"/>
+                <column id="middleNameUa" expandRatio="6" align="CENTER"/>
+                <column id="surnameRu" expandRatio="5" align="CENTER"/>
+                <column id="nameRu" expandRatio="3" align="CENTER"/>
+                <column id="middleNameRu" expandRatio="6" align="CENTER"/>
+                <column id="surnameEn" expandRatio="5" align="CENTER"/>
+                <column id="nameEn" expandRatio="3" align="CENTER"/>
+                <column id="middleNameEn" expandRatio="6" align="CENTER"/>
+                <column id="workEmail" expandRatio="4" align="CENTER"/>
+                <column id="otherEmail" expandRatio="4" align="CENTER"/>
+                <column id="workPhone" expandRatio="3" align="CENTER"/>
+                <column id="mobilePhone" expandRatio="3" align="CENTER"/>
+                <column id="company" expandRatio="4" align="CENTER"/>
+                <column id="department" expandRatio="6" align="CENTER"/>
+                <column id="position" expandRatio="5" align="CENTER"/>
+                <column id="manager" expandRatio="6" align="CENTER"/>
+                <column id="birthday" expandRatio="3" align="CENTER"/>
+                <column id="employmentDate" expandRatio="3" align="CENTER"/>
+                <column id="loginName" expandRatio="4" align="CENTER"/>
+                <column id="formEmployment" expandRatio="2" align="CENTER"/>
+                <column id="photo"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="employeesesTable.create"/>
+                <button id="editBtn" action="employeesesTable.edit"/>
+                <button id="removeBtn" action="employeesesTable.remove"/>
+                <button id="refreshBtn" action="employeesesTable.refresh"/>
+                <button id="excelBtn" action="employeesesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://departmentsBrowse.caption"
         focusComponent="departmentsesTable"
         messagesPack="com.itk.kdp.web.screens.departments">
@@ -8,13 +7,14 @@
         <collection id="departmentsesDc"
                     class="com.itk.kdp.entity.Departments">
             <view extends="_local">
-                <property name="organization" view="_minimal">
-                    <property name="shortName"/>
-                </property>
+                <property name="approvalManager" view="_minimal"/>
+                <property name="managerId" view="_minimal"/>
+                <property name="parentId" view="_minimal"/>
+                <property name="organizationsId" view="_minimal"/>
             </view>
             <loader id="departmentsesDl">
                 <query>
-                    <![CDATA[select e from kdp_Department e]]>
+                    <![CDATA[select e from kdp_Departments e]]>
                 </query>
             </loader>
         </collection>
@@ -28,11 +28,11 @@
                 dataLoader="departmentsesDl">
             <properties include=".*"/>
         </filter>
-        <groupTable id="departmentsesTable"
-                    width="100%"
-                    dataContainer="departmentsesDc"
-                    multiselect="true"
-                    presentations="true">
+        <treeTable id="departmentsesTable"
+                   width="100%"
+                   dataContainer="departmentsesDc"
+                   hierarchyProperty="parentId">
+
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
@@ -41,8 +41,15 @@
             </actions>
             <columns>
                 <column id="code"/>
+                <column id="approvalManager"/>
                 <column id="name"/>
-                <column id="organization"/>
+                <column id="departmentEn"/>
+                <column id="departmentUa"/>
+                <column id="departmentRu"/>
+                <column id="departmentId"/>
+                <column id="managerId"/>
+                <column id="parentId"/>
+                <column id="organizationsId"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
@@ -52,7 +59,7 @@
                 <button id="removeBtn" action="departmentsesTable.remove"/>
                 <button id="excelBtn" action="departmentsesTable.excel"/>
             </buttonsPanel>
-        </groupTable>
+        </treeTable>
         <hbox id="lookupActions" spacing="true" visible="false">
             <button action="lookupSelectAction"/>
             <button action="lookupCancelAction"/>

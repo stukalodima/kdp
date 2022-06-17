@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://positionBrowse.caption"
         focusComponent="positionsTable"
         messagesPack="com.itk.kdp.web.screens.position">
     <data readOnly="true">
         <collection id="positionsDc"
                     class="com.itk.kdp.entity.Position">
-            <view extends="_local"/>
+            <view extends="_local">
+                <property name="organizationsId" view="_minimal"/>
+            </view>
             <loader id="positionsDl">
                 <query>
                     <![CDATA[select e from kdp_Position e]]>
@@ -40,6 +41,10 @@
             </actions>
             <columns>
                 <column id="name"/>
+                <column id="positionEn"/>
+                <column id="positionUa"/>
+                <column id="positionRu"/>
+                <column id="organizationsId"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
@@ -47,10 +52,6 @@
                 <button id="createBtn" action="positionsTable.create"/>
                 <button id="editBtn" action="positionsTable.edit"/>
                 <button id="removeBtn" action="positionsTable.remove"/>
-                <button id="refreshBtn" action="positionsTable.refresh"/>
-                <button id="addBtn" action="positionsTable.add"/>
-                <button id="excludeBtn" action="positionsTable.exclude"/>
-                <button id="excelBtn" action="positionsTable.excel"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">
