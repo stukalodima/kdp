@@ -1,1 +1,0 @@
-alter table KDP_DEPARTMENT rename to KDP_DEPARTMENT__U92157 ;

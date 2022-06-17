@@ -1,1 +1,0 @@
-drop table KDP_DEPARTMENT__U92157 if exists cascade ;
