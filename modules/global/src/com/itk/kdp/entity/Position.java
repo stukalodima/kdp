@@ -17,7 +17,8 @@ import javax.validation.constraints.NotNull;
 public class Position extends StandardEntity {
     private static final long serialVersionUID = 6282166328827621264L;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
+    @NotNull
     private String name;
 
     @Column(name = "POSITION_EN", nullable = false)

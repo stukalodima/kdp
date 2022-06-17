@@ -37,10 +37,10 @@
             <view extends="_local"/>
             <loader id="departmentsesDl">
                 <query>
-                    <![CDATA[select e from kdp_Department e]]>
+                    <![CDATA[select e from kdp_Departments e]]>
                     <condition>
                         <c:jpql>
-                            <c:where> e.organization = :organization </c:where>
+                            <c:where> e.organizationsId = :organization </c:where>
                         </c:jpql>
                     </condition>
                 </query>

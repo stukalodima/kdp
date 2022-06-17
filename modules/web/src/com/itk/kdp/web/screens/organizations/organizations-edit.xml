@@ -11,34 +11,37 @@
         </instance>
     </data>
     <dialogMode
-            width="90%" forceDialog="true" height="75%" resizable="true"/>
+            width="70%" forceDialog="true" height="50%" resizable="true"/>
     <layout expand="body" spacing="true" width="100%">
         <scrollBox id="body">
-        <form id="form" dataContainer="organizationsDc" width="100%">
-            <column width="100%">
-                <textField id="codeField" property="code" width="100%"/>
-                <textField id="shortNameField" property="shortName" width="100%" colspan="2"/>
-                <textField id="fullNameField" property="fullName" width="100%" colspan ="2"/>
-                <textField id="organizationsEnField" property="organizationsEn" width="100%" colspan ="2"/>
-                <textField id="organizationsUaField" property="organizationsUa" width="100%" colspan ="2"/>
-                <textField id="organizationsRuField" property="organizationsRu" width="100%" colspan ="2"/>
-                <textField id="codeRegistrationField" property="codeRegistration" width="100%"/>
-                <checkBox id="entityField" property="entity" width="100%"/>
-                <checkBox id="activeField" property="active" width="100%"/>
-
-            </column>
-            <column width="100%">
-                <textField id="prefixField" property="prefix" width="100%"/>
-                <dateField id="dateRegistrationField" property="dateRegistration" width="100%"/>
-                <textField id="countryRegistrationField" property="countryRegistration" width="100%"/>
-                <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="organizations1cIdField"
-                             property="organizations1cId" width="100%"/>
-            </column>
-
-        </form>
+            <form id="form" dataContainer="organizationsDc" width="100%">
+                <column width="100%">
+                    <textField id="codeField" property="code" width="100%"/>
+                    <textField id="shortNameField" property="shortName" width="100%" colspan="2"/>
+                    <textField id="organizationsEnField" property="organizationsEn" width="100%" colspan="2"/>
+                    <textField id="fullNameField" property="fullName" width="100%" colspan="2"/>
+                    <checkBox id="entityField" property="entity" width="100%"/>
+                </column>
+                <column width="100%">
+                    <textField id="prefixField" property="prefix" width="100%"/>
+                    <checkBox id="activeField" property="active" width="100%"/>
+                </column>
+                <column width="100%">
+                    <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="organizations1cIdField"
+                                 property="organizations1cId" width="100%"  colspan="2"/>
+                    <textField id="organizationsUaField" property="organizationsUa" width="100%" colspan="2"/>
+                    <textField id="organizationsRuField" property="organizationsRu" width="100%" colspan="2"/>
+                    <dateField id="dateRegistrationField" property="dateRegistration" width="100%"/>
+                    <textField id="countryRegistrationField" property="countryRegistration" width="100%" colspan="2"/>
+                </column>
+                <column width="100%">
+                    <textField id="codeRegistrationField" property="codeRegistration" width="100%"/>
+                </column>
+            </form>
         </scrollBox>
-        <hbox id="editActions" spacing="true" >
+        <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="windowCommitButton" action="windowCommit"/>
             <button id="closeBtn" action="windowClose"/>
         </hbox>
     </layout>

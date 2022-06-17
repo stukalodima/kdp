@@ -7,7 +7,6 @@ import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
-import com.haulmont.cuba.security.entity.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,11 +23,12 @@ public class Departments extends StandardEntity {
     @Column(name = "CODE", nullable = false, unique = true)
     private Integer code;
 
-    @Lookup(type = LookupType.SCREEN, actions = {"lookup", "clear"})
+    @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
     @OnDeleteInverse(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "APPROVAL_MANAGER_ID")
-    private User approvalManager;
+    @OnDelete(DeletePolicy.DENY)
+    private Employees approvalManager;
 
     @NotNull
     @Column(name = "NAME", nullable = false)
@@ -66,7 +66,25 @@ public class Departments extends StandardEntity {
     @OnDeleteInverse(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MANAGER_ID_ID")
-    private User managerId;
+    @OnDelete(DeletePolicy.DENY)
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    private Employees managerId;
+
+    public void setManagerId(Employees managerId) {
+        this.managerId = managerId;
+    }
+
+    public Employees getManagerId() {
+        return managerId;
+    }
+
+    public void setApprovalManager(Employees approvalManager) {
+        this.approvalManager = approvalManager;
+    }
+
+    public Employees getApprovalManager() {
+        return approvalManager;
+    }
 
     public void setParentId(Departments parentId) {
         this.parentId = parentId;
@@ -74,22 +92,6 @@ public class Departments extends StandardEntity {
 
     public Departments getParentId() {
         return parentId;
-    }
-
-    public User getApprovalManager() {
-        return approvalManager;
-    }
-
-    public void setApprovalManager(User approvalManager) {
-        this.approvalManager = approvalManager;
-    }
-
-    public User getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(User managerId) {
-        this.managerId = managerId;
     }
 
     public UUID getDepartmentId() {
