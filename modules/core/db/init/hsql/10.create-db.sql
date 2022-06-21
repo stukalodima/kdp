@@ -24,7 +24,7 @@ create table KDP_ORGANIZATIONS (
     ACTIVE boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_POSITION
 create table KDP_POSITION (
@@ -44,7 +44,7 @@ create table KDP_POSITION (
     ORGANIZATIONS_ID_ID varchar(36) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_POSITION
 -- end KDP_RECONCILIATION_STATUSES
 -- begin KDP_VACATION_TYPE
@@ -104,7 +104,7 @@ create table KDP_DEPARTMENTS (
     MANAGER_ID_ID varchar(36),
     --
     primary key (ID)
-);
+)^
 -- end KDP_DEPARTMENTS
 -- begin KDP_EMPLOYEES
 create table KDP_EMPLOYEES (
@@ -141,7 +141,7 @@ create table KDP_EMPLOYEES (
     PHOTO_ID varchar(36),
     --
     primary key (ID)
-);
+)^
 -- end KDP_EMPLOYEES
 -- begin KDP_VACATION_REQUEST
 create table KDP_VACATION_REQUEST (
@@ -174,7 +174,8 @@ create table KDP_VACATION_REQUEST (
     UPLOAD_TO_1C boolean,
     STATUS varchar(255),
     COMMENT varchar(255),
+    STATE varchar(255),
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_REQUEST

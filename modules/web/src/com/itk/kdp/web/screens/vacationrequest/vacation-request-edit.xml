@@ -68,6 +68,22 @@
                 </query>
             </loader>
         </collection>
+        <instance id="vacationRequestDc"
+                  class="com.itk.kdp.entity.VacationRequest"
+                  view="_local">
+            <loader id="vacationRequestDl"/>
+        </instance>
+        <collection id="procAttachmentsDc"
+                    class="com.haulmont.bpm.entity.ProcAttachment"
+                    view="procAttachment-browse">
+            <loader id="procAttachmentsDl">
+                <query><![CDATA[select e from bpm$ProcAttachment e
+                                where e.procInstance.entity.entityId  = :entityId
+                                order by e.createTs]]>
+                </query>
+            </loader>
+        </collection>
+
     </data>
     <dialogMode height="75%"
                 width="90%"
@@ -149,6 +165,31 @@
                 </column>
             </form>
         </scrollBox>
+        <groupBox id="procActionsBox"
+                  caption="msg://process"
+                  spacing="true"
+                  width="AUTO"
+                  orientation="vertical">
+            <fragment id="procActionsFragment"
+                      screen="bpm_ProcActionsFragment"/>
+        </groupBox>
+        <groupBox caption="msg://attachments"
+                  height="300px"
+                  spacing="true"
+                  width="700px">
+            <table id="attachmentsTable"
+                   dataContainer="procAttachmentsDc"
+                   height="100%"
+                   width="100%">
+                <columns>
+                    <column id="file.name"/>
+                    <column id="author"/>
+                    <column id="type"/>
+                    <column id="comment"
+                            maxTextLength="50"/>
+                </columns>
+            </table>
+        </groupBox>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="commitBtn" action="windowCommit"/>

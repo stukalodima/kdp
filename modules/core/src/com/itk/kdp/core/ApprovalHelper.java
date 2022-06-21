@@ -12,7 +12,7 @@ package com.company.bpmdemo.core;
 */
 
 import org.springframework.stereotype.Component;
-import com.itk.kdp.entity.Contract;
+import com.itk.kdp.entity.VacationRequest;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.Transaction;
 
@@ -28,9 +28,9 @@ public class ApprovalHelper {
 
     public void updateState(UUID entityId, String state) {
         try (Transaction tx = persistence.getTransaction()) {
-            Contract contract = persistence.getEntityManager().find(Contract.class, entityId);
-            if (contract != null) {
-                contract.setState(state);
+            VacationRequest vacationRequest = persistence.getEntityManager().find(VacationRequest.class, entityId);
+            if (vacationRequest != null) {
+                vacationRequest.setState(state);
             }
             tx.commit();
         }

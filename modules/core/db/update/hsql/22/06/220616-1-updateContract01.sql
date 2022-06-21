@@ -1,1 +1,0 @@
-drop index IDX_KDP_CONTRACT_UNIQ_STATE ;

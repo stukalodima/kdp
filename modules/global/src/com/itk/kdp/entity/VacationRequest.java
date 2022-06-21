@@ -124,6 +124,9 @@ public class VacationRequest extends StandardEntity {
     @Column(name = "COMMENT")
     private String comment;
 
+    @NotNull
+    @Column(name = "STATE")
+    private String state;
 
     public Employees getEmployee() {
         return employee;
@@ -284,6 +287,14 @@ public class VacationRequest extends StandardEntity {
 
     public void setDocument(FileDescriptor document) {
         this.document = document;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
 
