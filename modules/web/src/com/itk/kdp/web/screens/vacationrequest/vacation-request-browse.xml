@@ -9,12 +9,12 @@
                     class="com.itk.kdp.entity.VacationRequest">
             <view extends="_local">
                 <property name="employee" view="_minimal"/>
-                <property name="company" view="_minimal"/>
-                <property name="department" view="_minimal"/>
-                <property name="position" view="_minimal"/>
+<!--                <property name="company" view="_minimal"/>-->
+<!--                <property name="department" view="_minimal"/>-->
+<!--                <property name="position" view="_minimal"/>-->
                 <property name="coordinator" view="_minimal"/>
                 <property name="vacationType" view="_minimal"/>
-                <property name="initiator" view="_minimal"/>
+<!--                <property name="initiator" view="_minimal"/>-->
             </view>
             <loader id="vacationRequestsDl">
                 <query>
@@ -44,24 +44,24 @@
             </actions>
             <columns>
                 <column id="applicationNumber"/>
+                <column id="status"/>
                 <column id="employee"/>
-                <column id="company"/>
-                <column id="department"/>
-                <column id="position"/>
-                <column id="coordinator"/>
+<!--                <column id="company"/>-->
+<!--                <column id="department"/>-->
+<!--                <column id="position"/>-->
                 <column id="vacationType"/>
-                <column id="remainingVacationDays"/>
+<!--                <column id="remainingVacationDays"/>-->
                 <column id="dateFrom"/>
                 <column id="dateBy"/>
                 <column id="vacationDays"/>
-                <column id="informationForConsultations"/>
-                <column id="note"/>
-                <column id="consentToBilling"/>
-                <column id="document"/>
-                <column id="initiator"/>
-                <column id="uploadTo1C"/>
-                <column id="status"/>
-                <column id="comment"/>
+<!--                <column id="informationForConsultations"/>-->
+<!--                <column id="note"/>-->
+<!--                <column id="consentToBilling"/>-->
+<!--                <column id="document"/>-->
+<!--                <column id="initiator"/>-->
+<!--                <column id="uploadTo1C"/>-->
+<!--                <column id="comment"/>-->
+                <column id="coordinator"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

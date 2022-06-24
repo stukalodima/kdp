@@ -1,0 +1,1 @@
+drop table KDP_DEPARTMENT__U46043 if exists cascade ;

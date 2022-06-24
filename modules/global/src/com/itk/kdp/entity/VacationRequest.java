@@ -8,11 +8,19 @@ import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
-import com.haulmont.cuba.core.global.DeletePolicy;
+import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.security.entity.User;
+import com.itk.kdp.service.EmployeeOrganizationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Objects;
 
 @Table(name = "KDP_VACATION_REQUEST")
 @Entity(name = "kdp_VacationRequest")
@@ -21,7 +29,7 @@ public class VacationRequest extends StandardEntity {
     private static final long serialVersionUID = 379968912838652266L;
 
     @NotNull
-    @Column(name = "APPLICATION_NUMBER", nullable = false, unique = true)
+    @Column(name = "APPLICATION_NUMBER", nullable = false)
     private Integer applicationNumber;
 
 
@@ -284,6 +292,49 @@ public class VacationRequest extends StandardEntity {
 
     public void setDocument(FileDescriptor document) {
         this.document = document;
+    }
+
+    @PostConstruct
+    private void initEntity(Metadata metadata) {
+ /*    EmployeeOrganizationService EmployeeOrganizationService = AppBeans.get(EmployeeOrganizationService.class);
+     employee = EmployeeOrganizationService.getEmployeeOrganization();
+
+        setApplicationDate(today());*/
+        Logger logger = LoggerFactory.getLogger(VacationRequest.class);
+
+//       UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
+//        DataManager dataManager = AppBeans.get(DataManager.class);
+//
+//
+//        User user = userSessionSource.getUserSession().getUser();
+//        if (!Objects.isNull(user.getEmail())) {
+//            String email = user.getEmail();
+//
+//            employee = dataManager.load(Employees.class)
+//                    .query("select e from kdp_Employees e where e.workEmail = :workEmail")
+//                    .parameter("workEmail", email)
+//                    .view("employees-view")
+//                    .one();
+//
+
+          /*  if (!Objects.isNull(employee)) {
+                company = employee.getCompany();
+                department = employee.getDepartment();
+                position = employee.getPosition();
+                coordinator = employee.getManager();
+                initiator = employee;*/
+//
+         /*  }
+        logger.debug(employee + " пока");*/
+  //      }
+
+
+
+    }
+
+    private Date today() {
+        TimeSource timeSource = AppBeans.get(TimeSource.class);
+        return timeSource.currentTimestamp();
     }
 }
 

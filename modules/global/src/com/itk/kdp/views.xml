@@ -4,4 +4,10 @@
     <view entity="kdp_Departments" name="departments-parent-id" extends="_local">
         <property name="parentId" view="_local"/>
     </view>
+    <view entity="kdp_Employees" name="employees-view" extends="_local">
+        <property name="company" view="_local"/>
+        <property name="manager" view="_local"/>
+        <property name="position" view="_local"/>
+        <property name="department" view="_local"/>
+    </view>
 </views>
