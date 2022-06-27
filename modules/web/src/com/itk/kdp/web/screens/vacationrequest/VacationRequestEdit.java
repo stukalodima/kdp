@@ -3,10 +3,7 @@ package com.itk.kdp.web.screens.vacationrequest;
 import com.haulmont.cuba.core.app.PersistenceManagerService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.global.*;
-import com.haulmont.cuba.gui.Dialogs;
-import com.haulmont.cuba.gui.Notifications;
-import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.UiComponents;
+import com.haulmont.cuba.gui.*;
 import com.haulmont.cuba.gui.app.core.inputdialog.DialogActions;
 import com.haulmont.cuba.gui.app.core.inputdialog.InputDialog;
 import com.haulmont.cuba.gui.app.core.inputdialog.InputParameter;
@@ -23,6 +20,9 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import javax.persistence.Persistence;
 import java.awt.image.LookupTable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
@@ -51,7 +51,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private DateField<Date> dateByField;
     @Inject
     private Logger log;
-   @Inject
+    @Inject
     private LookupPickerField<Employees> employeeField;
     @Inject
     private Dialogs dialogs;
@@ -65,6 +65,8 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private DateField<Date> applicationDateField;
     @Inject
     private ScreenBuilders screenBuilders;
+    @Inject
+    private Screens screens;
 
 
     @Subscribe
@@ -79,20 +81,28 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
 
     @Subscribe("dateByField")
     public void onDateByFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
-        if (event.getValue().compareTo(applicationDateField.getValue()) < 0) {
-            notifications.create()
-                    .withCaption("Дата не может быть меньше текущей")
-                    .show();
-        }
-      int  result = event.getValue().compareTo(dateFromField.getValue());
-       // if (result> 0) {
-            notifications.create()
-                    .withCaption("" + result + " " + dateFromField + " " + dateByField.getValue() + " " + timeSource.currentTimestamp())
-                    .show();
-       // }
-        log.debug(dateFromField.getValue().toString() + "привет");
-    }
 
+//        //  Количество дней между датами в миллисекундах
+//        long difference = applicationDateField.getValue().getTime() - dateFromField.getValue().getTime();
+//        //   Перевод количества дней между датами из миллисекунд в дни
+//        int days = (int) (difference / (24 * 60 * 60 * 1000)); // миллисекунды / (24ч * 60мин * 60сек * 1000мс)
+//        if (days < 0) {
+//            notifications.create()
+//                    .withCaption("Дата не может быть меньше текущей")
+//                    .show();
+//        }
+
+//        //  Количество дней между датами в миллисекундах
+//        long difference = dateFromField.getValue().getTime() - dateByField.getValue().getTime();
+//        //   Перевод количества дней между датами из миллисекунд в дни
+//        int days = (int) (difference / (24 * 60 * 60 * 1000)); // миллисекунды / (24ч * 60мин * 60сек * 1000мс)
+//        if (days < 0) {
+//            notifications.create()
+//                    .withCaption("Дата не может быть меньше даты начала")
+//                    .show();
+//        }
+
+    }
 
 
     //   @Subscribe
@@ -110,93 +120,30 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
 
     @Subscribe("dateFromField")
     public void onDateFromFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
-       if(event.getValue().compareTo(timeSource.currentTimestamp())<0) {
-           notifications.create()
-                   .withCaption("Дата не может быть меньше текущей")
-                   .show();
-       }
+
+//        LocalDateTime localDateTime = LocalDateTime.ofInstant(applicationDateField.getValue().toInstant(), ZoneId.systemDefault());
+//
+//      //  Количество дней между датами в миллисекундах
+//        long difference = applicationDateField.getValue().getTime() - dateFromField.getValue().getTime();
+//      //   Перевод количества дней между датами из миллисекунд в дни
+//       int days = (int) (difference / (24 * 60 * 60 * 1000)); // миллисекунды / (24ч * 60мин * 60сек * 1000мс)
+//        if (days < 0) {
+//            notifications.create()
+//                    .withCaption("Дата не может быть меньше текущей")
+//                    .show();
+//        }
     }
 
     @Subscribe()
     private void selectEmployee() {
 
-        UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
-        DataManager dataManager = AppBeans.get(DataManager.class);
 
-
-        User user = userSessionSource.getUserSession().getUser();
-        if (!Objects.isNull(user.getEmail())) {
-            String email = user.getEmail();
-            screenBuilders.screen(this).withScreenClass(EmployeesBrowse.class).withOpenMode(OpenMode.DIALOG).build().show();
-
-//            dialogs.createInputDialog(this)
-//                    .withCaption("Enter values")
-//                    .withParameters(
-//                            InputParameter.parameter("employees")
-//                                    .withField(() -> {
-//                                        return
-////                                        GroupTable<Employees> tableEmployees = uiComponents.create(GroupTable.class);
-////
-////                                        data
-////                                        field.setOptionsList(dataManager.load(Employees.class)
-////                                                .query("select e from kdp_Employees e where e.workEmail = :workEmail")
-////                                                .parameter("workEmail", email)
-////                                                .view("employees-view")
-////                                                .list());
-////                                        field.setCaption("Employees");
-////                                        field.setWidthFull();
-////                                        return field;
-//                                    })
-//                    )
-//                    .withActions(DialogActions.OK_CANCEL)
-//                    .withCloseListener(closeEvent -> {
-//                        if (closeEvent.getCloseAction().equals(InputDialog.INPUT_DIALOG_OK_ACTION)) {
-//                            String name = closeEvent.getValue("name");
-//                            Employees employees = closeEvent.getValue("employees");
+//        if (Objects.isNull(getEditedEntity().getEmployee())) {
+//            OrganizationSelectionForm organizationSelectionForm = screens.create(OrganizationSelectionForm.class);
+//            organizationSelectionForm.addAfterCloseListener(afterCloseEvent ->
 //
-//                            notifications.create()
-//                                    .withCaption("Entered Values")
-//                                    .withDescription("<strong>Name:</strong> " + name +
-//                                            "<br/><strong>Employees:</strong> " + metadataTools.format(employees))
-//                                    .withContentMode(ContentMode.HTML)
-//                                    .show();
-//                        }
-//                    })
-//                    .show();
+//                    )
+            screenBuilders.screen(this).withScreenClass(OrganizationSelectionForm.class).withOpenMode(OpenMode.DIALOG).build().show();
         }
     }
 
-
-//    @Subscribe()
-//    private void selectEmployee() {
-//        dialogs.createInputDialog(this)
-//               .withCaption("Enter values")
-//                .withParameters(
-//                       InputParameter.parameter("organizations")
-//                                .withField(() -> {
-//                                    LookupField<Organizations> field = uiComponents.create(
-//                                            LookupField.of(Organizations.class));
-//                                    field.setOptionsList(dataManager.load(Organizations.class).list());
-//                                    field.setCaption("Organizations");
-//                                    field.setWidthFull();
-//                                    return field;
-//                                })
-//                )
-//                .withActions(DialogActions.OK_CANCEL)
-//                .withCloseListener(closeEvent -> {
-//                    if (closeEvent.getCloseAction().equals(InputDialog.INPUT_DIALOG_OK_ACTION)) {
-//                        String name = closeEvent.getValue("name");
-//                        Organizations organizations = closeEvent.getValue("organizations");
-//
-//                        notifications.create()
-//                                .withCaption("Entered Values")
-//                                .withDescription("<strong>Name:</strong> " + name +
-//                                        "<br/><strong>Employees:</strong> " + metadataTools.format(organizations))
-//                                .withContentMode(ContentMode.HTML)
-//                                .show();
-//                    }
-//                })
-//                .show();
-//    }
-
-}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://vacationRequestSelectionOrganization.caption"
+        focusComponent="vacationRequestsTable"
+        messagesPack="com.itk.kdp.web.screens.vacationrequest">
+    <data readOnly="true">
+        <collection id="vacationRequestsDc"
+                    class="com.itk.kdp.entity.Employees">
+            <view extends="_local">
+                                <property name="company" view="_minimal"/>
+                                <property name="department" view="_minimal"/>
+                                <property name="position" view="_minimal"/>
+            </view>
+            <loader id="vacationRequestsDl">
+                <query>
+                    <![CDATA[select e from kdp_Employees e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.workEmail = :workEmail</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="50%"
+                width="50%"/>
+    <layout expand="vacationRequestsTable"
+            spacing="true">
+        <groupTable id="vacationRequestsTable"
+                    width="100%"
+                    dataContainer="vacationRequestsDc"
+                    multiselect="false">
+            <columns>
+                <column id="fio"/>
+                <column id="company"/>
+                <column id="department"/>
+                <column id="position"/>
+            </columns>
+            <rowsCount/>
+        </groupTable>
+    </layout>
+</window>

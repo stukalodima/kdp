@@ -117,6 +117,7 @@ create table KDP_EMPLOYEES (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
+    FIO varchar(255),
     SURNAME_UA varchar(250) not null,
     NAME_UA varchar(250) not null,
     MIDDLE_NAME_UA varchar(250) not null,

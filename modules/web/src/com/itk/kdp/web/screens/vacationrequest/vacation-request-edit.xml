@@ -79,7 +79,7 @@
                 <column width="100%">
                     <textField id="applicationNumberField" property="applicationNumber" width="100%" required="false" editable="false"/>
                     <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="2"
-                                       width="100%">
+                                       width="100%" editable="false">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
@@ -95,7 +95,7 @@
                         </actions>
                     </lookupPickerField>
                     <lookupPickerField id="vacationTypeField" optionsContainer="vacationTypesDc"
-                                       property="vacationType" colspan="2" width="100%">
+                                       property="vacationType" colspan="2" width="100%" >
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
@@ -118,7 +118,7 @@
                         </actions>
                     </lookupPickerField>
                     <lookupPickerField id="positionField" optionsContainer="positionsDc" property="position" colspan="2"
-                                       width="100%">
+                                       width="100%" editable="false">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>

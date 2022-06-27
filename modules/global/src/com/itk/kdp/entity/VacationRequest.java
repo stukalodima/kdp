@@ -19,7 +19,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Table(name = "KDP_VACATION_REQUEST")
@@ -296,13 +298,24 @@ public class VacationRequest extends StandardEntity {
 
     @PostConstruct
     private void initEntity(Metadata metadata) {
- /*    EmployeeOrganizationService EmployeeOrganizationService = AppBeans.get(EmployeeOrganizationService.class);
-     employee = EmployeeOrganizationService.getEmployeeOrganization();
+        List<Employees> employees = new ArrayList<>();
+        EmployeeOrganizationService EmployeeOrganizationService = AppBeans.get(EmployeeOrganizationService.class);
+        employees = EmployeeOrganizationService.getEmployeeOrganization();
+        if (employees.size() == 1) {
+            employee = employees.get(0);
+            if (!Objects.isNull(employee)) {
+                company = employee.getCompany();
+                department = employee.getDepartment();
+                position = employee.getPosition();
+                coordinator = employee.getManager();
+                initiator = employee;
+            }
+        }
+        setApplicationDate(today());
 
-        setApplicationDate(today());*/
-        Logger logger = LoggerFactory.getLogger(VacationRequest.class);
-
-//       UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
+//        Logger logger = LoggerFactory.getLogger(VacationRequest.class);
+//
+//      UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
 //        DataManager dataManager = AppBeans.get(DataManager.class);
 //
 //
@@ -316,21 +329,16 @@ public class VacationRequest extends StandardEntity {
 //                    .view("employees-view")
 //                    .one();
 //
-
-          /*  if (!Objects.isNull(employee)) {
-                company = employee.getCompany();
-                department = employee.getDepartment();
-                position = employee.getPosition();
-                coordinator = employee.getManager();
-                initiator = employee;*/
+//     if (!Objects.isNull(employee)) {
+//                company = employee.getCompany();
+//                department = employee.getDepartment();
+//                position = employee.getPosition();
+//                coordinator = employee.getManager();
+//                initiator = employee;
 //
-         /*  }
-        logger.debug(employee + " пока");*/
-  //      }
-
-
-
-    }
+//        }
+     //   logger.debug(employee + " пока");
+        }
 
     private Date today() {
         TimeSource timeSource = AppBeans.get(TimeSource.class);

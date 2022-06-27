@@ -19,14 +19,13 @@ import java.util.Objects;
 public class EmployeeOrganizationServiceBean implements EmployeeOrganizationService {
 
     public List<Employees> getEmployeeOrganization() {
-
         List<Employees> employees = new ArrayList<>();
-        Logger log = LoggerFactory.getLogger(VacationRequest.class);
-
-        UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
+//        UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
         DataManager dataManager = AppBeans.get(DataManager.class);
+
         Employees employee = null;
-        User user = userSessionSource.getUserSession().getUser();
+///        User user = userSessionSource.getUserSession().getUser();
+        User user = getUser();
         if (!Objects.isNull(user.getEmail())) {
             String email = user.getEmail();
 
@@ -35,10 +34,13 @@ public class EmployeeOrganizationServiceBean implements EmployeeOrganizationServ
                     .parameter("workEmail", email)
                     .view("employees-view")
                     .list();
-
-
         }
-    //    log.debug(employee.toString() + "лог сервиса");
         return employees;
     }
+
+    public User getUser(){
+        UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
+        return userSessionSource.getUserSession().getUser();
+    }
+
 }
