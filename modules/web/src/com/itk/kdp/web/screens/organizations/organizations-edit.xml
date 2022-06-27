@@ -6,12 +6,22 @@
     <data>
         <instance id="organizationsDc"
                   class="com.itk.kdp.entity.Organizations">
-            <view extends="_local"/>
+            <view extends="_local">
+                <property name="countryRegistration" view="_minimal"/>
+            </view>
             <loader/>
         </instance>
+        <collection id="countriesesDc" class="com.itk.kdp.entity.Countries">
+            <view extends="_local"/>
+            <loader id="countriesesDl">
+                <query>
+                    <![CDATA[select e from kdp_Countries e]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <dialogMode
-            width="70%" forceDialog="true" height="50%" resizable="true"/>
+            width="70%" forceDialog="true" height="40%" resizable="true"/>
     <layout expand="body" spacing="true" width="100%">
         <scrollBox id="body">
             <form id="form" dataContainer="organizationsDc" width="100%">
@@ -32,7 +42,13 @@
                     <textField id="organizationsUaField" property="organizationsUa" width="100%" colspan="2"/>
                     <textField id="organizationsRuField" property="organizationsRu" width="100%" colspan="2"/>
                     <dateField id="dateRegistrationField" property="dateRegistration" width="100%"/>
-                    <textField id="countryRegistrationField" property="countryRegistration" width="100%" colspan="2"/>
+                    <lookupPickerField id="countryRegistrationField" property="countryRegistration" width="100%" colspan="2" optionsContainer="countriesesDc">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
                 </column>
                 <column width="100%">
                     <textField id="codeRegistrationField" property="codeRegistration" width="100%"/>

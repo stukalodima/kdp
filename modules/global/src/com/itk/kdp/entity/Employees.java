@@ -1,6 +1,7 @@
 package com.itk.kdp.entity;
 
 import com.haulmont.chile.core.annotations.Composition;
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
@@ -16,6 +17,7 @@ import java.util.Date;
 
 @Table(name = "KDP_EMPLOYEES")
 @Entity(name = "kdp_Employees")
+@NamePattern("%s %s|surnameUa,nameUa")
 public class Employees extends StandardEntity {
     private static final long serialVersionUID = -3233447108705407573L;
 

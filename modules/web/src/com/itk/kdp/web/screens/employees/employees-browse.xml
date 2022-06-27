@@ -23,6 +23,11 @@
             <loader id="employeesesDl">
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where>e.company = :parOrganization</c:where>
+                        </c:jpql>
+                    </condition>
                 </query>
             </loader>
         </collection>

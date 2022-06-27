@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://departmentsBrowse.caption"
         focusComponent="departmentsesTable"
         messagesPack="com.itk.kdp.web.screens.departments">
@@ -15,12 +16,22 @@
             <loader id="departmentsesDl">
                 <query>
                     <![CDATA[select e from kdp_Departments e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e not in :department</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.organizationsId = :parOrganization</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
                 </query>
             </loader>
         </collection>
     </data>
-    <dialogMode height="600"
-                width="800"/>
+    <dialogMode height="100%"
+                width="100%"/>
     <layout expand="departmentsesTable"
             spacing="true">
         <filter id="filter"
@@ -40,16 +51,15 @@
                 <action id="excel" type="excel"/>
             </actions>
             <columns>
-                <column id="code"/>
-                <column id="approvalManager"/>
-                <column id="name"/>
-                <column id="departmentEn"/>
-                <column id="departmentUa"/>
-                <column id="departmentRu"/>
-                <column id="departmentId"/>
-                <column id="managerId"/>
-                <column id="parentId"/>
-                <column id="organizationsId"/>
+                <column id="name" expandRatio="2" />
+                <column id="departmentRu" expandRatio="2" />
+                <column id="departmentUa" expandRatio="2" />
+                <column id="departmentEn" expandRatio="2" />
+                <column id="organizationsId" expandRatio="3" />
+                <column id="approvalManager" expandRatio="3" />
+                <column id="managerId" expandRatio="3" />
+                <column id="parentId" expandRatio="2" />
+                <column id="departmentId" expandRatio="5" />
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

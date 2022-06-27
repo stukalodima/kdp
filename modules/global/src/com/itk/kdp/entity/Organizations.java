@@ -1,11 +1,23 @@
 package com.itk.kdp.entity;
 
 import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.Lookup;
+import com.haulmont.cuba.core.entity.annotation.LookupType;
+import com.haulmont.cuba.core.entity.annotation.OnDelete;
+import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
+import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.DeletePolicy;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Table(name = "KDP_ORGANIZATIONS")
@@ -50,8 +62,13 @@ public class Organizations extends StandardEntity {
     @Temporal(TemporalType.DATE)
     private Date dateRegistration;
 
-    @Column(name = "COUNTRY_REGISTRATION")
-    private String countryRegistration;
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    @NotNull
+    @OnDeleteInverse(DeletePolicy.DENY)
+    @OnDelete(DeletePolicy.UNLINK)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "COUNTRY_REGISTRATION_ID")
+    private Countries countryRegistration;
 
     @Column(name = "ORGANIZATIONS1C_ID")
     private UUID organizations1cId;
@@ -61,6 +78,14 @@ public class Organizations extends StandardEntity {
 
     @Column(name = "ACTIVE")
     private Boolean active;
+
+    public Countries getCountryRegistration() {
+        return countryRegistration;
+    }
+
+    public void setCountryRegistration(Countries countryRegistration) {
+        this.countryRegistration = countryRegistration;
+    }
 
     public Boolean getActive() {
         return active;
@@ -126,14 +151,6 @@ public class Organizations extends StandardEntity {
         this.entity = entity;
     }
 
-    public String getCountryRegistration() {
-        return countryRegistration;
-    }
-
-    public void setCountryRegistration(String countryRegistration) {
-        this.countryRegistration = countryRegistration;
-    }
-
     public String getPrefix() {
         return prefix;
     }
@@ -165,4 +182,33 @@ public class Organizations extends StandardEntity {
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
+
+    @PostConstruct
+    private void initVisitDate() {
+
+        if (code == null) {
+            setCode(generateNewCode().toString());
+        }
+
+        setActive(true);
+
+        DataManager dataManager = AppBeans.get(DataManager.class);
+
+        List<Countries> listCountry = dataManager.load(Countries.class)
+                .query("select e from kdp_Countries e where e.code = :codeCountry")
+                .parameter("codeCountry",804)
+                .view("_minimal")
+                .list();
+
+        if (listCountry.size() == 1) {
+            setCountryRegistration(listCountry.get(0));
+        }
+
+    }
+
+    private Long generateNewCode() {
+        UniqueNumbersService numbersService = AppBeans.get(UniqueNumbersService.class);
+        return numbersService.getNextNumber("organizationCode");
+    }
+
 }
