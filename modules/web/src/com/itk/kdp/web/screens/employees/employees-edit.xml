@@ -33,6 +33,13 @@
                 </query>
             </loader>
         </collection>
+        <collection id="managerDc" class="com.itk.kdp.entity.Employees" view="_minimal">
+            <loader id="managerDl">
+                <query>
+                    <![CDATA[select e from kdp_Employees e]]>
+                </query>
+            </loader>
+        </collection>
         <collection id="departmentsesDc" class="com.itk.kdp.entity.Departments">
             <view extends="_local"/>
             <loader id="departmentsesDl">
@@ -47,24 +54,52 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="90%"
+    <dialogMode height="80%"
                 width="75%" forceDialog="true" resizable="true"/>
     <layout spacing="true" width="100%" expand="body">
         <scrollBox id="body">
-            <hbox spacing="true" margin="true" width="100%">
-                <form id="form" dataContainer="employeesDc" captionPosition="TOP" width="100%">
-                    <column width="100%">
-                        <textField property="surnameUa"/>
-                    </column>
-                    <column width="100%">
-                        <textField property="nameUa"/>
-                    </column>
-                    <column width="100%">
-                        <textField property="middleNameUa"/>
-                    </column>
-                </form>
-              </hbox>
-            <groupBox caption="msg://groupBox.caption" outerMargin="true, false, true, false" spacing="true" width="100%">
+            <grid spacing="true" margin="true" width="100%">
+                <columns>
+                    <column flex="1"/>
+                    <column flex="10"/>
+                </columns>
+                <rows>
+                    <row>
+                        <groupBox caption="Фото" spacing="true"
+                                  height="230px" width="230px" expand="image">
+                            <image id="image"
+                                   width="100%"
+                                   dataContainer="employeesDc"
+                                   property="photo"
+                                   align="MIDDLE_CENTER"
+                                   scaleMode="FILL"/>
+                            <hbox align="BOTTOM_LEFT"
+                                  spacing="true">
+                                <upload id="photoField"
+                                        accept=".png, .gif, .jpg, .jpeg, .jpe, .jfif, .tif, .tiff"
+                                        property="image"
+                                        fileStoragePutMode="IMMEDIATE"
+                                        showClearButton="true"/>
+                                <button id="downloadImageBtn"
+                                        caption="Загрузить"
+                                        invoke="onDownloadImageBtnClick"/>
+                                <button id="clearImageBtn"
+                                        caption="Очистить"
+                                        invoke="onClearImageBtnClick"/>
+                            </hbox>
+                        </groupBox>
+                        <form id="form" dataContainer="employeesDc" captionPosition="TOP" width="100%">
+                            <column width="100%">
+                                <textField property="surnameUa"/>
+                                <textField property="nameUa"/>
+                                <textField property="middleNameUa"/>
+                            </column>
+                        </form>
+                    </row>
+                </rows>
+            </grid>
+            <groupBox caption="msg://hbox.captionDopInfo" outerMargin="true, false, true, false"
+                      spacing="true" width="100%" captionAsHtml="true">
                 <form dataContainer="employeesDc" width="100%">
                     <column width="100%">
                         <textField property="surnameRu" width="100%"/>
@@ -79,7 +114,7 @@
                 </form>
             </groupBox>
             <groupBox spacing="true" caption="msg://hbox.caption" width="100%"
-                          captionAsHtml="true">
+                          captionAsHtml="true" stylename="light">
                 <form dataContainer="employeesDc" width="100%">
                     <column>
                         <textField id="workEmailField" property="workEmail" colspan="1" width="100%"/>
@@ -91,61 +126,65 @@
                     </column>
                 </form>
             </groupBox>
-            <hbox spacing="true" width="100%">
-
-                <form dataContainer="employeesDc" width="100%" captionPosition="LEFT">
-                    <column width="100%">
-<!--                        <label value="msg://label.value" width="100%" colspan="2" stylename="colored"/>-->
-<!--                        <label value="msg://" height="10px" width="100%" colspan="2"/>-->
-                        <label value="  ---  КАДРОВЫЕ ДАННЫЕ  ---  " width="100%" colspan="2" stylename="colored"/>
-                        <label value="msg://" height="5px" width="100%" colspan="2"/>
-                        <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="2" width="100%">
+            <groupBox spacing="true" caption="msg://hbox.captionPersonnel" captionAsHtml="true" width="100%"
+                      stylename="light" outerMargin="true, false, true, false">
+                <form dataContainer="employeesDc" width="100%">
+                    <column>
+                        <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="1" width="100%">
                             <actions>
                                 <action id="lookup" type="picker_lookup"/>
                                 <action id="open" type="picker_open"/>
                                 <action id="clear" type="picker_clear"/>
                             </actions>
                         </lookupPickerField>
-                        <lookupPickerField id="departmentField" optionsContainer="departmentsesDc" property="department" colspan="2" width="100%">
+                        <lookupPickerField id="positionField" property="position" colspan="1" width="100%">
                             <actions>
                                 <action id="lookup" type="picker_lookup"/>
                                 <action id="open" type="picker_open"/>
                                 <action id="clear" type="picker_clear"/>
                             </actions>
                         </lookupPickerField>
-                        <lookupPickerField id="positionField" property="position" colspan="2" width="100%">
-                            <actions>
-                                <action id="lookup" type="picker_lookup"/>
-                                <action id="open" type="picker_open"/>
-                                <action id="clear" type="picker_clear"/>
-                            </actions>
-                        </lookupPickerField>
-                        <lookupPickerField id="managerField" property="manager" colspan="2" width="100%">
-                            <actions>
-                                <action id="lookup" type="picker_lookup"/>
-                                <action id="open" type="picker_open"/>
-                                <action id="clear" type="picker_clear"/>
-                            </actions>
-                        </lookupPickerField>
-                        <dateField id="employmentDateField" property="employmentDate" width="50%"/>
-                        <label value="msg://" colspan="2" height="10px" width="100%"/>
-                        <label value="  ---  ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ  ---  " width="100%" colspan="2" stylename="colored"/>
-                        <label value="msg://" height="5px" width="100%" colspan="2"/>
-                        <dateField id="birthdayField" property="birthday" width="50%"/>
-                        <textField id="loginNameField" property="loginName" colspan="2" width="100%"/>
-                        <label value="msg://" height="5px" width="100%" colspan="2"/>
-                        <upload id="photoField" fileStoragePutMode="IMMEDIATE" dataContainer="employeesDc"
-                               showClearButton="true" fileSizeLimit="5000" property="photo" showFileName="true" colspan="2" width="AUTO"/>
-                        <label value="msg://" colspan="2" height="10px" width="100%"/>
+                        <dateField id="employmentDateField" property="employmentDate" width="100%"/>
+                        <dateField id="birthdayField" property="birthday" width="100%"/>
                     </column>
-                    <column width="100%">
+                    <column>
+                        <lookupPickerField id="departmentField" optionsContainer="departmentsesDc" property="department" colspan="1" width="100%">
+                            <actions>
+                                <action id="lookup" type="picker_lookup"/>
+                                <action id="open" type="picker_open"/>
+                                <action id="clear" type="picker_clear"/>
+                            </actions>
+                        </lookupPickerField>
+                        <lookupPickerField id="managerField" optionsContainer="managerDc" property="manager" colspan="1" width="100%">
+                            <actions>
+                                <action id="lookup" type="picker_lookup"/>
+                                <action id="open" type="picker_open"/>
+                                <action id="clear" type="picker_clear"/>
+                            </actions>
+                        </lookupPickerField>
                         <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
                     </column>
                 </form>
-            </hbox>
+            </groupBox>
+            <groupBox spacing="true" caption="msg://hbox.captionOther" width="100%" captionAsHtml="true"
+                      orientation="vertical" stylename="light">
+                <form dataContainer="employeesDc" captionPosition="LEFT" width="100%">
+                    <column width="100%">
+                        <textField id="loginNameField" property="loginName" width="100%"/>
+<!--                        <upload id="photoField" fileStoragePutMode="IMMEDIATE" dataContainer="employeesDc"-->
+<!--                                showClearButton="true" property="photo" showFileName="true" width="100%"/>-->
+                    </column>
+                    <column width="100%">
+                        <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="employee1cIdField"
+                                     property="employee1cId" width="100%"/>
+                    </column>
+                </form>
+            </groupBox>
+
         </scrollBox>
         <hbox id="editActions" margin="true" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="commitBtn" action="windowCommit"/>
             <button id="closeBtn" action="windowClose"/>
         </hbox>
     </layout>

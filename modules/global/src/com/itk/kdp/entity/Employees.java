@@ -1,6 +1,7 @@
 package com.itk.kdp.entity;
 
 import com.haulmont.chile.core.annotations.Composition;
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
@@ -8,14 +9,19 @@ import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
+import jdk.internal.math.FormattedFloatingDecimal;
 import org.hibernate.validator.constraints.Length;
 
+import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.Normalizer;
 import java.util.Date;
+import java.util.UUID;
 
 @Table(name = "KDP_EMPLOYEES")
 @Entity(name = "kdp_Employees")
+@NamePattern("%s %s %s|surnameUa, nameUa, middleNameUa")
 public class Employees extends StandardEntity {
     private static final long serialVersionUID = -3233447108705407573L;
 
@@ -51,8 +57,7 @@ public class Employees extends StandardEntity {
     @Column(name = "NAME_EN", nullable = false, length = 250)
     private String nameEn;
 
-    @NotNull
-    @Column(name = "MIDDLE_NAME_EN", nullable = false, length = 250)
+    @Column(name = "MIDDLE_NAME_EN", length = 250)
     private String middleNameEn;
 
     @NotNull
@@ -116,12 +121,23 @@ public class Employees extends StandardEntity {
     @Column(name = "FORM_EMPLOYMENT")
     private Boolean formEmployment;
 
+    @Column(name = "EMPLOYEE_1C_ID")
+    private UUID employee1cId;
+
     @Composition
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.CASCADE)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PHOTO_ID")
     private FileDescriptor photo;
+
+    public UUID getEmployee1cId() {
+        return employee1cId;
+    }
+
+    public void setEmployee1cId(UUID employee1cId){
+        this.employee1cId = employee1cId;
+    }
 
     public FileDescriptor getPhoto() {
         return photo;
@@ -298,4 +314,5 @@ public class Employees extends StandardEntity {
     public void setNameUa(String nameUa) {
         this.nameUa = nameUa;
     }
+
 }

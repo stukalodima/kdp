@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
-
     <view entity="kdp_Departments" name="departments-parent-id" extends="_local">
         <property name="parentId" view="_local"/>
+    </view>
+    <view class="com.itk.kdp.entity.Employees"
+          extends="_local"
+          name="employees-edit">
+        <property name="photo"
+                  view="_local">
+        </property>
     </view>
 </views>

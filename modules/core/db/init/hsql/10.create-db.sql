@@ -44,7 +44,7 @@ create table KDP_POSITION (
     ORGANIZATIONS_ID_ID varchar(36) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_POSITION
 -- end KDP_RECONCILIATION_STATUSES
 -- begin KDP_VACATION_TYPE
@@ -104,7 +104,7 @@ create table KDP_DEPARTMENTS (
     MANAGER_ID_ID varchar(36),
     --
     primary key (ID)
-);
+)^
 -- end KDP_DEPARTMENTS
 -- begin KDP_EMPLOYEES
 create table KDP_EMPLOYEES (
@@ -125,7 +125,7 @@ create table KDP_EMPLOYEES (
     MIDDLE_NAME_RU varchar(250) not null,
     SURNAME_EN varchar(250) not null,
     NAME_EN varchar(250) not null,
-    MIDDLE_NAME_EN varchar(250) not null,
+    MIDDLE_NAME_EN varchar(250),
     WORK_EMAIL varchar(100) not null,
     OTHER_EMAIL varchar(100),
     WORK_PHONE varchar(15),
@@ -138,10 +138,11 @@ create table KDP_EMPLOYEES (
     EMPLOYMENT_DATE date,
     LOGIN_NAME varchar(250) not null,
     FORM_EMPLOYMENT boolean,
+    EMPLOYEE_1C_ID varchar(36),
     PHOTO_ID varchar(36),
     --
     primary key (ID)
-);
+)^
 -- end KDP_EMPLOYEES
 -- begin KDP_VACATION_REQUEST
 create table KDP_VACATION_REQUEST (
@@ -176,5 +177,5 @@ create table KDP_VACATION_REQUEST (
     COMMENT varchar(255),
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_REQUEST
