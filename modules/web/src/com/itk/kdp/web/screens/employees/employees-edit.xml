@@ -66,7 +66,7 @@
                 <rows>
                     <row>
                         <groupBox caption="Фото" spacing="true"
-                                  height="230px" width="230px" expand="image">
+                                  height="250px" width="230px" expand="image">
                             <image id="image"
                                    width="100%"
                                    dataContainer="employeesDc"
@@ -77,15 +77,12 @@
                                   spacing="true">
                                 <upload id="photoField"
                                         accept=".png, .gif, .jpg, .jpeg, .jpe, .jfif, .tif, .tiff"
-                                        property="image"
+                                        dataContainer="employeesDc"
+                                        property="photo"
                                         fileStoragePutMode="IMMEDIATE"
+                                        showFileName="false"
                                         showClearButton="true"/>
-                                <button id="downloadImageBtn"
-                                        caption="Загрузить"
-                                        invoke="onDownloadImageBtnClick"/>
-                                <button id="clearImageBtn"
-                                        caption="Очистить"
-                                        invoke="onClearImageBtnClick"/>
+
                             </hbox>
                         </groupBox>
                         <form id="form" dataContainer="employeesDc" captionPosition="TOP" width="100%">

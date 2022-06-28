@@ -9,13 +9,10 @@ import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
-import jdk.internal.math.FormattedFloatingDecimal;
 import org.hibernate.validator.constraints.Length;
 
-import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.text.Normalizer;
 import java.util.Date;
 import java.util.UUID;
 
