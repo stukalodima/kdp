@@ -2,17 +2,17 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://vacationRequestSelectionOrganization.caption"
-        focusComponent="vacationRequestsTable"
+        focusComponent="organizationSelectionTable"
         messagesPack="com.itk.kdp.web.screens.vacationrequest">
     <data readOnly="true">
-        <collection id="vacationRequestsDc"
+        <collection id="organizationSelectionsDc"
                     class="com.itk.kdp.entity.Employees">
             <view extends="_local">
                                 <property name="company" view="_minimal"/>
                                 <property name="department" view="_minimal"/>
                                 <property name="position" view="_minimal"/>
             </view>
-            <loader id="vacationRequestsDl">
+            <loader id="organizationSelectionsDl">
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>
                     <condition>
@@ -28,11 +28,11 @@
     </data>
     <dialogMode height="50%"
                 width="50%"/>
-    <layout expand="vacationRequestsTable"
+    <layout expand="organizationSelectionTable"
             spacing="true">
-        <groupTable id="vacationRequestsTable"
+        <groupTable id="organizationSelectionTable"
                     width="100%"
-                    dataContainer="vacationRequestsDc"
+                    dataContainer="organizationSelectionsDc"
                     multiselect="false">
             <columns>
                 <column id="fio"/>

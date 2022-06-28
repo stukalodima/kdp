@@ -20,11 +20,9 @@ public class EmployeeOrganizationServiceBean implements EmployeeOrganizationServ
 
     public List<Employees> getEmployeeOrganization() {
         List<Employees> employees = new ArrayList<>();
-//        UserSessionSource userSessionSource = AppBeans.get(UserSessionSource.class);
         DataManager dataManager = AppBeans.get(DataManager.class);
 
         Employees employee = null;
-///        User user = userSessionSource.getUserSession().getUser();
         User user = getUser();
         if (!Objects.isNull(user.getEmail())) {
             String email = user.getEmail();

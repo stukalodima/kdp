@@ -1,32 +1,22 @@
 package com.itk.kdp.web.screens.vacationrequest;
 
-import com.haulmont.cuba.core.app.PersistenceManagerService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
-import com.haulmont.cuba.core.global.*;
-import com.haulmont.cuba.gui.*;
-import com.haulmont.cuba.gui.app.core.inputdialog.DialogActions;
-import com.haulmont.cuba.gui.app.core.inputdialog.InputDialog;
-import com.haulmont.cuba.gui.app.core.inputdialog.InputParameter;
+import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.core.global.PersistenceHelper;
+import com.haulmont.cuba.core.global.TimeSource;
+import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.screen.*;
-import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.config.ConsultationService;
 import com.itk.kdp.entity.Employees;
-import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.entity.VacationRequest;
-import com.itk.kdp.web.screens.employees.EmployeesBrowse;
+import com.vaadin.data.ValidationException;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
-import javax.persistence.Persistence;
-import java.awt.image.LookupTable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import java.util.*;
 import java.util.Formatter;
-import java.util.List;
-import java.util.Objects;
 
 @UiController("kdp_VacationRequest.edit")
 @UiDescriptor("vacation-request-edit.xml")
@@ -34,40 +24,25 @@ import java.util.Objects;
 @LoadDataBeforeShow
 public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Inject
-    private ConsultationService consultationService;
+    private ScreenValidation screenValidation;
+    @Inject
+    private UniqueNumbersService uniqueNumbersService;
+    @Inject
+    private ScreenBuilders screenBuilders;
     @Inject
     private Label<String> labelInfo;
     @Inject
     private Messages messages;
     @Inject
-    private TimeSource timeSource;
-    @Inject
-    private UniqueNumbersService uniqueNumbersService;
-    @Inject
-    private Notifications notifications;
-    @Inject
-    private DateField<Date> dateFromField;
-    @Inject
-    private DateField<Date> dateByField;
-    @Inject
-    private Logger log;
+    private ConsultationService consultationService;
     @Inject
     private LookupPickerField<Employees> employeeField;
     @Inject
-    private Dialogs dialogs;
+    private TimeSource timeSource;
     @Inject
-    private UiComponents uiComponents;
+    private Logger log;
     @Inject
-    private DataManager dataManager;
-    @Inject
-    private MetadataTools metadataTools;
-    @Inject
-    private DateField<Date> applicationDateField;
-    @Inject
-    private ScreenBuilders screenBuilders;
-    @Inject
-    private Screens screens;
-
+    private DateField<Date> dateByField;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -81,35 +56,15 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
 
     @Subscribe("dateByField")
     public void onDateByFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
+        ValidationErrors errors = screenValidation.validateCrossFieldRules(this, getEditedEntity());
+//        log.debug();
+       if (!errors.isEmpty()) {
 
-//        //  Количество дней между датами в миллисекундах
-//        long difference = applicationDateField.getValue().getTime() - dateFromField.getValue().getTime();
-//        //   Перевод количества дней между датами из миллисекунд в дни
-//        int days = (int) (difference / (24 * 60 * 60 * 1000)); // миллисекунды / (24ч * 60мин * 60сек * 1000мс)
-//        if (days < 0) {
-//            notifications.create()
-//                    .withCaption("Дата не может быть меньше текущей")
-//                    .show();
-//        }
-
-//        //  Количество дней между датами в миллисекундах
-//        long difference = dateFromField.getValue().getTime() - dateByField.getValue().getTime();
-//        //   Перевод количества дней между датами из миллисекунд в дни
-//        int days = (int) (difference / (24 * 60 * 60 * 1000)); // миллисекунды / (24ч * 60мин * 60сек * 1000мс)
-//        if (days < 0) {
-//            notifications.create()
-//                    .withCaption("Дата не может быть меньше даты начала")
-//                    .show();
-//        }
-
+            screenValidation.showValidationErrors(this, errors);
+//            dateByField.setStyleName();
+       }
+//       this.validateScreen();
     }
-
-
-    //   @Subscribe
-    // public void onInitEntity(InitEntityEvent<VacationRequest> event) {
-    //event.getEntity().setApplicationDate(timeSource.currentTimestamp());
-    //  }
-
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
@@ -120,30 +75,27 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
 
     @Subscribe("dateFromField")
     public void onDateFromFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
-
-//        LocalDateTime localDateTime = LocalDateTime.ofInstant(applicationDateField.getValue().toInstant(), ZoneId.systemDefault());
-//
-//      //  Количество дней между датами в миллисекундах
-//        long difference = applicationDateField.getValue().getTime() - dateFromField.getValue().getTime();
-//      //   Перевод количества дней между датами из миллисекунд в дни
-//       int days = (int) (difference / (24 * 60 * 60 * 1000)); // миллисекунды / (24ч * 60мин * 60сек * 1000мс)
-//        if (days < 0) {
-//            notifications.create()
-//                    .withCaption("Дата не может быть меньше текущей")
-//                    .show();
-//        }
+        this.validateScreen();
     }
 
-    @Subscribe()
     private void selectEmployee() {
-
-
-//        if (Objects.isNull(getEditedEntity().getEmployee())) {
-//            OrganizationSelectionForm organizationSelectionForm = screens.create(OrganizationSelectionForm.class);
-//            organizationSelectionForm.addAfterCloseListener(afterCloseEvent ->
-//
-//                    )
-            screenBuilders.screen(this).withScreenClass(OrganizationSelectionForm.class).withOpenMode(OpenMode.DIALOG).build().show();
-        }
+        screenBuilders.screen(this)
+                .withScreenClass(OrganizationSelectionForm.class)
+                .withAfterCloseListener(afterCloseEvent -> {
+                    OrganizationSelectionForm organizationSelectionForm = afterCloseEvent.getScreen();
+                    if (afterCloseEvent.closedWith(StandardOutcome.SELECT)) {
+                        Employees result = organizationSelectionForm.getResult();
+                        getEditedEntity().setEmployee(result);
+                        getEditedEntity().setDepartment(result.getDepartment());
+                        getEditedEntity().setCompany(result.getCompany());
+                        getEditedEntity().setPosition(result.getPosition());
+                     //   notifications.create().withCaption("Result: " + result).show();
+                    }
+                })
+                .build()
+                .show();
     }
+
+ }
+
 
