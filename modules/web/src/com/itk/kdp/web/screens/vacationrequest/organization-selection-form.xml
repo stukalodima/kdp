@@ -8,9 +8,10 @@
         <collection id="organizationSelectionsDc"
                     class="com.itk.kdp.entity.Employees">
             <view extends="_local">
-                                <property name="company" view="_minimal"/>
+                                <property name="company" view="_local"/>
                                 <property name="department" view="_minimal"/>
                                 <property name="position" view="_minimal"/>
+                                <property name="manager" view="_minimal"/>
             </view>
             <loader id="organizationSelectionsDl">
                 <query>
@@ -39,6 +40,7 @@
                 <column id="company"/>
                 <column id="department"/>
                 <column id="position"/>
+<!--                <column id="manager"/>-->
             </columns>
             <rowsCount/>
         </groupTable>

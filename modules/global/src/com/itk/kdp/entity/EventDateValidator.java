@@ -7,6 +7,7 @@ public class EventDateValidator implements ConstraintValidator<EventDate, Vacati
 
     @Override
     public boolean isValid(VacationRequest value, ConstraintValidatorContext context) {
-        return value.getDateFrom().before(value.getDateBy());
+     //  return value.getDateFrom().before(value.getDateBy());
+        return (value.getDateFrom().before(value.getDateBy()) || value.getDateFrom().equals(value.getDateBy()));
     }
 }

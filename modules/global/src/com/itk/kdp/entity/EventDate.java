@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = EventDateValidator.class)
 public @interface EventDate {
 
-    String message() default "The Start date must be earlier than the End date";
+    String message() default "Дата не может быть меньше даты начала";
 
     Class<?>[] groups() default {};
 

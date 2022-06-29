@@ -44,44 +44,44 @@ public class VacationRequest extends StandardEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "EMPLOYEES_ID")
-    @OnDelete(DeletePolicy.DENY)
-    @OnDeleteInverse(DeletePolicy.UNLINK)
+  //@OnDelete(DeletePolicy.UNLINK)
+  //@OnDeleteInverse(DeletePolicy.DENY)
     private Employees employee;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "COMPANY_ID")
-    @OnDelete(DeletePolicy.DENY)
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    private Organizations company;
+    //@OnDelete(DeletePolicy.DENY)
+    //@OnDeleteInverse(DeletePolicy.UNLINK)
+   private Organizations company;
 
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEPARTMENTS_ID")
-    @OnDelete(DeletePolicy.DENY)
-    @OnDeleteInverse(DeletePolicy.UNLINK)
+//    @OnDelete(DeletePolicy.DENY)
+//    @OnDeleteInverse(DeletePolicy.UNLINK)
     private Departments department;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POSITION_ID")
-    @OnDelete(DeletePolicy.DENY)
-    @OnDeleteInverse(DeletePolicy.UNLINK)
+//    @OnDelete(DeletePolicy.DENY)
+//    @OnDeleteInverse(DeletePolicy.UNLINK)
     private Position position;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
+//    @OnDeleteInverse(DeletePolicy.UNLINK)
+//    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "COORDINATOR_ID")
     private Employees coordinator;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
+//    @OnDeleteInverse(DeletePolicy.UNLINK)
+//    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "VACATION_TYPE_ID")
     private VacationType vacationType;
@@ -102,8 +102,8 @@ public class VacationRequest extends StandardEntity {
     @Column(name = "VACATION_DAYS")
     private Integer vacationDays;
 
-    @Column(name = "INFORMATION_FOR_CONSULTATIONS")
-    private String informationForConsultations;
+//    @Column(name = "INFORMATION_FOR_CONSULTATIONS")
+//    private String informationForConsultations;
 
     @Column(name = "NOTE")
     private String note;
@@ -112,18 +112,18 @@ public class VacationRequest extends StandardEntity {
     private Boolean consentToBilling;
 
     @Composition
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.CASCADE)
+//    @OnDeleteInverse(DeletePolicy.UNLINK)
+//    @OnDelete(DeletePolicy.CASCADE)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_ID")
     private FileDescriptor document;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
+//    @OnDeleteInverse(DeletePolicy.UNLINK)
+   // @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "INITIATOR_ID")
-    private Employees initiator;
+    private User initiator;
 
     @Column(name = "UPLOAD_TO_1C")
     private Boolean uploadTo1C;
@@ -207,14 +207,14 @@ public class VacationRequest extends StandardEntity {
     public void setVacationDays(Integer vacationDays) {
         this.vacationDays = vacationDays;
     }
+//
+//    public String getInformationForConsultations() {
+//        return informationForConsultations;
+//    }
 
-    public String getInformationForConsultations() {
-        return informationForConsultations;
-    }
-
-    public void setInformationForConsultations(String informationForConsultations) {
-        this.informationForConsultations = informationForConsultations;
-    }
+//    public void setInformationForConsultations(String informationForConsultations) {
+//        this.informationForConsultations = informationForConsultations;
+//    }
 
     public String getNote() {
         return note;
@@ -224,11 +224,11 @@ public class VacationRequest extends StandardEntity {
         this.note = note;
     }
 
-    public Employees getInitiator() {
+    public User getInitiator() {
         return initiator;
     }
 
-    public void setInitiator(Employees initiator) {
+    public void setInitiator(User initiator) {
         this.initiator = initiator;
     }
 
@@ -300,6 +300,7 @@ public class VacationRequest extends StandardEntity {
     private void initEntity(Metadata metadata) {
         List<Employees> employees = new ArrayList<>();
         EmployeeOrganizationService EmployeeOrganizationService = AppBeans.get(EmployeeOrganizationService.class);
+        initiator = EmployeeOrganizationService.getUser();
         employees = EmployeeOrganizationService.getEmployeeOrganization();
         if (employees.size() == 1) {
             employee = employees.get(0);
@@ -308,7 +309,6 @@ public class VacationRequest extends StandardEntity {
                 department = employee.getDepartment();
                 position = employee.getPosition();
                 coordinator = employee.getManager();
-                initiator = employee;
             }
         }
         setApplicationDate(today());

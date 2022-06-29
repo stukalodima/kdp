@@ -7,14 +7,14 @@
         <instance id="vacationRequestDc"
                   class="com.itk.kdp.entity.VacationRequest">
             <view extends="_local">
-                <property name="employee" view="_minimal"/>
+                <property name="employee" view="_local"/>
                 <property name="company" view="_local"/>
-                <property name="department" view="_minimal"/>
-                <property name="position" view="_minimal"/>
-                <property name="coordinator" view="_minimal"/>
-                <property name="vacationType" view="_minimal"/>
-                <property name="document" view="_minimal"/>
-                <property name="initiator" view="_minimal"/>
+                <property name="department" view="_local"/>
+                <property name="position" view="_local"/>
+                <property name="coordinator" view="_local"/>
+                <property name="vacationType" view="_local"/>
+                <property name="document" view="_local"/>
+                <property name="initiator" view="_local"/>
             </view>
             <loader/>
             <instance id="documentDc" property="document"/>
@@ -61,7 +61,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="initiatorsDc" class="com.itk.kdp.entity.Employees" view="_minimal">
+        <collection id="initiatorsDc" class="com.itk.kdp.entity.Employees" view="employees-view">
             <loader id="initiatorsDl">
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>
@@ -88,7 +88,7 @@
                         </actions>
                     </lookupPickerField>
                     <lookupPickerField id="employeeField" optionsContainer="employeesDc" property="employee" colspan="2"
-                                       width="100%">
+                                       width="100%" >
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
@@ -105,7 +105,11 @@
                     </lookupPickerField>
                 </column>
                 <column width="100%">
-                    <dateField id="applicationDateField" property="applicationDate" width="100%"/>
+                    <dateField id="applicationDateField" property="applicationDate" width="100%" editable="false">
+                        <validators>
+                            <futureOrPresent checkSeconds="false" message="msg://dateFromField.message"/>
+                        </validators>
+                    </dateField>
                 </column>
 
                 <column width="100%">
@@ -152,7 +156,7 @@
                         </validators>
                     </dateField>
                     <dateField id="dateByField" property="dateBy"/>
-                    <textField id="vacationDaysField" property="vacationDays" editable="false"/>
+                             <textField id="vacationDaysField" property="vacationDays" editable="false"/>
                 </column>
             </form>
 

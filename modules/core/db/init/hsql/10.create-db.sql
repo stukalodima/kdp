@@ -167,7 +167,6 @@ create table KDP_VACATION_REQUEST (
     DATE_FROM date,
     DATE_BY date,
     VACATION_DAYS integer,
-    INFORMATION_FOR_CONSULTATIONS varchar(255),
     NOTE varchar(255),
     CONSENT_TO_BILLING boolean,
     document_ID varchar(36),
