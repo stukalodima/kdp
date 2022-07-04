@@ -1,6 +1,8 @@
 package com.itk.kdp.entity;
 
 import com.haulmont.chile.core.annotations.Composition;
+import com.haulmont.chile.core.annotations.MetaProperty;
+import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
@@ -16,9 +18,12 @@ import java.util.Date;
 
 @Table(name = "KDP_EMPLOYEES")
 @Entity(name = "kdp_Employees")
+@NamePattern("%s %s %s |surnameUa,nameUa, middleNameUa")
 public class Employees extends StandardEntity {
     private static final long serialVersionUID = -3233447108705407573L;
 
+    @MetaProperty
+    private String fio;
     @NotNull
     @Column(name = "SURNAME_UA", nullable = false, length = 250)
     private String surnameUa;
@@ -297,5 +302,13 @@ public class Employees extends StandardEntity {
 
     public void setNameUa(String nameUa) {
         this.nameUa = nameUa;
+    }
+
+    public String getFio() {
+        return surnameUa + " " + nameUa + " " + middleNameUa;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 }

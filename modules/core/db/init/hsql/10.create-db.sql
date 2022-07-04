@@ -44,7 +44,7 @@ create table KDP_POSITION (
     ORGANIZATIONS_ID_ID varchar(36) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_POSITION
 -- end KDP_RECONCILIATION_STATUSES
 -- begin KDP_VACATION_TYPE
@@ -104,7 +104,7 @@ create table KDP_DEPARTMENTS (
     MANAGER_ID_ID varchar(36),
     --
     primary key (ID)
-);
+)^
 -- end KDP_DEPARTMENTS
 -- begin KDP_EMPLOYEES
 create table KDP_EMPLOYEES (
@@ -117,6 +117,7 @@ create table KDP_EMPLOYEES (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
+    FIO varchar(255),
     SURNAME_UA varchar(250) not null,
     NAME_UA varchar(250) not null,
     MIDDLE_NAME_UA varchar(250) not null,
@@ -141,7 +142,7 @@ create table KDP_EMPLOYEES (
     PHOTO_ID varchar(36),
     --
     primary key (ID)
-);
+)^
 -- end KDP_EMPLOYEES
 -- begin KDP_VACATION_REQUEST
 create table KDP_VACATION_REQUEST (
@@ -166,7 +167,6 @@ create table KDP_VACATION_REQUEST (
     DATE_FROM date,
     DATE_BY date,
     VACATION_DAYS integer,
-    INFORMATION_FOR_CONSULTATIONS varchar(255),
     NOTE varchar(255),
     CONSENT_TO_BILLING boolean,
     document_ID varchar(36),
@@ -176,5 +176,5 @@ create table KDP_VACATION_REQUEST (
     COMMENT varchar(255),
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_REQUEST

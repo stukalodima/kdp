@@ -7,14 +7,14 @@
         <instance id="vacationRequestDc"
                   class="com.itk.kdp.entity.VacationRequest">
             <view extends="_local">
-                <property name="employee" view="_minimal"/>
-                <property name="company" view="_minimal"/>
-                <property name="department" view="_minimal"/>
-                <property name="position" view="_minimal"/>
-                <property name="coordinator" view="_minimal"/>
-                <property name="vacationType" view="_minimal"/>
-                <property name="document" view="_minimal"/>
-                <property name="initiator" view="_minimal"/>
+                <property name="employee" view="_local"/>
+                <property name="company" view="_local"/>
+                <property name="department" view="_local"/>
+                <property name="position" view="_local"/>
+                <property name="coordinator" view="_local"/>
+                <property name="vacationType" view="_local"/>
+                <property name="document" view="_local"/>
+                <property name="initiator" view="_local"/>
             </view>
             <loader/>
             <instance id="documentDc" property="document"/>
@@ -26,7 +26,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="companiesDc" class="com.itk.kdp.entity.Organizations" view="_minimal">
+        <collection id="companiesDc" class="com.itk.kdp.entity.Organizations" view="_local">
             <loader id="companiesDl">
                 <query>
                     <![CDATA[select e from kdp_Organizations e]]>
@@ -61,7 +61,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="initiatorsDc" class="com.itk.kdp.entity.Employees" view="_minimal">
+        <collection id="initiatorsDc" class="com.itk.kdp.entity.Employees" view="employees-view">
             <loader id="initiatorsDl">
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>
@@ -70,43 +70,25 @@
         </collection>
     </data>
     <dialogMode height="75%"
-                width="90%"
+                width="50%"
                 forceDialog="true" resizable="true"/>
     <layout expand="scrollBox" spacing="true" width="100%">
         <scrollBox id="scrollBox" spacing="true">
-            <form id="form" dataContainer="vacationRequestDc" width="100%">
+
+            <form id="form" dataContainer="vacationRequestDc" width="100%" childrenCaptionWidth="AUTO">
                 <column width="100%">
-                    <textField id="applicationNumberField" property="applicationNumber" width="100%"/>
-                    <dateField id="applicationDateField" property="applicationDate" width="200"/>
-                    <lookupPickerField id="employeeField" optionsContainer="employeesDc" property="employee" width="100%">
+                    <textField id="applicationNumberField" property="applicationNumber" width="100%" required="false"
+                               editable="false"/>
+                    <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="2"
+                                       width="100%" editable="false">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
                             <action id="clear" type="picker_clear"/>
                         </actions>
                     </lookupPickerField>
-                    <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" width="100%">
-                        <actions>
-                            <action id="lookup" type="picker_lookup"/>
-                            <action id="open" type="picker_open"/>
-                            <action id="clear" type="picker_clear"/>
-                        </actions>
-                    </lookupPickerField>
-                    <lookupPickerField id="departmentField" optionsContainer="departmentsDc" property="department" width="100%">
-                        <actions>
-                            <action id="lookup" type="picker_lookup"/>
-                            <action id="open" type="picker_open"/>
-                            <action id="clear" type="picker_clear"/>
-                        </actions>
-                    </lookupPickerField>
-                    <lookupPickerField id="positionField" optionsContainer="positionsDc" property="position" width="100%">
-                        <actions>
-                            <action id="lookup" type="picker_lookup"/>
-                            <action id="open" type="picker_open"/>
-                            <action id="clear" type="picker_clear"/>
-                        </actions>
-                    </lookupPickerField>
-                    <lookupPickerField id="coordinatorField" optionsContainer="coordinatorsDc" property="coordinator" width="100%">
+                    <lookupPickerField id="employeeField" optionsContainer="employeesDc" property="employee" colspan="2"
+                                       width="100%" >
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
@@ -114,38 +96,97 @@
                         </actions>
                     </lookupPickerField>
                     <lookupPickerField id="vacationTypeField" optionsContainer="vacationTypesDc"
-                                       property="vacationType" width="100%">
+                                       property="vacationType" colspan="2" width="100%">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
                             <action id="clear" type="picker_clear"/>
                         </actions>
                     </lookupPickerField>
-                    <textField id="remainingVacationDaysField" property="remainingVacationDays" width="200"/>
-                    <dateField id="dateFromField" property="dateFrom" width="200"/>
-                    <dateField id="dateByField" property="dateBy" width="200"/>
-                    <textField id="vacationDaysField" property="vacationDays" width="200"/>
+                </column>
+                <column width="100%">
+                    <dateField id="applicationDateField" property="applicationDate" width="100%" editable="false">
+                        <validators>
+                            <futureOrPresent checkSeconds="false" message="msg://dateFromField.message"/>
+                        </validators>
+                    </dateField>
+                </column>
+
+                <column width="100%">
+                    <label colspan="2"/>
+                    <lookupPickerField id="departmentField" optionsContainer="departmentsDc" property="department"
+                                       colspan="2" width="100%" editable="false">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
+                    <lookupPickerField id="positionField" optionsContainer="positionsDc" property="position" colspan="2"
+                                       width="100%" editable="false">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
+
+                    <lookupPickerField id="coordinatorField" optionsContainer="coordinatorsDc" property="coordinator"
+                                       colspan="2" width="100%">
+                        <actions>
+                            <action id="lookup" type="picker_lookup"/>
+                            <action id="open" type="picker_open"/>
+                            <action id="clear" type="picker_clear"/>
+                        </actions>
+                    </lookupPickerField>
+
+                </column>
+
+                <column width="100%">
+
+                </column>
+            </form>
+
+            <form dataContainer="vacationRequestDc" width="100%" childrenCaptionWidth="115px">
+                <column width="120px">
+                    <textField id="remainingVacationDaysField" property="remainingVacationDays" editable="false"/>
+                    <dateField id="dateFromField" property="dateFrom">
+                        <validators>
+                            <futureOrPresent checkSeconds="false" message="msg://dateFromField.message"/>
+                        </validators>
+                    </dateField>
+                    <dateField id="dateByField" property="dateBy"/>
+                             <textField id="vacationDaysField" property="vacationDays" editable="false"/>
+                </column>
+            </form>
+
+            <form dataContainer="vacationRequestDc" width="100%" childrenCaptionWidth="AUTO">
+                <column width="100%">
+
                     <hbox spacing="true">
-                        <label  value="msg://label.value" width="100%" />
-<!--                        <label  value="111" width="100%" />-->
+                        <label id="labelInfo" width="100%"/>
                     </hbox>
-                    <label  value="msg://label.value" width="100%" />
-                    <textField id="informationForConsultationsField" property="informationForConsultations" width="100%"/>
-                    <textArea id="note" cols="20" rows="5" caption="Примечание" />
-                    <label value= "msg://label.info" width="100%" />
-                    <label value="msg://label.requiredFields" width="100%" />
-                    <checkBox id="consentToBillingField" property="consentToBilling"/>
-                    <upload id="documentField" fileStoragePutMode="IMMEDIATE"  showClearButton="true" property="document" showFileName="true" width="AUTO"/>
-                    <lookupPickerField id="initiatorField" optionsContainer="initiatorsDc" property="initiator" width="100%">
-                        <actions>
-                            <action id="lookup" type="picker_lookup"/>
-                            <action id="open" type="picker_open"/>
-                            <action id="clear" type="picker_clear"/>
-                        </actions>
-                    </lookupPickerField>
-                    <checkBox id="uploadTo1CField" property="uploadTo1C"/>
-                    <textField id="statusField" property="status" width="100%"/>
-                    <textField id="commentField" property="comment" width="100%"/>
+                    <textArea id="note" cols="20" rows="5" caption="Примечание"/>
+                    <hbox spacing="true">
+                        <label value="msg://label.info" width="100%"/>
+                    </hbox>
+                    <hbox spacing="true">
+                        <label value="msg://label.requiredFields" width="100%"/>
+                    </hbox>
+                    <!--                    <checkBox id="consentToBillingField" property="consentToBilling"/>-->
+                    <upload id="documentField" fileStoragePutMode="IMMEDIATE" showClearButton="true" property="document"
+                            showFileName="true" width="AUTO" accept=".pdf"/>
+                    <!--                                        <lookupPickerField id="initiatorField" optionsContainer="initiatorsDc" property="initiator" -->
+                    <!--                                                           width="100%">-->
+                    <!--                                            <actions>-->
+                    <!--                                                <action id="lookup" type="picker_lookup"/>-->
+                    <!--                                                <action id="open" type="picker_open"/>-->
+                    <!--                                                <action id="clear" type="picker_clear"/>-->
+                    <!--                                            </actions>-->
+                    <!--                                        </lookupPickerField>-->
+                    <!--                    <checkBox id="uploadTo1CField" property="uploadTo1C"/>-->
+                    <!--                    <textField id="statusField" property="status" width="100%"/>-->
+                    <!--                    <textArea id="commentField" property="comment" cols="20" rows="5" caption="Комментарий"/>-->
                 </column>
             </form>
         </scrollBox>

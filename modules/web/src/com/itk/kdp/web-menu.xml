@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-    <menu id="application-kdp" insertBefore="administration" caption="mainMsg://menu_config.application-kdp">
-        <item screen="kdp_ReconciliationStatuses.browse"
-              caption="mainMsg://menu_config.kdp_ReconciliationStatuses.browse"/>
-        <item screen="kdp_VacationType.browse" caption="mainMsg://menu_config.kdp_VacationType.browse"/>
+    <menu id="documents-kdp" insertBefore="administration" caption="mainMsg://menu_config.documents-kdp">
+        <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
+    </menu>
+    <menu id="application-kdp" insertBefore="documents-kdp" caption="mainMsg://menu_config.application-kdp">
+         <item screen="kdp_VacationType.browse" caption="mainMsg://menu_config.kdp_VacationType.browse"/>
         <item screen="kdp_Position.browse" caption="mainMsg://menu_config.kdp_Position.browse"/>
         <item screen="kdp_Organizations.browse" caption="mainMsg://menu_config.kdp_Organizations.browse"/>
         <item screen="kdp_Departments.browse" caption="mainMsg://menu_config.kdp_Department.browse"/>
         <item screen="kdp_Employees.browse" caption="mainMsg://menu_config.kdp_Employees.browse"/>
-        <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
+        <item screen="kdp_ReconciliationStatuses.browse"
+              caption="mainMsg://menu_config.kdp_ReconciliationStatuses.browse"/>
     </menu>
 </menu-config>
