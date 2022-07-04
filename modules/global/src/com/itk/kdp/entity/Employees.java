@@ -15,10 +15,11 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.UUID;
 
 @Table(name = "KDP_EMPLOYEES")
 @Entity(name = "kdp_Employees")
-@NamePattern("%s %s %s |surnameUa,nameUa, middleNameUa")
+@NamePattern("%s %s %s|surnameUa, nameUa, middleNameUa")
 public class Employees extends StandardEntity {
     private static final long serialVersionUID = -3233447108705407573L;
 
@@ -56,8 +57,7 @@ public class Employees extends StandardEntity {
     @Column(name = "NAME_EN", nullable = false, length = 250)
     private String nameEn;
 
-    @NotNull
-    @Column(name = "MIDDLE_NAME_EN", nullable = false, length = 250)
+    @Column(name = "MIDDLE_NAME_EN", length = 250)
     private String middleNameEn;
 
     @NotNull
@@ -121,12 +121,23 @@ public class Employees extends StandardEntity {
     @Column(name = "FORM_EMPLOYMENT")
     private Boolean formEmployment;
 
+    @Column(name = "EMPLOYEE_1C_ID")
+    private UUID employee1cId;
+
     @Composition
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.CASCADE)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PHOTO_ID")
     private FileDescriptor photo;
+
+    public UUID getEmployee1cId() {
+        return employee1cId;
+    }
+
+    public void setEmployee1cId(UUID employee1cId){
+        this.employee1cId = employee1cId;
+    }
 
     public FileDescriptor getPhoto() {
         return photo;
@@ -303,6 +314,7 @@ public class Employees extends StandardEntity {
     public void setNameUa(String nameUa) {
         this.nameUa = nameUa;
     }
+
 
     public String getFio() {
         return surnameUa + " " + nameUa + " " + middleNameUa;

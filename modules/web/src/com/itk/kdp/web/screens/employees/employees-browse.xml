@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
-        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://employeesBrowse.caption"
         focusComponent="employeesesTable"
         messagesPack="com.itk.kdp.web.screens.employees">
@@ -47,6 +46,7 @@
                 <action id="excel" type="excel"/>
             </actions>
             <columns>
+                <column id="photo"/>
                 <column id="surnameUa" expandRatio="5" sort="ASCENDING" align="CENTER"/>
                 <column id="nameUa" expandRatio="3" align="CENTER"/>
                 <column id="middleNameUa" expandRatio="6" align="CENTER"/>
@@ -68,7 +68,6 @@
                 <column id="employmentDate" expandRatio="3" align="CENTER"/>
                 <column id="loginName" expandRatio="4" align="CENTER"/>
                 <column id="formEmployment" expandRatio="2" align="CENTER"/>
-                <column id="photo"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

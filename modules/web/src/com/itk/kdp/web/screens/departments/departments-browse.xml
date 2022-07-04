@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
         caption="msg://departmentsBrowse.caption"
         focusComponent="departmentsesTable"
         messagesPack="com.itk.kdp.web.screens.departments">
@@ -15,6 +16,13 @@
             <loader id="departmentsesDl">
                 <query>
                     <![CDATA[select e from kdp_Departments e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where>
+                                e.organizationsId = :parOrganization
+                            </c:where>
+                        </c:jpql>
+                    </condition>
                 </query>
             </loader>
         </collection>
