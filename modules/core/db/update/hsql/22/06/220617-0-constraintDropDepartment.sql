@@ -1,1 +1,0 @@
-alter table KDP_EMPLOYEES drop constraint FK_KDP_EMPLOYEES_ON_DEPARTMENT ;

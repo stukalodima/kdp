@@ -1,0 +1,179 @@
+-- begin KDP_POSITION
+create table KDP_POSITION (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255) not null,
+    POSITION_EN varchar(255) not null,
+    POSITION_UA varchar(255) not null,
+    POSITION_RU varchar(255) not null,
+    ORGANIZATIONS_ID_ID uuid not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_POSITION
+-- begin KDP_VACATION_REQUEST
+create table KDP_VACATION_REQUEST (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    APPLICATION_NUMBER integer not null,
+    APPLICATION_DATE date,
+    EMPLOYEES_ID uuid not null,
+    COMPANY_ID uuid not null,
+    DEPARTMENTS_ID uuid,
+    POSITION_ID uuid,
+    COORDINATOR_ID uuid not null,
+    VACATION_TYPE_ID uuid,
+    REMAINING_VACATION_DAYS integer,
+    DATE_FROM date,
+    DATE_BY date,
+    VACATION_DAYS integer,
+    NOTE varchar(255),
+    CONSENT_TO_BILLING boolean,
+    document_ID uuid,
+    INITIATOR_ID uuid,
+    UPLOAD_TO_1C boolean,
+    STATUS varchar(255),
+    COMMENT varchar(255),
+    --
+    primary key (ID)
+)^
+-- end KDP_VACATION_REQUEST
+-- begin KDP_ORGANIZATIONS
+create table KDP_ORGANIZATIONS (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    CODE varchar(9) not null,
+    PREFIX varchar(3) not null,
+    SHORT_NAME varchar(255) not null,
+    FULL_NAME varchar(255) not null,
+    ORGANIZATIONS_EN varchar(255) not null,
+    ORGANIZATIONS_UA varchar(255) not null,
+    ORGANIZATIONS_RU varchar(255) not null,
+    CODE_OCPO varchar(12) not null,
+    DATE_REGISTRATION date,
+    COUNTRY_REGISTRATION varchar(255),
+    ORGANIZATIONS1C_ID uuid,
+    ENTITY boolean,
+    ACTIVE boolean,
+    --
+    primary key (ID)
+)^
+-- end KDP_ORGANIZATIONS
+-- begin KDP_EMPLOYEES
+create table KDP_EMPLOYEES (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    FIO varchar(255),
+    SURNAME_UA varchar(250) not null,
+    NAME_UA varchar(250) not null,
+    MIDDLE_NAME_UA varchar(250) not null,
+    SURNAME_RU varchar(250) not null,
+    NAME_RU varchar(250) not null,
+    MIDDLE_NAME_RU varchar(250) not null,
+    SURNAME_EN varchar(250) not null,
+    NAME_EN varchar(250) not null,
+    MIDDLE_NAME_EN varchar(250),
+    WORK_EMAIL varchar(100) not null,
+    OTHER_EMAIL varchar(100),
+    WORK_PHONE varchar(15),
+    MOBILE_PHONE varchar(15),
+    COMPANY_ID uuid not null,
+    DEPARTMENT_ID uuid not null,
+    POSITION_ID uuid not null,
+    MANAGER_ID uuid,
+    BIRTHDAY date,
+    EMPLOYMENT_DATE date,
+    LOGIN_NAME varchar(250) not null,
+    FORM_EMPLOYMENT boolean,
+    EMPLOYEE_1C_ID uuid,
+    PHOTO_ID uuid,
+    --
+    primary key (ID)
+)^
+-- end KDP_EMPLOYEES
+-- begin KDP_RECONCILIATION_STATUSES
+create table KDP_RECONCILIATION_STATUSES (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255) not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_RECONCILIATION_STATUSES
+-- begin KDP_DEPARTMENTS
+create table KDP_DEPARTMENTS (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    CODE integer not null,
+    APPROVAL_MANAGER_ID uuid,
+    NAME varchar(255) not null,
+    DEPARTMENT_EN varchar(255) not null,
+    DEPARTMENT_UA varchar(255) not null,
+    DEPARTMENT_RU varchar(255) not null,
+    DEPARTMENT_ID uuid,
+    ORGANIZATION_ID uuid not null,
+    P_ID_ID uuid,
+    MANAGER_ID_ID uuid,
+    --
+    primary key (ID)
+)^
+-- end KDP_DEPARTMENTS
+-- begin KDP_VACATION_TYPE
+create table KDP_VACATION_TYPE (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    CODE varchar(255) not null,
+    NAME varchar(255) not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_VACATION_TYPE

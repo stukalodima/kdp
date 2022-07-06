@@ -15,7 +15,7 @@ import java.util.Objects;
 
 
 
-@UiController("kdp_Employees.edit")
+@UiController("kdp_Employees1.edit")
 @UiDescriptor("employees-edit.xml")
 @EditedEntityContainer("employeesDc")
 @LoadDataBeforeShow

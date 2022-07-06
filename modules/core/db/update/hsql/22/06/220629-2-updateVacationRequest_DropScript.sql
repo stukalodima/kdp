@@ -1,1 +1,0 @@
-alter table KDP_VACATION_REQUEST drop column INFORMATION_FOR_CONSULTATIONS__U98210 cascade ;
