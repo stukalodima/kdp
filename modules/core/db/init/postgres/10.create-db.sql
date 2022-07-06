@@ -16,7 +16,7 @@ create table KDP_POSITION (
     ORGANIZATIONS_ID_ID uuid not null,
     --
     primary key (ID)
-)^
+);
 -- end KDP_POSITION
 -- begin KDP_VACATION_REQUEST
 create table KDP_VACATION_REQUEST (
@@ -50,7 +50,7 @@ create table KDP_VACATION_REQUEST (
     COMMENT varchar(255),
     --
     primary key (ID)
-)^
+);
 -- end KDP_VACATION_REQUEST
 -- begin KDP_ORGANIZATIONS
 create table KDP_ORGANIZATIONS (
@@ -78,7 +78,7 @@ create table KDP_ORGANIZATIONS (
     ACTIVE boolean,
     --
     primary key (ID)
-)^
+);
 -- end KDP_ORGANIZATIONS
 -- begin KDP_EMPLOYEES
 create table KDP_EMPLOYEES (
@@ -117,7 +117,7 @@ create table KDP_EMPLOYEES (
     PHOTO_ID uuid,
     --
     primary key (ID)
-)^
+);
 -- end KDP_EMPLOYEES
 -- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
@@ -133,7 +133,7 @@ create table KDP_RECONCILIATION_STATUSES (
     NAME varchar(255) not null,
     --
     primary key (ID)
-)^
+);
 -- end KDP_RECONCILIATION_STATUSES
 -- begin KDP_DEPARTMENTS
 create table KDP_DEPARTMENTS (
@@ -158,7 +158,7 @@ create table KDP_DEPARTMENTS (
     MANAGER_ID_ID uuid,
     --
     primary key (ID)
-)^
+);
 -- end KDP_DEPARTMENTS
 -- begin KDP_VACATION_TYPE
 create table KDP_VACATION_TYPE (
@@ -175,7 +175,7 @@ create table KDP_VACATION_TYPE (
     NAME varchar(255) not null,
     --
     primary key (ID)
-)^
+);
 -- end KDP_VACATION_TYPE
 -- begin KDP_COUNTRIES
 create table KDP_COUNTRIES (
@@ -193,5 +193,5 @@ create table KDP_COUNTRIES (
     FULL_NAME varchar(255) not null,
     --
     primary key (ID)
-)^
+);
 -- end KDP_COUNTRIES
