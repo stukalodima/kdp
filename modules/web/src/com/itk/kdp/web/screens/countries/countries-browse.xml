@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://countriesBrowse.caption"
+        focusComponent="countriesesTable"
+        messagesPack="com.itk.kdp.web.screens.countries">
+    <data readOnly="true">
+        <collection id="countriesesDc"
+                    class="com.itk.kdp.entity.Countries">
+            <view extends="_local"/>
+            <loader id="countriesesDl">
+                <query>
+                    <![CDATA[select e from kdp_Countries e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="100%"
+                width="100%"/>
+    <layout expand="countriesesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="countriesesTable"
+                dataLoader="countriesesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="countriesesTable"
+                    width="100%"
+                    dataContainer="countriesesDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="code"/>
+                <column id="name"/>
+                <column id="fullName"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="countriesesTable.create"/>
+                <button id="editBtn" action="countriesesTable.edit"/>
+                <button id="removeBtn" action="countriesesTable.remove"/>
+                <button id="excelBtn" action="countriesesTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

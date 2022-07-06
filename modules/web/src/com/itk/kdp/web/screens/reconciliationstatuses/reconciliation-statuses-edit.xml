@@ -10,14 +10,18 @@
             <loader/>
         </instance>
     </data>
-    <dialogMode height="AUTO"
-                width="AUTO" forceDialog="true"/>
-    <layout expand="editActions" spacing="true">
-        <form id="form" dataContainer="reconciliationStatusesDc">
-            <column width="350px">
-                <textField id="nameField" property="name"/>
+    <dialogMode height="20%"
+                width="40%"
+                forceDialog="true"
+                resizable="true"/>
+    <layout expand="body" spacing="true">
+        <scrollBox id="body" orientation="vertical" width="100%">
+        <form id="form" dataContainer="reconciliationStatusesDc" width="100%">
+            <column>
+                <textField id="nameField" property="name" width="100%"/>
             </column>
         </form>
+        </scrollBox>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="closeBtn" action="windowClose"/>

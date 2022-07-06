@@ -17,26 +17,28 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="AUTO"
+    <dialogMode height="40%"
                 width="40%"
                 forceDialog="true"
                 resizable="true"/>
-    <layout expand="editActions" spacing="true">
-        <form id="form" dataContainer="positionDc" width="100%">
-            <column>
-                <textField id="nameField" property="name" width="100%"/>
-                <textField id="positionEnField" property="positionEn" width="100%"/>
-                <textField id="positionUaField" property="positionUa" width="100%"/>
-                <textField id="positionRuField" property="positionRu" width="100%"/>
-                <lookupPickerField id="organizationsIdField" property="organizationsId" width="100%">
-                    <actions>
-                        <action id="picker_lookup" type="picker_lookup"/>
-                        <action id="picker_clear" type="picker_clear"/>
-                        <action id="picker_open" type="picker_open"/>
-                    </actions>
-                </lookupPickerField>
-            </column>
-        </form>
+    <layout expand="body" spacing="true">
+        <scrollBox id="body" orientation="vertical">
+            <form id="form" dataContainer="positionDc" width="100%">
+                <column>
+                    <textField id="nameField" property="name" width="100%"/>
+                    <textField id="positionEnField" property="positionEn" width="100%"/>
+                    <textField id="positionUaField" property="positionUa" width="100%"/>
+                    <textField id="positionRuField" property="positionRu" width="100%"/>
+                    <lookupPickerField id="organizationsIdField" property="organizationsId" optionsContainer="companyIdsDc" width="100%">
+                        <actions>
+                            <action id="picker_lookup" type="picker_lookup"/>
+                            <action id="picker_clear" type="picker_clear"/>
+                            <action id="picker_open" type="picker_open"/>
+                        </actions>
+                    </lookupPickerField>
+                </column>
+            </form>
+        </scrollBox>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="commitBtn" action="windowCommit"/>

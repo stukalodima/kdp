@@ -19,13 +19,6 @@
             <loader id="companyIdsDl">
                 <query>
                     <![CDATA[select e from kdp_Organizations e]]>
-                    <condition>
-                        <and>
-                            <c:jpql>
-                                <c:where>e = :parentOrganization</c:where>
-                            </c:jpql>
-                        </and>
-                    </condition>
                 </query>
             </loader>
         </collection>
@@ -39,49 +32,65 @@
                             <c:jpql>
                                 <c:where>e not in :department</c:where>
                             </c:jpql>
+                            <c:jpql>
+                                <c:where>e.organizationsId = :parOrganization</c:where>
+                            </c:jpql>
                         </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+        <collection id="employeesesDc" class="com.itk.kdp.entity.Employees">
+            <view extends="_local"/>
+            <loader id="employeesesDl">
+                <query>
+                    <![CDATA[select e from kdp_Employees e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where>e.company = :parOrganization</c:where>
+                        </c:jpql>
                     </condition>
                 </query>
             </loader>
         </collection>
     </data>
     <dialogMode
-            width="70%" forceDialog="true" height="10%" resizable="true"/>
-    <layout expand="scrollBox" spacing="true" width="100%">
-        <scrollBox id="scrollBox" orientation="vertical" width="100%">
+            width="70%" forceDialog="true" height="40%" resizable="true"/>
+    <layout expand="body" spacing="true" width="100%">
+        <scrollBox id="body" orientation="vertical" width="100%">
             <form id="form" dataContainer="departmentsDc" width="100%" childrenCaptionWidth="AUTO">
                 <column width="100%">
                     <textField id="codeField" property="code" width="100%"/>
                     <textField id="nameField" property="name" width="100%"/>
                     <textField id="departmentRuField" property="departmentRu" width="100%"/>
-                    <lookupPickerField id="companyIdField" optionsContainer="companyIdsDc" property="organizationsId"
-                                       width="100%">
+                    <lookupPickerField id="companyIdField" property="organizationsId"
+                                       width="100%" optionsContainer="companyIdsDc">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
                             <action id="clear" type="picker_clear"/>
                         </actions>
                     </lookupPickerField>
-                    <pickerField id="approvalManagerField" property="approvalManager" width="100%">
+                    <lookupPickerField id="approvalManagerField" property="approvalManager" width="100%" optionsContainer="employeesesDc">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
                             <action id="clear" type="picker_clear"/>
                         </actions>
-                    </pickerField>
+                    </lookupPickerField>
                 </column>
                 <column>
                     <maskedField id="departmentIdField" mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh"
                                  property="departmentId" width="100%"/>
                     <textField id="departmentUaField" property="departmentUa" width="100%"/>
                     <textField id="departmentEnField" property="departmentEn" width="100%"/>
-                    <pickerField id="managerIdField" property="managerId" width="100%">
+                    <lookupPickerField id="managerIdField" property="managerId" width="100%" optionsContainer="employeesesDc">
                         <actions>
                             <action id="lookup" type="picker_lookup"/>
                             <action id="open" type="picker_open"/>
                             <action id="clear" type="picker_clear"/>
                         </actions>
-                    </pickerField>
+                    </lookupPickerField>
                     <lookupPickerField id="pIdField" property="parentId" optionsContainer="departmentsesDc"
                                        width="100%">
                         <actions>

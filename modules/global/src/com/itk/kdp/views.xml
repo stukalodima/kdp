@@ -16,4 +16,8 @@
         <property name="position" view="_local"/>
         <property name="department" view="_local"/>
     </view>
+    <view entity="kdp_Departments" name="departments-organization-id" extends="_local">
+        <property name="organizationsId" view="_local"/>
+    </view>
+
 </views>

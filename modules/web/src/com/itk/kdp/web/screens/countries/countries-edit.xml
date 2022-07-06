@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://countriesEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.countries">
+    <data>
+        <instance id="countriesDc"
+                  class="com.itk.kdp.entity.Countries">
+            <view extends="_local"/>
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode height="AUTO"
+                width="50%"
+                forceDialog="true"
+                resizable="true"/>
+    <layout expand="body" spacing="true">
+        <scrollBox id="body">
+        <form id="form" dataContainer="countriesDc" width="100%">
+            <column width="100%">
+                <textField id="nameField" property="name" colspan="2" width="100%"/>
+                <textField id="fullNameField" property="fullName" colspan="3" width="100%"/>
+            </column>
+            <column>
+            </column>
+            <column>
+                <textField id="codeField" property="code" width="100%"/>
+            </column>
+        </form>
+        </scrollBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="commitBtn" action="windowCommit"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

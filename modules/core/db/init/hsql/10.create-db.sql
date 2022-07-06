@@ -18,13 +18,13 @@ create table KDP_ORGANIZATIONS (
     ORGANIZATIONS_RU varchar(255) not null,
     CODE_OCPO varchar(12) not null,
     DATE_REGISTRATION date,
-    COUNTRY_REGISTRATION varchar(255),
+    COUNTRY_REGISTRATION_ID varchar(36) not null,
     ORGANIZATIONS1C_ID varchar(36),
     ENTITY boolean,
     ACTIVE boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_POSITION
 create table KDP_POSITION (
@@ -179,3 +179,21 @@ create table KDP_VACATION_REQUEST (
     primary key (ID)
 )^
 -- end KDP_VACATION_REQUEST
+-- begin KDP_COUNTRIES
+create table KDP_COUNTRIES (
+    ID varchar(36) not null,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    CODE integer not null,
+    NAME varchar(255) not null,
+    FULL_NAME varchar(255) not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_COUNTRIES

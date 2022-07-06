@@ -12,6 +12,7 @@
         <property name="remoteServices">
             <map>
                 <entry key="kdp_EmployeeOrganizationService" value="com.itk.kdp.service.EmployeeOrganizationService"/>
+                <entry key="kdp_GetDepartmensService" value="com.itk.kdp.service.GetDepartmensService"/>
             </map>
         </property>
     </bean>

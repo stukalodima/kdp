@@ -1,13 +1,16 @@
 package com.itk.kdp.entity;
 
 import com.haulmont.chile.core.annotations.NamePattern;
+import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
+import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
@@ -148,5 +151,17 @@ public class Departments extends StandardEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @PostConstruct
+    private void initVisitDate() {
+        if (code == null) {
+            setCode((int) (long) generateNewCode());
+        }
+    }
+
+    private Long generateNewCode() {
+        UniqueNumbersService numbersService = AppBeans.get(UniqueNumbersService.class);
+        return numbersService.getNextNumber("countryCode");
     }
 }
