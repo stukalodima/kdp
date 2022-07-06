@@ -72,7 +72,7 @@ create table KDP_ORGANIZATIONS (
     ORGANIZATIONS_RU varchar(255) not null,
     CODE_OCPO varchar(12) not null,
     DATE_REGISTRATION date,
-    COUNTRY_REGISTRATION varchar(255),
+    COUNTRY_REGISTRATION_ID uuid not null,
     ORGANIZATIONS1C_ID uuid,
     ENTITY boolean,
     ACTIVE boolean,
@@ -177,3 +177,21 @@ create table KDP_VACATION_TYPE (
     primary key (ID)
 )^
 -- end KDP_VACATION_TYPE
+-- begin KDP_COUNTRIES
+create table KDP_COUNTRIES (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    CODE integer not null,
+    NAME varchar(255) not null,
+    FULL_NAME varchar(255) not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_COUNTRIES

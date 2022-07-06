@@ -12,6 +12,7 @@ import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.Organizations;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 @UiController("kdp_Employees.browse")
 @UiDescriptor("employees-browse.xml")
@@ -24,22 +25,25 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
     @Inject
     private CollectionLoader<Employees> employeesesDl;
 
+    @Inject
+    protected GroupTable<Employees> employeesesTable;
+
+    @Inject
+    protected UiComponents uiComponents;
+
     public void setOrganization(Organizations organization){
         this.organization = organization;
     }
 
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
-        employeesesDl.setParameter("parOrganization", organization);
+        if (Objects.isNull(organization)) {
+            employeesesDl.removeParameter("parOrganization");
+        } else {
+            employeesesDl.setParameter("parOrganization", organization);
+        }
         employeesesDl.load();
     }
-
-
-    @Inject
-    protected GroupTable<Employees> employeesesTable;
-
-    @Inject
-    protected UiComponents uiComponents;
 
     @Subscribe
     protected void onInit(InitEvent event) {
