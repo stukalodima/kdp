@@ -1,1 +1,0 @@
-alter table KDP_VACATION_REQUEST add constraint FK_KDP_VACATION_REQUEST_ON_INITIATOR foreign key (INITIATOR_ID) references SEC_USER(ID);
