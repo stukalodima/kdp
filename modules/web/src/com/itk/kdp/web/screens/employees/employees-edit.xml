@@ -47,138 +47,136 @@
                     <![CDATA[select e from kdp_Departments e]]>
                     <condition>
                         <c:jpql>
-                            <c:where> e.organizationsId = :organization </c:where>
+                            <c:where>e.organizationsId = :organization</c:where>
                         </c:jpql>
                     </condition>
                 </query>
             </loader>
         </collection>
     </data>
-    <dialogMode height="80%"
+    <dialogMode height="73%"
                 width="75%" forceDialog="true" resizable="true"/>
-    <layout spacing="true" width="100%" expand="body">
-        <scrollBox id="body">
-            <grid spacing="true" margin="true" width="100%">
-                <columns>
-                    <column flex="1"/>
-                    <column flex="10"/>
-                </columns>
-                <rows>
-                    <row>
-                        <groupBox caption="Фото" spacing="true"
-                                  height="250px" width="230px" expand="image">
-                            <image id="image"
-                                   width="100%"
-                                   dataContainer="employeesDc"
-                                   property="photo"
-                                   align="MIDDLE_CENTER"
-                                   scaleMode="FILL"/>
-                            <hbox align="BOTTOM_LEFT"
-                                  spacing="true">
-                                <upload id="photoField"
-                                        accept=".png, .gif, .jpg, .jpeg, .jpe, .jfif, .tif, .tiff"
-                                        dataContainer="employeesDc"
-                                        property="photo"
-                                        fileStoragePutMode="IMMEDIATE"
-                                        showFileName="false"
-                                        showClearButton="true"/>
+    <layout spacing="true" width="100%" expand="tabBody">
+        <tabSheet id="tabBody" width="100%">
+            <tab id="main" spacing="true" caption="msg://tab.main" margin="true,false,false,false">
+                <grid spacing="true" margin="true" width="100%">
+                    <columns>
+                        <column flex="1"/>
+                        <column flex="10"/>
+                    </columns>
+                    <rows>
+                        <row>
+                            <groupBox spacing="true"
+                                      height="450px" width="370px" expand="image">
+                                <image id="image"
+                                       width="100%"
+                                       dataContainer="employeesDc"
+                                       property="photo"
+                                       align="MIDDLE_CENTER"
+                                       scaleMode="FILL"/>
+                                <hbox align="BOTTOM_RIGHT"
+                                      spacing="true">
+                                    <upload id="photoField"
+                                            accept=".png, .gif, .jpg, .jpeg, .jpe, .jfif, .tif, .tiff"
+                                            dataContainer="employeesDc"
+                                            property="photo"
+                                            fileStoragePutMode="IMMEDIATE"
+                                            showFileName="false"
+                                            showClearButton="true"/>
 
-                            </hbox>
-                        </groupBox>
-                        <form id="form" dataContainer="employeesDc" captionPosition="TOP" width="100%">
-                            <column width="100%">
-                                <textField property="surnameUa"/>
-                                <textField property="nameUa"/>
-                                <textField property="middleNameUa"/>
-                            </column>
-                        </form>
-                    </row>
-                </rows>
-            </grid>
-            <groupBox caption="msg://hbox.captionDopInfo" outerMargin="true, false, true, false"
-                      spacing="true" width="100%" captionAsHtml="true">
-                <form dataContainer="employeesDc" width="100%">
-                    <column width="100%">
-                        <textField property="surnameRu" width="100%"/>
-                        <textField property="nameRu" width="100%"/>
-                        <textField property="middleNameRu" width="100%"/>
-                    </column>
-                    <column width="100%">
-                        <textField property="surnameEn" width="100%"/>
-                        <textField property="nameEn" width="100%"/>
-                        <textField property="middleNameEn" width="100%"/>
-                    </column>
-                </form>
-            </groupBox>
-            <groupBox spacing="true" caption="msg://hbox.caption" width="100%"
-                          captionAsHtml="true" stylename="light">
-                <form dataContainer="employeesDc" width="100%">
-                    <column>
-                        <textField id="workEmailField" property="workEmail" colspan="1" width="100%"/>
-                        <textField id="workPhoneField" property="workPhone" width="100%"/>
-                    </column>
-                    <column>
-                        <textField id="otherEmailField" property="otherEmail" width="100%"/>
-                        <maskedField mask="(###)###-##-##" id="mobilePhoneField" property="mobilePhone" valueMode="masked" width="100%"/>
-                    </column>
-                </form>
-            </groupBox>
-            <groupBox spacing="true" caption="msg://hbox.captionPersonnel" captionAsHtml="true" width="100%"
-                      stylename="light" outerMargin="true, false, true, false">
-                <form dataContainer="employeesDc" width="100%">
-                    <column>
-                        <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" colspan="1" width="100%">
-                            <actions>
-                                <action id="lookup" type="picker_lookup"/>
-                                <action id="open" type="picker_open"/>
-                                <action id="clear" type="picker_clear"/>
-                            </actions>
-                        </lookupPickerField>
-                        <lookupPickerField id="positionField" property="position" colspan="1" width="100%">
-                            <actions>
-                                <action id="lookup" type="picker_lookup"/>
-                                <action id="open" type="picker_open"/>
-                                <action id="clear" type="picker_clear"/>
-                            </actions>
-                        </lookupPickerField>
-                        <dateField id="employmentDateField" property="employmentDate" width="100%"/>
-                        <dateField id="birthdayField" property="birthday" width="100%"/>
-                    </column>
-                    <column>
-                        <lookupPickerField id="departmentField" optionsContainer="departmentsesDc" property="department" colspan="1" width="100%">
-                            <actions>
-                                <action id="lookup" type="picker_lookup"/>
-                                <action id="open" type="picker_open"/>
-                                <action id="clear" type="picker_clear"/>
-                            </actions>
-                        </lookupPickerField>
-                        <lookupPickerField id="managerField" optionsContainer="managerDc" property="manager" colspan="1" width="100%">
-                            <actions>
-                                <action id="lookup" type="picker_lookup"/>
-                                <action id="open" type="picker_open"/>
-                                <action id="clear" type="picker_clear"/>
-                            </actions>
-                        </lookupPickerField>
-                        <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
-                    </column>
-                </form>
-            </groupBox>
-            <groupBox spacing="true" caption="msg://hbox.captionOther" width="100%" captionAsHtml="true"
-                      orientation="vertical" stylename="light">
-                <form dataContainer="employeesDc" captionPosition="LEFT" width="100%">
-                    <column width="100%">
-                        <textField id="loginNameField" property="loginName" width="100%"/>
-<!--                        <upload id="photoField" fileStoragePutMode="IMMEDIATE" dataContainer="employeesDc"-->
-<!--                                showClearButton="true" property="photo" showFileName="true" width="100%"/>-->
-                    </column>
-                    <column width="100%">
-                        <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="employee1cIdField"
-                                     property="employee1cId" width="100%"/>
-                    </column>
-                </form>
-            </groupBox>
-
-        </scrollBox>
+                                </hbox>
+                            </groupBox>
+                            <form id="form" dataContainer="employeesDc" captionPosition="TOP" width="100%">
+                                <column width="100%">
+                                    <textField property="surnameUa"/>
+                                    <textField property="nameUa"/>
+                                    <textField property="middleNameUa"/>
+                                    <lookupPickerField id="companyField" optionsContainer="companiesDc"
+                                                       property="company" colspan="1" width="100%">
+                                        <actions>
+                                            <action id="lookup" type="picker_lookup"/>
+                                            <action id="open" type="picker_open"/>
+                                            <action id="clear" type="picker_clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                    <lookupPickerField id="departmentField" optionsContainer="departmentsesDc"
+                                                       property="department" colspan="1" width="100%">
+                                        <actions>
+                                            <action id="lookup" type="picker_lookup"/>
+                                            <action id="open" type="picker_open"/>
+                                            <action id="clear" type="picker_clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                    <lookupPickerField id="positionField" property="position" colspan="1" width="100%">
+                                        <actions>
+                                            <action id="lookup" type="picker_lookup"/>
+                                            <action id="open" type="picker_open"/>
+                                            <action id="clear" type="picker_clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                    <lookupPickerField id="managerField" optionsContainer="managerDc" property="manager"
+                                                       colspan="1" width="100%">
+                                        <actions>
+                                            <action id="lookup" type="picker_lookup"/>
+                                            <action id="open" type="picker_open"/>
+                                            <action id="clear" type="picker_clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                </column>
+                            </form>
+                        </row>
+                    </rows>
+                </grid>
+            </tab>
+            <tab id="optional" expand="scrollOptional" caption="msg://tab.optional" spacing="true">
+                <scrollBox id="scrollOptional" spacing="true" margin="true,false,false,false">
+                <groupBox caption="msg://hbox.captionDopInfo"
+                          spacing="true" width="100%" captionAsHtml="true">
+                    <form dataContainer="employeesDc" width="100%">
+                        <column width="100%">
+                            <textField property="surnameRu" width="100%"/>
+                            <textField property="nameRu" width="100%"/>
+                            <textField property="middleNameRu" width="100%"/>
+                        </column>
+                        <column width="100%">
+                            <textField property="surnameEn" width="100%"/>
+                            <textField property="nameEn" width="100%"/>
+                            <textField property="middleNameEn" width="100%"/>
+                        </column>
+                    </form>
+                </groupBox>
+                <groupBox spacing="true" caption="msg://hbox.caption" width="100%"
+                          captionAsHtml="true" >
+                    <form dataContainer="employeesDc" width="100%">
+                        <column>
+                            <textField id="workEmailField" property="workEmail" colspan="1" width="100%"/>
+                            <textField id="workPhoneField" property="workPhone" width="100%"/>
+                        </column>
+                        <column>
+                            <textField id="otherEmailField" property="otherEmail" width="100%"/>
+                            <maskedField mask="(###)###-##-##" id="mobilePhoneField" property="mobilePhone"
+                                         valueMode="masked" width="100%"/>
+                        </column>
+                    </form>
+                </groupBox>
+                <groupBox spacing="true" caption="msg://hbox.captionOther" width="100%" captionAsHtml="true"
+                          orientation="vertical">
+                    <form dataContainer="employeesDc" captionPosition="LEFT" width="100%">
+                        <column width="100%">
+                            <textField id="loginNameField" property="loginName" width="100%"/>
+                            <dateField id="birthdayField" property="birthday" width="100%"/>
+                        </column>
+                        <column width="100%">
+                            <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
+                            <dateField id="employmentDateField" property="employmentDate" width="100%"/>
+<!--                            <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="employee1cIdField"-->
+<!--                                         property="employee1cId" width="100%"/>-->
+                        </column>
+                    </form>
+                </groupBox>
+                </scrollBox>
+            </tab>
+        </tabSheet>
         <hbox id="editActions" margin="true" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="commitBtn" action="windowCommit"/>

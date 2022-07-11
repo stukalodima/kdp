@@ -58,9 +58,9 @@ public class DepartmentsEdit extends StandardEditor<Departments> {
     public void onCompanyIdFieldValueChange(HasValue.ValueChangeEvent<Organizations> event) {
         if (event.isUserOriginated()) {
             Departments editedEntity = getEditedEntity();
-            editedEntity.setParentId(dataManager.create(Departments.class));
-            editedEntity.setApprovalManager(dataManager.create(Employees.class));
-            editedEntity.setManagerId(dataManager.create(Employees.class));
+            editedEntity.setParentId(null);
+            editedEntity.setApprovalManager(null);
+            editedEntity.setManagerId(null);
 
             departmentsesDl.setParameter("parOrganization", (Objects.isNull(getEditedEntity().getOrganizationsId()) ? dataManager.create(Organizations.class) : getEditedEntity().getOrganizationsId()));
             departmentsesDl.setParameter("department", departmensService.getDepartmentsFilter(getEditedEntity()));

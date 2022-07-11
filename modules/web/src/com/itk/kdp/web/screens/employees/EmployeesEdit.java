@@ -13,9 +13,7 @@ import com.itk.kdp.web.screens.departments.DepartmentsBrowse;
 import javax.inject.Inject;
 import java.util.Objects;
 
-
-
-@UiController("kdp_Employees1.edit")
+@UiController("kdp_Employees.edit")
 @UiDescriptor("employees-edit.xml")
 @EditedEntityContainer("employeesDc")
 @LoadDataBeforeShow
@@ -58,6 +56,7 @@ public class EmployeesEdit extends StandardEditor<Employees> {
     @Subscribe("photoField")
     public void onPhotoFieldAfterValueClear(FileUploadField.AfterValueClearEvent event) {
         getEditedEntity().setPhoto(null);
+        displayImage();
     }
 
     private void displayImage() {
@@ -69,5 +68,9 @@ public class EmployeesEdit extends StandardEditor<Employees> {
         }
     }
 
+    @Subscribe("photoField")
+    public void onPhotoFieldFileUploadSucceed(FileUploadField.FileUploadSucceedEvent event) {
+        displayImage();
+    }
 
 }

@@ -11,6 +11,7 @@ import com.haulmont.cuba.gui.screen.*;
 import com.itk.kdp.config.ConsultationService;
 import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.VacationRequest;
+import com.itk.kdp.service.EmployeeOrganizationService;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -44,13 +45,15 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private DateField<Date> dateByField;
     @Inject
     private Notifications notifications;
+    @Inject
+    private EmployeeOrganizationService employeeOrganizationService;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
         Formatter formatter = new Formatter();
         labelInfo.setValue(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
                 consultationService.getName(), consultationService.getTelephone()).toString());
-        if (Objects.isNull(employeeField.getValue())) {
+        if (Objects.isNull(employeeField.getValue()) && !employeeOrganizationService.getEmployeeOrganization().isEmpty()) {
             notifications.create().withCaption("Вы являетесь сотрудником нескольких организаций.\n Не забудьте оформить отпуск по каждой из них отдельными Заявками на отпуск").show();
             selectEmployee();
         }

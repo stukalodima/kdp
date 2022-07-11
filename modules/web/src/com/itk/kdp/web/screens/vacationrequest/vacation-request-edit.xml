@@ -69,7 +69,7 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="75%"
+    <dialogMode height="85%"
                 width="50%"
                 forceDialog="true" resizable="true"/>
     <layout expand="scrollBox" spacing="true" width="100%">

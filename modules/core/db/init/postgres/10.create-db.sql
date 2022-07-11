@@ -78,7 +78,7 @@ create table KDP_ORGANIZATIONS (
     ACTIVE boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_EMPLOYEES
 create table KDP_EMPLOYEES (
@@ -193,5 +193,5 @@ create table KDP_COUNTRIES (
     FULL_NAME varchar(255) not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_COUNTRIES
