@@ -67,7 +67,7 @@
                     <rows>
                         <row>
                             <groupBox spacing="true"
-                                      height="450px" width="370px" expand="image">
+                                      height="450px" width="400px" expand="image">
                                 <image id="image"
                                        width="100%"
                                        dataContainer="employeesDc"
