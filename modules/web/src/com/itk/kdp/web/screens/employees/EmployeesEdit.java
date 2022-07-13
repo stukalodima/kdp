@@ -8,7 +8,9 @@ import com.haulmont.cuba.gui.screen.*;
 import com.itk.kdp.entity.Departments;
 import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.Organizations;
+import com.itk.kdp.entity.Position;
 import com.itk.kdp.web.screens.departments.DepartmentsBrowse;
+import com.itk.kdp.web.screens.position.PositionBrowse;
 
 import javax.inject.Inject;
 import java.util.Objects;
@@ -28,6 +30,10 @@ public class EmployeesEdit extends StandardEditor<Employees> {
     private LookupPickerField<Departments> departmentField;
     @Inject
     private ScreenBuilders screenBuilders;
+    @Inject
+    private CollectionLoader<Position> positionDl;
+    @Inject
+    private LookupPickerField<Position> positionField;
 
     @Subscribe("departmentField.lookup")
     public void onDepartmentFieldLookup(Action.ActionPerformedEvent event) {
@@ -38,17 +44,36 @@ public class EmployeesEdit extends StandardEditor<Employees> {
         departmentsBrowse.show();
     }
 
+    @Subscribe("positionField.lookup")
+    public void onPositionFieldLookup(Action.ActionPerformedEvent event) {
+        PositionBrowse positionBrowse = screenBuilders.lookup(positionField)
+                .withScreenClass(PositionBrowse.class)
+                .build();
+        positionBrowse.setOrganization(getEditedEntity().getCompany());
+        positionBrowse.show();
+    }
 
     @Subscribe("companyField")
     public void onCompanyFieldValueChange(HasValue.ValueChangeEvent<Organizations> event) {
+
+        Employees editedEntity = getEditedEntity();
+        editedEntity.setPosition(null);
+        editedEntity.setDepartment(null);
+
         departmentsesDl.setParameter( "organization", event.getValue());
         departmentsesDl.load();
+
+        positionDl.setParameter("organization", event.getValue());
+        positionDl.load();
     }
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
         departmentsesDl.setParameter("organization", (Objects.isNull(getEditedEntity().getCompany()) ? dataManager.create(Organizations.class) : getEditedEntity().getCompany()));
         departmentsesDl.load();
+
+        positionDl.setParameter("organization", (Objects.isNull(getEditedEntity().getCompany()) ? dataManager.create(Organizations.class) : getEditedEntity().getCompany()));
+        positionDl.load();
 
         displayImage();
     }
