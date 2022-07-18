@@ -6,9 +6,11 @@
     <view class="com.itk.kdp.entity.Employees"
           extends="_local"
           name="employees-edit">
-        <property name="photo"
-                  view="_local">
+        <property name="photo" view="_local"/>
+        <property name="manager" view="_local">
+            <property name="user" view="_local"/>
         </property>
+        <property name="user" view="_local"/>
     </view>
     <view entity="kdp_Employees" name="employees-view" extends="_local">
         <property name="company" view="_local"/>
@@ -18,6 +20,10 @@
     </view>
     <view entity="kdp_Departments" name="departments-organization-id" extends="_local">
         <property name="organizationsId" view="_local"/>
+    </view>
+    <view entity="kdp_AddressingDetail" name="addressingDetail-all-property" extends="_local">
+        <property name="procRole" view="_minimal"/>
+        <property name="user" view="_minimal"/>
     </view>
 
 </views>

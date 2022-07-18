@@ -1,6 +1,7 @@
 package com.itk.kdp.web.screens.vacationrequest;
 
 import com.haulmont.cuba.core.app.UniqueNumbersService;
+import com.haulmont.cuba.core.global.EntityStates;
 import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.core.global.PersistenceHelper;
 import com.haulmont.cuba.core.global.TimeSource;
@@ -15,8 +16,11 @@ import com.itk.kdp.service.EmployeeOrganizationService;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Formatter;
+import java.util.logging.SimpleFormatter;
 
 @UiController("kdp_VacationRequest.edit")
 @UiDescriptor("vacation-request-edit.xml")
@@ -30,28 +34,45 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Inject
     private ScreenBuilders screenBuilders;
     @Inject
-    private Label<String> labelInfo;
-    @Inject
     private Messages messages;
     @Inject
     private ConsultationService consultationService;
     @Inject
     private LookupPickerField<Employees> employeeField;
     @Inject
-    private TimeSource timeSource;
-    @Inject
-    private Logger log;
-    @Inject
     private DateField<Date> dateByField;
     @Inject
     private Notifications notifications;
     @Inject
     private EmployeeOrganizationService employeeOrganizationService;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private TextField<Integer> remainingVacationDaysField;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
+        if (entityStates.isNew(getEditedEntity())) {
+            this.getWindow().setCaption(
+                    messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.caption")
+                            + " "
+                            + messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.newCaption")
+            );
+        } else {
+            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+
+            this.getWindow().setCaption(
+                    messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.caption")
+                            + " "
+                            + getEditedEntity().getApplicationNumber()
+                            + " "
+                            + messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.dateCaption")
+                            + " "
+                            +format.format(getEditedEntity().getApplicationDate())
+            );
+        }
         Formatter formatter = new Formatter();
-        labelInfo.setValue(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
+        remainingVacationDaysField.setContextHelpText(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
                 consultationService.getName(), consultationService.getTelephone()).toString());
         if (Objects.isNull(employeeField.getValue()) && !employeeOrganizationService.getEmployeeOrganization().isEmpty()) {
             notifications.create().withCaption("Вы являетесь сотрудником нескольких организаций.\n Не забудьте оформить отпуск по каждой из них отдельными Заявками на отпуск").show();
@@ -74,7 +95,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
-        if (PersistenceHelper.isNew(getEditedEntity())) {
+        if (entityStates.isNew(getEditedEntity())) {
             getEditedEntity().setApplicationNumber((int) uniqueNumbersService.getNextNumber(getEditedEntity().getCompany().getCodeRegistration()));
         }
     }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <menu id="documents-kdp" insertBefore="administration" caption="mainMsg://menu_config.documents-kdp"
-    icon="ARCHIVE">
+    icon="font-icon:BOOK">
         <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
+        <item screen="kdp_BusinessTrip.browse" caption="mainMsg://menu_config.kdp_BusinessTrip.browse"/>
     </menu>
     <menu id="application-kdp" insertBefore="documents-kdp" caption="mainMsg://menu_config.application-kdp"
     icon="ADDRESS_BOOK">
@@ -18,5 +19,44 @@
               caption="mainMsg://menu_config.kdp_ReconciliationStatuses.browse"/>
         <separator/>
         <item screen="kdp_Countries.browse" caption="mainMsg://menu_config.kdp_Countries.browse"/>
+        <item screen="kdp_Purpose.browse" caption="mainMsg://menu_config.kdp_Purpose.browse"/>
+        <item screen="kdp_Transport.browse" caption="mainMsg://menu_config.kdp_Transport.browse"/>
+        <item screen="kdp_Addressing.browse" caption="mainMsg://menu_config.kdp_Addressing.browse"/>
+    </menu>
+    <menu id="bpm" icon="font-icon:AREA_CHART" caption="mainMsg://menu_config.bpm">
+        <item id="bpm$ProcModel.lookup"/>
+        <item id="bpm$ProcDefinition.lookup"/>
+        <item id="bpm$ProcInstance.lookup"/>
+        <item screen="bpm$ProcTask.lookup" id="bpm$ProcTask.lookup"/>
+        <item id="bpm$ProcAttachmentType.lookup"/>
+        <item id="stencilSetEditor"/>
+    </menu>
+    <menu id="administration" icon="font-icon:SERVER">
+        <item id="sec$User.browse"/>
+        <item id="sec$Group.browse"/>
+        <item id="sec$Role.browse"/>
+        <item id="sys$Category.browse"/>
+        <item id="sec$UserSessionEntity.browse"/>
+        <item id="sys$LockInfo.browse"/>
+        <item id="sys$FileDescriptor.browse"/>
+        <item id="sys$ScheduledTask.browse"/>
+        <item id="entityRestore"/>
+        <item id="entityInspector.browse"/>
+        <item id="appProperties"/>
+        <item id="jmxConsole"/>
+        <separator/>
+        <item id="entityLog"/>
+        <item id="sec$SessionLogEntry.browse"/>
+        <item id="sys$SendingMessage.browse"/>
+        <item id="serverLog"/>
+        <item id="screenProfiler"/>
+        <item id="performanceStatistics"/>
+    </menu>
+    <menu id="help" icon="font-icon:QUESTION">
+        <item id="aboutWindow" openType="DIALOG"/>
+        <item class="com.haulmont.cuba.web.app.domain.DomainProvider" id="printDomain"/>
+        <separator/>
+        <item id="settings"/>
+        <item screen="helium_ThemeSettingsScreen"/>
     </menu>
 </menu-config>

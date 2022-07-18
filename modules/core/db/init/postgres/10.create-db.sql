@@ -115,9 +115,10 @@ create table KDP_EMPLOYEES (
     FORM_EMPLOYMENT boolean,
     EMPLOYEE_1C_ID uuid,
     PHOTO_ID uuid,
+    USER_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_EMPLOYEES
 -- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
@@ -195,3 +196,138 @@ create table KDP_COUNTRIES (
     primary key (ID)
 )^
 -- end KDP_COUNTRIES
+-- begin KDP_BUSINESS_TRIP
+create table KDP_BUSINESS_TRIP (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NUMBER bigint,
+    ON_DATE timestamp,
+    EMPLOYEES_ID uuid,
+    ORGANIZATION_ID uuid,
+    DEPARTMENT_ID uuid,
+    POSITION_ID uuid,
+    PHONE_NUMBER varchar(255),
+    START_DATE timestamp,
+    END_DATE timestamp,
+    DETAILS varchar(255),
+    PURPOSE_ID uuid,
+    TRANSPORT_ID uuid,
+    HOTEL boolean,
+    VISA boolean,
+    ANALYTICS varchar(255),
+    DESTINATION varchar(255),
+    COMPANY_NAME varchar(255),
+    PAY_CENTER varchar(255),
+    IS_BUDGET varchar(255),
+    BUDGET varchar(255),
+    COMMENT varchar(255),
+    AUTHOR_ID uuid,
+    STATUS varchar(255),
+    PLAIN boolean,
+    TRAIN boolean,
+    BUS boolean,
+    AUTO_COMPANY boolean,
+    AUTO_SELF boolean,
+    PROC_INSTANCE_ID uuid,
+    --
+    primary key (ID)
+)^
+-- end KDP_BUSINESS_TRIP
+-- begin KDP_PURPOSE
+create table KDP_PURPOSE (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255),
+    ACTIVE boolean,
+    --
+    primary key (ID)
+)^
+-- end KDP_PURPOSE
+-- begin KDP_TRANSPORT
+create table KDP_TRANSPORT (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME varchar(255),
+    ACTIVE boolean,
+    --
+    primary key (ID)
+)^
+-- end KDP_TRANSPORT
+-- begin KDP_ADDRESSING
+create table KDP_ADDRESSING (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    PROC_DEFINITION_ID uuid not null,
+    USE_COMPANY boolean,
+    COMPANY_ID uuid,
+    --
+    primary key (ID)
+)^
+-- end KDP_ADDRESSING
+-- begin KDP_ADDRESSING_DETAIL
+create table KDP_ADDRESSING_DETAIL (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    PROC_ROLE_ID uuid not null,
+    USER_ID uuid,
+    IS_INITIAL boolean,
+    IS_NANAGER boolean,
+    AUTO boolean,
+    ADDRESSING_ID uuid not null,
+    --
+    primary key (ID)
+)^
+-- end KDP_ADDRESSING_DETAIL
+-- begin KDP_BUSINESS_TRIP_FILES
+create table KDP_BUSINESS_TRIP_FILES (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    DOCUMENT_ID uuid,
+    BUSINESS_TRIP_ID uuid,
+    COMMENT varchar(255),
+    --
+    primary key (ID)
+)^
+-- end KDP_BUSINESS_TRIP_FILES

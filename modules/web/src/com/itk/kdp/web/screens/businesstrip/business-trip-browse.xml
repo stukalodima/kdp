@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://businessTripBrowse.caption"
+        focusComponent="businessTripsTable"
+        messagesPack="com.itk.kdp.web.screens.businesstrip">
+    <data readOnly="true">
+        <collection id="businessTripsDc"
+                    class="com.itk.kdp.entity.BusinessTrip">
+            <view extends="_local">
+                <property name="employee" view="_minimal">
+                    <property name="fio"/>
+                    <property name="manager" view="_local"/>
+                </property>
+                <property name="purpose" view="_minimal">
+                    <property name="name"/>
+                </property>
+                <property name="transport" view="_minimal">
+                    <property name="name"/>
+                </property>
+                <property name="author" view="_minimal">
+                    <property name="fio"/>
+                </property>
+                <property name="organization" view="_minimal"/>
+            </view>
+            <loader id="businessTripsDl">
+                <query>
+                    <![CDATA[select e from kdp_BusinessTrip e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="businessTripsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="businessTripsTable"
+                dataLoader="businessTripsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="businessTripsTable"
+                    width="100%"
+                    dataContainer="businessTripsDc"
+                    multiselect="true"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="number"/>
+                <column id="onDate"/>
+                <column id="status"/>
+                <column id="organization"/>
+                <column id="employee.fio" caption="msg://businessTripEdit.employee.fio"/>
+                <column id="startDate"/>
+                <column id="endDate"/>
+                <column id="destination"/>
+                <column id="companyName"/>
+                <column id="isBudget"/>
+                <column id="budgetTrip"/>
+                <column id="employee.manager.fio" caption="msg://businessTripEdit.employee.manager.fio"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="businessTripsTable.create"/>
+                <button id="editBtn" action="businessTripsTable.edit"/>
+                <button id="removeBtn" action="businessTripsTable.remove"/>
+                <button id="excelBtn" action="businessTripsTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

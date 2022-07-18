@@ -1,0 +1,12 @@
+alter table KDP_BUSINESS_TRIP rename column position_id to position_id__u25578 ;
+alter table KDP_BUSINESS_TRIP drop constraint FK_KDP_BUSINESS_TRIP_ON_POSITION ;
+drop index IDX_KDP_BUSINESS_TRIP_ON_POSITION ;
+alter table KDP_BUSINESS_TRIP rename column organization_id to organization_id__u05461 ;
+alter table KDP_BUSINESS_TRIP drop constraint FK_KDP_BUSINESS_TRIP_ON_ORGANIZATION ;
+drop index IDX_KDP_BUSINESS_TRIP_ON_ORGANIZATION ;
+alter table KDP_BUSINESS_TRIP rename column department_id to department_id__u89971 ;
+alter table KDP_BUSINESS_TRIP drop constraint FK_KDP_BUSINESS_TRIP_ON_DEPARTMENT ;
+drop index IDX_KDP_BUSINESS_TRIP_ON_DEPARTMENT ;
+alter table KDP_BUSINESS_TRIP add column DEPARTMENT_ID uuid ;
+alter table KDP_BUSINESS_TRIP add column ORGANIZATION_ID uuid ;
+alter table KDP_BUSINESS_TRIP add column POSITION_ID uuid ;

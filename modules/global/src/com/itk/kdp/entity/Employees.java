@@ -10,6 +10,7 @@ import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
+import com.haulmont.cuba.security.entity.User;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 @Table(name = "KDP_EMPLOYEES")
 @Entity(name = "kdp_Employees")
-@NamePattern("%s %s %s|surnameUa, nameUa, middleNameUa")
+@NamePattern("%s %s %s (%s)|surnameUa, nameUa, middleNameUa, company")
 public class Employees extends StandardEntity {
     private static final long serialVersionUID = -3233447108705407573L;
 
@@ -130,6 +131,11 @@ public class Employees extends StandardEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PHOTO_ID")
     private FileDescriptor photo;
+
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
     public UUID getEmployee1cId() {
         return employee1cId;
@@ -322,5 +328,13 @@ public class Employees extends StandardEntity {
 
     public void setFio(String fio) {
         this.fio = fio;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

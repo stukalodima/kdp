@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://addressingBrowse.caption"
+        focusComponent="addressingsTable"
+        messagesPack="com.itk.kdp.web.screens.addressing">
+    <data readOnly="true">
+        <collection id="addressingsDc"
+                    class="com.itk.kdp.entity.Addressing">
+            <view extends="_local">
+                <property name="procDefinition" view="_minimal"/>
+                <property name="company" view="_minimal"/>
+                <property name="addressingDetail" view="_minimal"/>
+            </view>
+            <loader id="addressingsDl">
+                <query>
+                    <![CDATA[select e from kdp_Addressing e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="addressingsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="addressingsTable"
+                dataLoader="addressingsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="addressingsTable"
+                    width="100%"
+                    dataContainer="addressingsDc"
+                    multiselect="true"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="procDefinition"/>
+                <column id="useCompany"/>
+                <column id="company"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="addressingsTable.create"/>
+                <button id="editBtn" action="addressingsTable.edit"/>
+                <button id="removeBtn" action="addressingsTable.remove"/>
+                <button id="excelBtn" action="addressingsTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

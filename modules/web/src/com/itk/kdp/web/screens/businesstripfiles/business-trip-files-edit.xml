@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://businessTripFilesEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.businesstripfiles">
+    <data>
+        <instance id="businessTripFilesDc"
+                  class="com.itk.kdp.entity.BusinessTripFiles">
+            <view extends="_local">
+                <property name="document" view="browse"/>
+                <property name="businessTrip" view="_minimal"/>
+            </view>
+            <loader/>
+            <instance id="documentDc" property="document"/>
+        </instance>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="businessTripFilesDc">
+            <column width="400px">
+                <upload id="documentField" fileStoragePutMode="IMMEDIATE" property="document" showFileName="true" required="true"/>
+                <textArea id="commentField" property="comment" cols="3"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="commitBtn" action="windowCommit"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

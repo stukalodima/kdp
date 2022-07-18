@@ -10,5 +10,11 @@
         <class>com.itk.kdp.entity.Employees</class>
         <class>com.itk.kdp.entity.VacationRequest</class>
         <class>com.itk.kdp.entity.Countries</class>
+        <class>com.itk.kdp.entity.BusinessTrip</class>
+        <class>com.itk.kdp.entity.Purpose</class>
+        <class>com.itk.kdp.entity.Transport</class>
+        <class>com.itk.kdp.entity.Addressing</class>
+        <class>com.itk.kdp.entity.AddressingDetail</class>
+        <class>com.itk.kdp.entity.BusinessTripFiles</class>
     </persistence-unit>
 </persistence>

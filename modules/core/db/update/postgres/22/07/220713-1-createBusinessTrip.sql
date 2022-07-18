@@ -1,0 +1,33 @@
+create table KDP_BUSINESS_TRIP (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NUMBER bigint,
+    ON_DATE timestamp,
+    EMPLOYEES_ID uuid,
+    START_DATE timestamp,
+    END_DATE timestamp,
+    DETAILS varchar(255),
+    PURPOSE_ID uuid,
+    TRANSPORT_ID uuid,
+    HOTEL boolean,
+    VISA boolean,
+    ANALYTICS varchar(255),
+    DESTINATION varchar(255),
+    COMPANY_NAME varchar(255),
+    PAY_CENTER varchar(255),
+    IS_BUDGET varchar(255),
+    BUDGET varchar(255),
+    COMMENT varchar(255),
+    DOCUMENT_ID uuid,
+    AUTHOR_ID uuid,
+    STATUS varchar(255),
+    --
+    primary key (ID)
+);

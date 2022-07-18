@@ -22,6 +22,7 @@
                     <property name="middleNameUa"/>
                 </property>
                 <property name="photo" view="_minimal"/>
+                <property name="user" view="_minimal"/>
             </view>
             <loader/>
             <instance id="photoDc" property="photo"/>
@@ -51,6 +52,14 @@
                         </c:jpql>
                     </condition>
                 </query>
+            </loader>
+        </collection>
+        <collection id="userDc" class="com.haulmont.cuba.security.entity.User">
+            <view extends="group.browse"/>
+            <loader id="userDl">
+                <query><![CDATA[
+                    select e from sec$User e
+                ]]></query>
             </loader>
         </collection>
     </data>
@@ -130,50 +139,61 @@
             </tab>
             <tab id="optional" expand="scrollOptional" caption="msg://tab.optional" spacing="true">
                 <scrollBox id="scrollOptional" spacing="true" margin="true,false,false,false">
-                <groupBox caption="msg://hbox.captionDopInfo"
-                          spacing="true" width="100%" captionAsHtml="true">
-                    <form dataContainer="employeesDc" width="100%">
-                        <column width="100%">
-                            <textField property="surnameRu" width="100%"/>
-                            <textField property="nameRu" width="100%"/>
-                            <textField property="middleNameRu" width="100%"/>
-                        </column>
-                        <column width="100%">
-                            <textField property="surnameEn" width="100%"/>
-                            <textField property="nameEn" width="100%"/>
-                            <textField property="middleNameEn" width="100%"/>
-                        </column>
-                    </form>
-                </groupBox>
-                <groupBox spacing="true" caption="msg://hbox.caption" width="100%"
-                          captionAsHtml="true" >
+                    <groupBox caption="msg://hbox.captionDopInfo"
+                              spacing="true" width="100%" captionAsHtml="true">
+                        <form dataContainer="employeesDc" width="100%">
+                            <column width="100%">
+                                <textField property="surnameRu" width="100%"/>
+                                <textField property="nameRu" width="100%"/>
+                                <textField property="middleNameRu" width="100%"/>
+                            </column>
+                            <column width="100%">
+                                <textField property="surnameEn" width="100%"/>
+                                <textField property="nameEn" width="100%"/>
+                                <textField property="middleNameEn" width="100%"/>
+                            </column>
+                        </form>
+                    </groupBox>
+                    <groupBox spacing="true" caption="msg://hbox.caption" width="100%"
+                              captionAsHtml="true">
+                        <form dataContainer="employeesDc" width="100%">
+                            <column>
+                                <textField id="workEmailField" property="workEmail" colspan="1" width="100%"/>
+                                <textField id="workPhoneField" property="workPhone" width="100%"/>
+                            </column>
+                            <column>
+                                <textField id="otherEmailField" property="otherEmail" width="100%"/>
+                                <maskedField mask="(###)###-##-##" id="mobilePhoneField" property="mobilePhone"
+                                             valueMode="masked" width="100%"/>
+                            </column>
+                        </form>
+                    </groupBox>
+                    <groupBox spacing="true" caption="msg://hbox.captionOther" width="100%" captionAsHtml="true"
+                              orientation="vertical">
+                        <form dataContainer="employeesDc" captionPosition="LEFT" width="100%">
+                            <column width="100%">
+                                <textField id="loginNameField" property="loginName" width="100%"/>
+                                <dateField id="birthdayField" property="birthday" width="100%"/>
+                            </column>
+                            <column width="100%">
+                                <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
+                                <dateField id="employmentDateField" property="employmentDate" width="100%"/>
+                                <!--                            <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="employee1cIdField"-->
+                                <!--                                         property="employee1cId" width="100%"/>-->
+                            </column>
+                        </form>
+                    </groupBox>
                     <form dataContainer="employeesDc" width="100%">
                         <column>
-                            <textField id="workEmailField" property="workEmail" colspan="1" width="100%"/>
-                            <textField id="workPhoneField" property="workPhone" width="100%"/>
-                        </column>
-                        <column>
-                            <textField id="otherEmailField" property="otherEmail" width="100%"/>
-                            <maskedField mask="(###)###-##-##" id="mobilePhoneField" property="mobilePhone"
-                                         valueMode="masked" width="100%"/>
-                        </column>
-                    </form>
-                </groupBox>
-                <groupBox spacing="true" caption="msg://hbox.captionOther" width="100%" captionAsHtml="true"
-                          orientation="vertical">
-                    <form dataContainer="employeesDc" captionPosition="LEFT" width="100%">
-                        <column width="100%">
-                            <textField id="loginNameField" property="loginName" width="100%"/>
-                            <dateField id="birthdayField" property="birthday" width="100%"/>
-                        </column>
-                        <column width="100%">
-                            <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
-                            <dateField id="employmentDateField" property="employmentDate" width="100%"/>
-<!--                            <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="employee1cIdField"-->
-<!--                                         property="employee1cId" width="100%"/>-->
+                            <lookupPickerField id="userField" property="user" optionsContainer="userDc" width="100%">
+                                <actions>
+                                    <action id="lookup" type="picker_lookup"/>
+                                    <action id="open" type="picker_open"/>
+                                    <action id="clear" type="picker_clear"/>
+                                </actions>
+                            </lookupPickerField>
                         </column>
                     </form>
-                </groupBox>
                 </scrollBox>
             </tab>
         </tabSheet>
