@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "KDP_VACATION_REQUEST_FILES")
 @Entity(name = "kdp_VacationRequestFiles")
 public class VacationRequestFiles extends StandardEntity {
-    private static final long serialVersionUID = -4149196259712220215L;
+    private static final long serialVersionUID = -4293731557749419446L;
 
     @Composition
     @OneToOne(fetch = FetchType.LAZY)

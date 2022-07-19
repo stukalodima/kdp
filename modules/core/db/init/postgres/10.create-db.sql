@@ -48,9 +48,10 @@ create table KDP_VACATION_REQUEST (
     UPLOAD_TO_1C boolean,
     STATUS varchar(255),
     COMMENT varchar(255),
+    PROC_INSTANCE_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_REQUEST
 -- begin KDP_ORGANIZATIONS
 create table KDP_ORGANIZATIONS (
