@@ -17,7 +17,7 @@ public class VacationRequestFiles extends StandardEntity {
     private FileDescriptor document;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BUSINESS_TRIP_ID")
+    @JoinColumn(name = "VacationRequest_ID")
     private VacationRequest vacationRequest;
 
     @Column(name = "COMMENT")
