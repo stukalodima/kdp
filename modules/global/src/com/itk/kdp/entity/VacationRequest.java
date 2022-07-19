@@ -1,5 +1,6 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.bpm.entity.ProcInstance;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.FileDescriptor;
@@ -134,7 +135,14 @@ public class VacationRequest extends StandardEntity {
     @Column(name = "COMMENT")
     private String comment;
 
-
+    @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROC_INSTANCE_ID")
+    private ProcInstance procInstance;
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "businessTrip")
+    private List<VacationRequestFiles> documents;
     public Employees getEmployee() {
         return employee;
     }
@@ -318,5 +326,21 @@ public class VacationRequest extends StandardEntity {
         TimeSource timeSource = AppBeans.get(TimeSource.class);
         return DateUtils.truncate(timeSource.currentTimestamp(), Calendar.DATE);
     }
+    public ProcInstance getProcInstance() {
+        return procInstance;
+    }
+
+    public void setProcInstance(ProcInstance procInstance) {
+        this.procInstance = procInstance;
+    }
+
+    public List<VacationRequestFiles> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<VacationRequestFiles> documents) {
+        this.documents = documents;
+    }
 }
+
 

@@ -1,32 +1,51 @@
 package com.itk.kdp.web.screens.vacationrequest;
 
+import com.haulmont.bpm.BpmConstants;
+import com.haulmont.bpm.entity.ProcInstance;
+import com.haulmont.bpm.entity.ProcTask;
+import com.haulmont.bpm.form.ProcFormDefinition;
+import com.haulmont.bpm.gui.action.ClaimProcTaskAction;
+import com.haulmont.bpm.gui.action.CompleteProcTaskAction;
+import com.haulmont.bpm.gui.action.ProcAction;
+import com.haulmont.bpm.service.BpmEntitiesService;
+import com.haulmont.bpm.service.ProcessFormService;
+import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
-import com.haulmont.cuba.core.global.EntityStates;
-import com.haulmont.cuba.core.global.Messages;
-import com.haulmont.cuba.core.global.PersistenceHelper;
-import com.haulmont.cuba.core.global.TimeSource;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.UiComponents;
+import com.haulmont.cuba.gui.app.core.file.FileDownloadHelper;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.model.CollectionLoader;
+import com.haulmont.cuba.gui.model.InstanceLoader;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.gui.util.OperationResult;
+import com.haulmont.cuba.security.entity.User;
+import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.config.ConsultationService;
+import com.itk.kdp.entity.AddressingDetail;
 import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.VacationRequest;
 import com.itk.kdp.service.EmployeeOrganizationService;
 import org.slf4j.Logger;
+import com.itk.kdp.entity.*;
 
 import javax.inject.Inject;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Formatter;
-import java.util.logging.SimpleFormatter;
 
 @UiController("kdp_VacationRequest.edit")
 @UiDescriptor("vacation-request-edit.xml")
 @EditedEntityContainer("vacationRequestDc")
 @LoadDataBeforeShow
 public class VacationRequestEdit extends StandardEditor<VacationRequest> {
+    private static final String PROCESS_CODE = "Vacation";
+
+    public static final String QUERY_STRING_ROLES_BY_BUSINESS =
+            "select e from kdp_AddressingDetail e " +
+                    "where " +
+                    "e.addressing.procDefinition.code = :procDefinition ";
     @Inject
     private ScreenValidation screenValidation;
     @Inject
@@ -34,11 +53,17 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Inject
     private ScreenBuilders screenBuilders;
     @Inject
+    private Label<String> labelInfo;
+    @Inject
     private Messages messages;
     @Inject
     private ConsultationService consultationService;
     @Inject
     private LookupPickerField<Employees> employeeField;
+    @Inject
+    private TimeSource timeSource;
+    @Inject
+    private Logger log;
     @Inject
     private DateField<Date> dateByField;
     @Inject
@@ -46,39 +71,58 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Inject
     private EmployeeOrganizationService employeeOrganizationService;
     @Inject
-    private EntityStates entityStates;
+    private Table<BusinessTripFiles> attachmentsTable;
     @Inject
-    private TextField<Integer> remainingVacationDaysField;
-
+    private InstanceLoader<BusinessTrip> businessTripDl;
+    @Inject
+    private CollectionLoader<ProcTask> procTasksDl;
+    @Inject
+    private BpmEntitiesService bpmEntitiesService;
+    @Inject
+    private ProcessRuntimeService processRuntimeService;
+    @Inject
+    private ProcessFormService processFormService;
+    private final List<CompleteProcTaskAction> completeProcTaskActions = new ArrayList<>();
+    protected ProcTask procTask;
+    @Inject
+    private Button sendToApprove;
+    @Inject
+    private Form bpmField;
+    private UiComponents uiComponents;
+    @Inject
+    private HBoxLayout actionsBox;
+    @Inject
+    private UserSession userSession;
+    @Inject
+    private GlobalConfig globalConfig;
+    @Inject
+    private DataManager dataManager;
+    @Inject
+    private MessageBundle messageBundle;
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+        FileDownloadHelper.initGeneratedColumn(attachmentsTable, "document");
+        businessTripDl.load();
+        if (Objects.isNull(getEditedEntity().getProcInstance())) {
+            procTasksDl.setParameter("procInstance", null);
+        } else {
+            procTasksDl.setParameter("procInstance", getEditedEntity().getProcInstance().getId());
+        }
+        procTasksDl.load();
+    }
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-        if (entityStates.isNew(getEditedEntity())) {
-            this.getWindow().setCaption(
-                    messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.caption")
-                            + " "
-                            + messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.newCaption")
-            );
-        } else {
-            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-
-            this.getWindow().setCaption(
-                    messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.caption")
-                            + " "
-                            + getEditedEntity().getApplicationNumber()
-                            + " "
-                            + messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.dateCaption")
-                            + " "
-                            +format.format(getEditedEntity().getApplicationDate())
-            );
-        }
         Formatter formatter = new Formatter();
-        remainingVacationDaysField.setContextHelpText(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
+        labelInfo.setValue(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
                 consultationService.getName(), consultationService.getTelephone()).toString());
         if (Objects.isNull(employeeField.getValue()) && !employeeOrganizationService.getEmployeeOrganization().isEmpty()) {
             notifications.create().withCaption("Вы являетесь сотрудником нескольких организаций.\n Не забудьте оформить отпуск по каждой из них отдельными Заявками на отпуск").show();
             selectEmployee();
         }
+        initProcAction();
+        updateVisible();
     }
+
 
     @Subscribe("dateByField")
     public void onDateByFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
@@ -95,7 +139,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
-        if (entityStates.isNew(getEditedEntity())) {
+        if (PersistenceHelper.isNew(getEditedEntity())) {
             getEditedEntity().setApplicationNumber((int) uniqueNumbersService.getNextNumber(getEditedEntity().getCompany().getCodeRegistration()));
         }
     }
@@ -134,6 +178,135 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
             getEditedEntity().setCoordinator(event.getValue().getManager());
         }
     }
+    private void initProcAction() {
+        if (!Objects.isNull(getEditedEntity().getProcInstance())) {
+            List<ProcTask> procTasks = bpmEntitiesService.findActiveProcTasksForCurrentUser(getEditedEntity().getProcInstance(), BpmConstants.Views.PROC_TASK_COMPLETE);
+            procTask = procTasks.isEmpty() ? null : procTasks.get(0);
+            if (procTask != null && procTask.getProcActor() != null) {
+                initCompleteTaskUI();
+            } else if (procTask != null && procTask.getProcActor() == null) {
+                initClaimTaskUI();
+            }
+        }
+    }
+    private void updateVisible() {
+        sendToApprove.setVisible(Objects.isNull(getEditedEntity().getProcInstance()));
+       // baseFormSetEditable(Objects.isNull(getEditedEntity().getProcInstance()));
+        //formTransport.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
+        //startDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
+        //endDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
+        //bpmField.setEditable(true);
+ /*       if (!Objects.isNull(procTask) && !Objects.isNull(procTask.getProcActor()) && procTask.getProcActor().getUser().equals(userSession.getUser())) {
+            if (procTask.getActTaskDefinitionKey().equals("buhApprove")) {
+                detailsField.setEditable(true);
+                purposeField.setEditable(true);
+                analyticsField.setEditable(true);
+                bpmField.setEditable(true);
+                destinationField.setRequired(true);
+                companyNameField.setRequired(true);
+                payCenterField.setRequired(true);
+            }
+            if (procTask.getActTaskDefinitionKey().equals("logistic")) {
+                bpmField.setEditable(true);
+                budgetField.setRequired(true);
+                isBudgetField.setRequired(true);
+            }
+       }*/
+}
+
+    private void initClaimTaskUI() {
+        Button claimTaskBtn = uiComponents.create(Button.class);
+        claimTaskBtn.setWidth("100%");
+
+        ProcAction.AfterActionListener afterClaimTaskListener = () -> {
+            actionsBox.removeAll();
+            initProcAction();
+            updateVisible();
+        };
+
+        ClaimProcTaskAction claimProcTaskAction = new ClaimProcTaskAction(procTask);
+        claimTaskBtn.setAction(claimProcTaskAction);
+        claimProcTaskAction.addAfterActionListener(afterClaimTaskListener);
+        actionsBox.add(claimTaskBtn);
+    }
+
+    protected void initCompleteTaskUI() {
+        Map<String, ProcFormDefinition> outcomesWithForms = processFormService.getOutcomesWithForms(procTask);
+        if (!outcomesWithForms.isEmpty()) {
+            for (Map.Entry<String, ProcFormDefinition> entry : outcomesWithForms.entrySet()) {
+                CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, entry.getKey(), entry.getValue());
+                action.setCaption(
+//                        processMessagesService.getMessage(
+//                                procTask.getProcInstance().getProcDefinition().getActId(),
+//                                procTask.getActTaskDefinitionKey() + "." +
+                        entry.getKey()
+//                        )
+                );
+                completeProcTaskActions.add(action);
+            }
+        } else {
+            ProcFormDefinition form = processFormService.getDefaultCompleteTaskForm(getEditedEntity().getProcInstance().getProcDefinition());
+            CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, BpmConstants.DEFAULT_TASK_OUTCOME, form);
+            action.setCaption(messageBundle.getMessage("completeTask"));
+            completeProcTaskActions.add(action);
+        }
+
+        for (CompleteProcTaskAction completeProcTaskAction : completeProcTaskActions) {
+            completeProcTaskAction.addAfterActionListener(this::closeWithCommit);
+            Button actionBtn = uiComponents.create(Button.class);
+            actionBtn.setWidth("100%");
+            actionBtn.setAction(completeProcTaskAction);
+            actionsBox.add(actionBtn);
+        }
+    }
+
+    @Subscribe("sendToApprove")
+    public void onSendToApproveClick(Button.ClickEvent event) {
+        if (Objects.isNull(getEditedEntity().getProcInstance())) {
+            getEditedEntity().setStatus("На согласовании");
+            if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
+                List<AddressingDetail> listRoles = dataManager.load(AddressingDetail.class)
+                        .query(QUERY_STRING_ROLES_BY_BUSINESS)
+                        .parameter("procDefinition", PROCESS_CODE)
+                        .view("addressingDetail-all-property")
+                        .list();
+
+                BpmEntitiesService.ProcInstanceDetails procInstanceDetails = new BpmEntitiesService.ProcInstanceDetails(PROCESS_CODE);
+                listRoles.forEach(e -> {
+                    if (Boolean.TRUE.equals(e.getIsInitial())) {
+                        procInstanceDetails.addProcActor(e.getProcRole(), userSession.getUser());
+                    } else if (Boolean.TRUE.equals(e.getIsManager())) {
+                        Employees manager = dataManager.reload(getEditedEntity().getEmployee().getManager(), "employees-edit");
+                        procInstanceDetails.addProcActor(e.getProcRole(), manager.getUser());
+                    } else if (Boolean.TRUE.equals(e.getAuto())) {
+                        procInstanceDetails.addProcActor(
+                                e.getProcRole(),
+                                dataManager.getReference(
+                                        User.class,
+                                        Objects.requireNonNull(globalConfig.getAnonymousSessionId())
+                                )
+                        );
+                    } else {
+                        procInstanceDetails.addProcActor(e.getProcRole(), e.getUser());
+                    }
+                });
+                procInstanceDetails.setEntity(getEditedEntity());
+
+                ProcInstance procInstance = bpmEntitiesService.createProcInstance(procInstanceDetails);
+
+                HashMap<String, Object> processVariables = new HashMap<>();
+                processRuntimeService.startProcess(procInstance, "Process started programmatically", processVariables);
+                notifications.create()
+                        .withCaption("Отправлено по маршруту")
+                        .withType(Notifications.NotificationType.HUMANIZED)
+                        .show();
+                businessTripDl.load();
+                getEditedEntity().setProcInstance(procInstance);
+                closeWithCommit();
+            }
+        }
+    }
+
 }
 
 
