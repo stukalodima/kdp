@@ -8,6 +8,7 @@ import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.components.Image;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.Organizations;
 
@@ -21,6 +22,8 @@ import java.util.Objects;
 public class EmployeesBrowse extends StandardLookup<Employees> {
 
     private Organizations organization;
+
+    private User user;
 
     @Inject
     private CollectionLoader<Employees> employeesesDl;
@@ -41,6 +44,11 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
             employeesesDl.removeParameter("parOrganization");
         } else {
             employeesesDl.setParameter("parOrganization", organization);
+        }
+        if (Objects.isNull(user)) {
+            employeesesDl.removeParameter("user");
+        } else {
+            employeesesDl.setParameter("user", getUser());
         }
         employeesesDl.load();
     }
@@ -67,5 +75,13 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
         photo.setWidth("40");
         photo.setStyleName("avatar-icon-small");
         return photo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

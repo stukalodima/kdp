@@ -11,10 +11,9 @@ import com.haulmont.bpm.service.BpmEntitiesService;
 import com.haulmont.bpm.service.ProcessFormService;
 import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
-import com.haulmont.cuba.core.global.DataManager;
-import com.haulmont.cuba.core.global.GlobalConfig;
-import com.haulmont.cuba.core.global.TimeSource;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
+import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.app.core.file.FileDownloadHelper;
 import com.haulmont.cuba.gui.components.*;
@@ -25,8 +24,12 @@ import com.haulmont.cuba.gui.util.OperationResult;
 import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.entity.*;
+import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @UiController("kdp_BusinessTrip.edit")
@@ -34,12 +37,6 @@ import java.util.*;
 @EditedEntityContainer("businessTripDc")
 @LoadDataBeforeShow
 public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
-    private static final String PROCESS_CODE = "Trip";
-
-    public static final String QUERY_STRING_ROLES_BY_BUSINESS =
-            "select e from kdp_AddressingDetail e " +
-                    "where " +
-                    "e.addressing.procDefinition.code = :procDefinition ";
     protected ProcTask procTask;
     @Inject
     private InstanceLoader<BusinessTrip> businessTripDl;
@@ -85,14 +82,6 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
     @Inject
     private LookupPickerField<Employees> employeeField;
     @Inject
-    private LookupPickerField<Organizations> organizationField;
-    @Inject
-    private LookupPickerField<Position> positionField;
-    @Inject
-    private LookupPickerField<Departments> departmentField;
-    @Inject
-    private TextField<String> phoneNumberField;
-    @Inject
     private TextField<String> detailsField;
     @Inject
     private LookupPickerField<Purpose> purposeField;
@@ -112,11 +101,59 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
     private TextField<String> budgetField;
     @Inject
     private TextField<String> isBudgetField;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private Messages messages;
+    @Inject
+    private ScreenValidation screenValidation;
+    @Named("body.mainTab")
+    private VBoxLayout mainTab;
+    private boolean chooseEmployee;
+    @Inject
+    private ScreenBuilders screenBuilders;
+    @Inject
+    private GroupBoxLayout bpmGroup;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
+        updateFormCaption();
         initProcAction();
         updateVisible();
+        if (chooseEmployee) {
+            EmployeesBrowse employeesBrowse = screenBuilders.lookup(employeeField)
+                    .withScreenClass(EmployeesBrowse.class)
+                    .build();
+            employeesBrowse.setUser(userSession.getUser());
+            employeesBrowse.show();
+        }
+    }
+
+    @Subscribe
+    public void onAfterCommitChanges(AfterCommitChangesEvent event) {
+        updateFormCaption();
+    }
+
+    private void updateFormCaption() {
+        if (entityStates.isNew(getEditedEntity())) {
+            this.getWindow().setCaption(
+                    messages.getMessage(BusinessTripEdit.class, "businessTripEdit.caption")
+                            + " "
+                            + messages.getMessage(BusinessTripEdit.class, "businessTripEdit.newCaption")
+            );
+        } else {
+            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
+
+            this.getWindow().setCaption(
+                    messages.getMessage(BusinessTripEdit.class, "businessTripEdit.caption")
+                            + " "
+                            + getEditedEntity().getNumber()
+                            + " "
+                            + messages.getMessage(BusinessTripEdit.class, "businessTripEdit.dateCaption")
+                            + " "
+                            + format.format(getEditedEntity().getOnDate())
+            );
+        }
     }
 
     private void updateVisible() {
@@ -125,6 +162,7 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
         formTransport.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
         startDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         endDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
+//        bpmGroup.is
         bpmField.setEditable(false);
         if (!Objects.isNull(procTask) && !Objects.isNull(procTask.getProcActor()) && procTask.getProcActor().getUser().equals(userSession.getUser())) {
             if (procTask.getActTaskDefinitionKey().equals("buhApprove")) {
@@ -141,15 +179,19 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
                 budgetField.setRequired(true);
                 isBudgetField.setRequired(true);
             }
+            if (procTask.getActTaskDefinitionKey().equals("correction")) {
+                baseFormSetEditable(true);
+                formTransport.setEditable(true);
+                detailsField.setEditable(true);
+                purposeField.setEditable(true);
+                analyticsField.setEditable(true);
+                bpmField.setEditable(false);
+            }
         }
     }
 
     private void baseFormSetEditable(boolean editable) {
         employeeField.setEditable(editable);
-        organizationField.setEditable(editable);
-        positionField.setEditable(editable);
-        departmentField.setEditable(editable);
-        phoneNumberField.setEditable(editable);
         startDateField.setEditable(editable);
         endDateField.setEditable(editable);
         detailsField.setEditable(editable);
@@ -203,14 +245,31 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
         Map<String, ProcFormDefinition> outcomesWithForms = processFormService.getOutcomesWithForms(procTask);
         if (!outcomesWithForms.isEmpty()) {
             for (Map.Entry<String, ProcFormDefinition> entry : outcomesWithForms.entrySet()) {
+                ProcAction.BeforeActionPredicate beforeActionPredicate = () -> {
+                    boolean result;
+                    if (entry.getKey().equals("Согласовано")) {
+                        ValidationErrors validationErrors = screenValidation.validateUiComponents(mainTab);
+                        result = validationErrors.isEmpty();
+                        if (!result) {
+                            screenValidation.showValidationErrors(this, validationErrors);
+                        }
+                    } else {
+                        detailsField.setEditable(false);
+                        purposeField.setEditable(false);
+                        analyticsField.setEditable(false);
+                        bpmField.setEditable(false);
+                        destinationField.setRequired(false);
+                        companyNameField.setRequired(false);
+                        payCenterField.setRequired(false);
+                        budgetField.setRequired(false);
+                        isBudgetField.setRequired(false);
+                        result = true;
+                    }
+                    return result;
+                };
                 CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, entry.getKey(), entry.getValue());
-                action.setCaption(
-//                        processMessagesService.getMessage(
-//                                procTask.getProcInstance().getProcDefinition().getActId(),
-//                                procTask.getActTaskDefinitionKey() + "." +
-                        entry.getKey()
-//                        )
-                );
+                action.setCaption(entry.getKey());
+                action.addBeforeActionPredicate(beforeActionPredicate);
                 completeProcTaskActions.add(action);
             }
         } else {
@@ -241,17 +300,21 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
     @Subscribe("employeeField")
     public void onEmployeeFieldValueChange(HasValue.ValueChangeEvent<Employees> event) {
         if (event.isUserOriginated()) {
-            if (!Objects.isNull(event.getValue())) {
-                getEditedEntity().setOrganization(event.getValue().getCompany());
-                getEditedEntity().setDepartment(event.getValue().getDepartment());
-                getEditedEntity().setPosition(event.getValue().getPosition());
-                getEditedEntity().setPhoneNumber(event.getValue().getMobilePhone());
-            } else {
-                getEditedEntity().setOrganization(null);
-                getEditedEntity().setDepartment(null);
-                getEditedEntity().setPosition(null);
-                getEditedEntity().setPhoneNumber(null);
-            }
+            fillParameterFromEmployee(event.getValue());
+        }
+    }
+
+    private void fillParameterFromEmployee(Employees employees) {
+        if (!Objects.isNull(employees)) {
+            getEditedEntity().setOrganization(employees.getCompany());
+            getEditedEntity().setDepartment(employees.getDepartment());
+            getEditedEntity().setPosition(employees.getPosition());
+            getEditedEntity().setPhoneNumber(employees.getMobilePhone());
+        } else {
+            getEditedEntity().setOrganization(null);
+            getEditedEntity().setDepartment(null);
+            getEditedEntity().setPosition(null);
+            getEditedEntity().setPhoneNumber(null);
         }
     }
 
@@ -260,13 +323,22 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
             getEditedEntity().setStatus("На согласовании");
             if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
-                List<AddressingDetail> listRoles = dataManager.load(AddressingDetail.class)
-                        .query(QUERY_STRING_ROLES_BY_BUSINESS)
-                        .parameter("procDefinition", PROCESS_CODE)
-                        .view("addressingDetail-all-property")
+
+                List<Addressing> addressingList = dataManager.load(Addressing.class)
+                        .query("select e from kdp_Addressing e where e.procEntity = :procEntity")
+                        .parameter("procEntity", ProcEntityEnum.BUSINESS_TRIP.getId())
+                        .view("addressing-all-property")
                         .list();
 
-                BpmEntitiesService.ProcInstanceDetails procInstanceDetails = new BpmEntitiesService.ProcInstanceDetails(PROCESS_CODE);
+                if (addressingList.isEmpty()) {
+                    return;
+                }
+
+                Addressing addressing = addressingList.get(0);
+
+                List<AddressingDetail> listRoles = addressing.getAddressingDetail();
+
+                BpmEntitiesService.ProcInstanceDetails procInstanceDetails = new BpmEntitiesService.ProcInstanceDetails(addressing.getProcDefinition().getCode());
                 listRoles.forEach(e -> {
                     if (Boolean.TRUE.equals(e.getIsInitial())) {
                         procInstanceDetails.addProcActor(e.getProcRole(), userSession.getUser());
@@ -299,6 +371,21 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
                 getEditedEntity().setProcInstance(procInstance);
                 closeWithCommit();
             }
+        }
+    }
+
+    @Subscribe
+    public void onInitEntity(InitEntityEvent<BusinessTrip> event) {
+        List<Employees> employees = dataManager.load(Employees.class)
+                .query("select e from kdp_Employees e where e.user = :user")
+                .parameter("user", userSession.getUser())
+                .view("employees-view")
+                .list();
+        if (employees.size() == 1) {
+            event.getEntity().setEmployee(employees.get(0));
+            event.getEntity().setAuthor(employees.get(0));
+        } else if (!employees.isEmpty()) {
+            chooseEmployee = true;
         }
     }
 }

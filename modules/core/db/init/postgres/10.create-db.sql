@@ -285,6 +285,7 @@ create table KDP_ADDRESSING (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
+    PROC_ENTITY varchar(50),
     PROC_DEFINITION_ID uuid not null,
     USE_COMPANY boolean,
     COMPANY_ID uuid,

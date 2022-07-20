@@ -52,6 +52,22 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
+        updateFormCaption();
+        Formatter formatter = new Formatter();
+        remainingVacationDaysField.setContextHelpText(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
+                consultationService.getName(), consultationService.getTelephone()).toString());
+        if (Objects.isNull(employeeField.getValue()) && !employeeOrganizationService.getEmployeeOrganization().isEmpty()) {
+            notifications.create().withCaption("Вы являетесь сотрудником нескольких организаций.\n Не забудьте оформить отпуск по каждой из них отдельными Заявками на отпуск").show();
+            selectEmployee();
+        }
+    }
+
+    @Subscribe
+    public void onAfterCommitChanges(AfterCommitChangesEvent event) {
+        updateFormCaption();
+    }
+
+    private void updateFormCaption() {
         if (entityStates.isNew(getEditedEntity())) {
             this.getWindow().setCaption(
                     messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.caption")
@@ -70,13 +86,6 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
                             + " "
                             +format.format(getEditedEntity().getApplicationDate())
             );
-        }
-        Formatter formatter = new Formatter();
-        remainingVacationDaysField.setContextHelpText(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
-                consultationService.getName(), consultationService.getTelephone()).toString());
-        if (Objects.isNull(employeeField.getValue()) && !employeeOrganizationService.getEmployeeOrganization().isEmpty()) {
-            notifications.create().withCaption("Вы являетесь сотрудником нескольких организаций.\n Не забудьте оформить отпуск по каждой из них отдельными Заявками на отпуск").show();
-            selectEmployee();
         }
     }
 

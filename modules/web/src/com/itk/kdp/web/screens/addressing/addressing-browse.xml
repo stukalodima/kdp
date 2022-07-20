@@ -40,6 +40,7 @@
                 <action id="excel" type="excel"/>
             </actions>
             <columns>
+                <column id="procEntity"/>
                 <column id="procDefinition"/>
                 <column id="useCompany"/>
                 <column id="company"/>

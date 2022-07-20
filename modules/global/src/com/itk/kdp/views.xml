@@ -25,5 +25,9 @@
         <property name="procRole" view="_minimal"/>
         <property name="user" view="_minimal"/>
     </view>
+    <view entity="kdp_Addressing" name="addressing-all-property" extends="_local">
+        <property name="procDefinition" view="procDefinition-procInstanceEdit"/>
+        <property name="addressingDetail" view="addressingDetail-all-property"/>
+    </view>
 
 </views>

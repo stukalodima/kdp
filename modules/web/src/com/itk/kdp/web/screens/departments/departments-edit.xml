@@ -41,7 +41,9 @@
             </loader>
         </collection>
         <collection id="employeesesDc" class="com.itk.kdp.entity.Employees">
-            <view extends="_local"/>
+            <view extends="_local">
+                <property name="company"/>
+            </view>
             <loader id="employeesesDl">
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>

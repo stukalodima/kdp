@@ -24,16 +24,21 @@
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>
                     <condition>
-                        <c:jpql>
-                            <c:where>e.company = :parOrganization</c:where>
-                        </c:jpql>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.company = :parOrganization</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.user = :user</c:where>
+                            </c:jpql>
+                        </and>
                     </condition>
                 </query>
             </loader>
         </collection>
     </data>
-    <dialogMode height="100%"
-                width="100%"/>
+    <dialogMode height="75%"
+                width="80%"/>
     <layout expand="employeesesTable"
             spacing="true">
         <filter id="filter"

@@ -16,6 +16,8 @@ import java.util.List;
 public class Addressing extends StandardEntity {
     private static final long serialVersionUID = -8862784569085070496L;
 
+    @Column(name = "PROC_ENTITY")
+    private String procEntity;
     @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "PROC_DEFINITION_ID")
@@ -64,5 +66,13 @@ public class Addressing extends StandardEntity {
 
     public void setAddressingDetail(List<AddressingDetail> addressingDetail) {
         this.addressingDetail = addressingDetail;
+    }
+
+    public ProcEntityEnum getProcEntity() {
+        return procEntity == null ? null : ProcEntityEnum.fromId(procEntity);
+    }
+
+    public void setProcEntity(ProcEntityEnum procEntity) {
+        this.procEntity = procEntity == null ? null : procEntity.getId();
     }
 }
