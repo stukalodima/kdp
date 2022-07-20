@@ -54,6 +54,19 @@
                 </query>
             </loader>
         </collection>
+        <collection id="positionsDc" class="com.itk.kdp.entity.Position">
+            <view extends="_minimal"/>
+            <loader id="positionsDl">
+                <query>
+                    <![CDATA[select e from kdp_Position e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where>e.organizationsId = :parOrganization</c:where>
+                        </c:jpql>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
         <collection id="userDc" class="com.haulmont.cuba.security.entity.User">
             <view extends="group.browse"/>
             <loader id="userDl">
@@ -76,7 +89,7 @@
                     <rows>
                         <row>
                             <groupBox spacing="true"
-                                      height="450px" width="370px" expand="image">
+                                      height="450px" width="420px" expand="image">
                                 <image id="image"
                                        width="100%"
                                        dataContainer="employeesDc"
@@ -116,7 +129,8 @@
                                             <action id="clear" type="picker_clear"/>
                                         </actions>
                                     </lookupPickerField>
-                                    <lookupPickerField id="positionField" property="position" colspan="1" width="100%">
+                                    <lookupPickerField id="positionField" optionsContainer="positionsDc"
+                                                       property="position" colspan="1" width="100%">
                                         <actions>
                                             <action id="lookup" type="picker_lookup"/>
                                             <action id="open" type="picker_open"/>

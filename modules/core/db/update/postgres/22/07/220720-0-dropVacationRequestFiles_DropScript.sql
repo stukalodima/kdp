@@ -1,0 +1,1 @@
+drop table if exists KDP_VACATION_REQUEST_FILES__U65409 cascade ;
