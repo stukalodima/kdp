@@ -1,0 +1,3 @@
+alter table KDP_VACATION_REQUEST rename column proc_instance_id to proc_instance_id__u32990 ;
+alter table KDP_VACATION_REQUEST drop constraint FK_KDP_VACATION_REQUEST_ON_PROC_INSTANCE ;
+drop index IDX_KDP_VACATION_REQUEST_ON_PROC_INSTANCE ;

@@ -1,6 +1,8 @@
 package com.itk.kdp.web.screens.employees;
 
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionLoader;
@@ -8,7 +10,9 @@ import com.haulmont.cuba.gui.screen.*;
 import com.itk.kdp.entity.Departments;
 import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.Organizations;
+import com.itk.kdp.entity.Position;
 import com.itk.kdp.web.screens.departments.DepartmentsBrowse;
+import com.itk.kdp.web.screens.position.PositionBrowse;
 
 import javax.inject.Inject;
 import java.util.Objects;
@@ -28,6 +32,14 @@ public class EmployeesEdit extends StandardEditor<Employees> {
     private LookupPickerField<Departments> departmentField;
     @Inject
     private ScreenBuilders screenBuilders;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private Messages messages;
+    @Inject
+    private CollectionLoader<Position> positionsDl;
+    @Inject
+    private LookupPickerField<Position> positionField;
 
     @Subscribe("departmentField.lookup")
     public void onDepartmentFieldLookup(Action.ActionPerformedEvent event) {
@@ -38,17 +50,39 @@ public class EmployeesEdit extends StandardEditor<Employees> {
         departmentsBrowse.show();
     }
 
+    @Subscribe("positionField.lookup")
+    public void onPositionFieldLookup(Action.ActionPerformedEvent event) {
+        PositionBrowse positionBrowse = screenBuilders.lookup(positionField)
+                .withScreenClass(PositionBrowse.class)
+                .build();
+        positionBrowse.setOrganization(getEditedEntity().getCompany());
+        positionBrowse.show();
+    }
+
 
     @Subscribe("companyField")
     public void onCompanyFieldValueChange(HasValue.ValueChangeEvent<Organizations> event) {
-        departmentsesDl.setParameter( "organization", event.getValue());
-        departmentsesDl.load();
+        if (event.isUserOriginated()) {
+            Employees editedEntity = getEditedEntity();
+            editedEntity.setDepartment(null);
+            editedEntity.setPosition(null);
+
+            departmentsesDl.setParameter("organization", event.getValue());
+            departmentsesDl.load();
+
+            positionsDl.setParameter("parOrganization", getEditedEntity().getCompany());
+            positionsDl.load();
+        }
     }
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
+        updateFromCaption();
         departmentsesDl.setParameter("organization", (Objects.isNull(getEditedEntity().getCompany()) ? dataManager.create(Organizations.class) : getEditedEntity().getCompany()));
         departmentsesDl.load();
+
+        positionsDl.setParameter("parOrganization", getEditedEntity().getCompany());
+        positionsDl.load();
 
         displayImage();
     }
@@ -65,6 +99,22 @@ public class EmployeesEdit extends StandardEditor<Employees> {
             image.setVisible(true);
         } else {
             image.setVisible(false);
+        }
+    }
+
+    private void updateFromCaption(){
+        if (entityStates.isNew(getEditedEntity())){
+            this.getWindow().setCaption(
+                    messages.getMessage(EmployeesEdit.class, "Сотрудник организации")
+                    + ": "
+                    + messages.getMessage(EmployeesEdit.class, "(cоздание)")
+            );
+        } else {
+            this.getWindow().setCaption(
+                    messages.getMessage(EmployeesEdit.class, "Сотрудник организации")
+                    + ": "
+                    + getEditedEntity().getFio()
+            );
         }
     }
 
