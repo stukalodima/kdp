@@ -47,15 +47,13 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
                     "where " +
                     "e.addressing.procDefinition.code = :procDefinition ";
     @Inject
+    private InstanceLoader<VacationRequest> vacationRequestDl;
+    @Inject
     private ScreenValidation screenValidation;
     @Inject
     private UniqueNumbersService uniqueNumbersService;
     @Inject
     private ScreenBuilders screenBuilders;
-    @Inject
-    private Label<String> labelInfo;
-    @Inject
-    private Messages messages;
     @Inject
     private ConsultationService consultationService;
     @Inject
@@ -71,9 +69,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Inject
     private EmployeeOrganizationService employeeOrganizationService;
     @Inject
-    private Table<BusinessTripFiles> attachmentsTable;
-    @Inject
-    private InstanceLoader<BusinessTrip> businessTripDl;
+    private Table<VacationRequestFiles> attachmentsTable;
     @Inject
     private CollectionLoader<ProcTask> procTasksDl;
     @Inject
@@ -99,10 +95,11 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private DataManager dataManager;
     @Inject
     private MessageBundle messageBundle;
+
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
         FileDownloadHelper.initGeneratedColumn(attachmentsTable, "document");
-        businessTripDl.load();
+        vacationRequestDl.load();
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
             procTasksDl.setParameter("procInstance", null);
         } else {
@@ -112,15 +109,8 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     }
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-        Formatter formatter = new Formatter();
-        labelInfo.setValue(formatter.format(messages.getMessage(VacationRequestEdit.class, "message.Info"),
-                consultationService.getName(), consultationService.getTelephone()).toString());
-        if (Objects.isNull(employeeField.getValue()) && !employeeOrganizationService.getEmployeeOrganization().isEmpty()) {
-            notifications.create().withCaption("Вы являетесь сотрудником нескольких организаций.\n Не забудьте оформить отпуск по каждой из них отдельными Заявками на отпуск").show();
-            selectEmployee();
-        }
+
         initProcAction();
-        updateVisible();
     }
 
 
@@ -189,30 +179,6 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
             }
         }
     }
-    private void updateVisible() {
-        sendToApprove.setVisible(Objects.isNull(getEditedEntity().getProcInstance()));
-       // baseFormSetEditable(Objects.isNull(getEditedEntity().getProcInstance()));
-        //formTransport.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
-        //startDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
-        //endDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
-        //bpmField.setEditable(true);
- /*       if (!Objects.isNull(procTask) && !Objects.isNull(procTask.getProcActor()) && procTask.getProcActor().getUser().equals(userSession.getUser())) {
-            if (procTask.getActTaskDefinitionKey().equals("buhApprove")) {
-                detailsField.setEditable(true);
-                purposeField.setEditable(true);
-                analyticsField.setEditable(true);
-                bpmField.setEditable(true);
-                destinationField.setRequired(true);
-                companyNameField.setRequired(true);
-                payCenterField.setRequired(true);
-            }
-            if (procTask.getActTaskDefinitionKey().equals("logistic")) {
-                bpmField.setEditable(true);
-                budgetField.setRequired(true);
-                isBudgetField.setRequired(true);
-            }
-       }*/
-}
 
     private void initClaimTaskUI() {
         Button claimTaskBtn = uiComponents.create(Button.class);
@@ -221,7 +187,6 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
         ProcAction.AfterActionListener afterClaimTaskListener = () -> {
             actionsBox.removeAll();
             initProcAction();
-            updateVisible();
         };
 
         ClaimProcTaskAction claimProcTaskAction = new ClaimProcTaskAction(procTask);
@@ -235,13 +200,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
         if (!outcomesWithForms.isEmpty()) {
             for (Map.Entry<String, ProcFormDefinition> entry : outcomesWithForms.entrySet()) {
                 CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, entry.getKey(), entry.getValue());
-                action.setCaption(
-//                        processMessagesService.getMessage(
-//                                procTask.getProcInstance().getProcDefinition().getActId(),
-//                                procTask.getActTaskDefinitionKey() + "." +
-                        entry.getKey()
-//                        )
-                );
+                action.setCaption(entry.getKey());
                 completeProcTaskActions.add(action);
             }
         } else {
@@ -300,7 +259,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
                         .withCaption("Отправлено по маршруту")
                         .withType(Notifications.NotificationType.HUMANIZED)
                         .show();
-                businessTripDl.load();
+                vacationRequestDl.load();
                 getEditedEntity().setProcInstance(procInstance);
                 closeWithCommit();
             }

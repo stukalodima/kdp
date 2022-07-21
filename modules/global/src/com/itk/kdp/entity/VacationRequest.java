@@ -141,7 +141,7 @@ public class VacationRequest extends StandardEntity {
     private ProcInstance procInstance;
     @Composition
     @OnDelete(DeletePolicy.CASCADE)
-    @OneToMany(mappedBy = "businessTrip")
+    @OneToMany(mappedBy = "vacationRequest")
     private List<VacationRequestFiles> documents;
     public Employees getEmployee() {
         return employee;
