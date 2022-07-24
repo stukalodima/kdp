@@ -109,7 +109,6 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     }
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-
         initProcAction();
     }
 

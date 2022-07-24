@@ -1,6 +1,8 @@
 package com.itk.kdp.web.screens.employees;
 
+import com.haulmont.cuba.core.app.FileStorageService;
 import com.haulmont.cuba.core.entity.FileDescriptor;
+import com.haulmont.cuba.core.global.FileStorageException;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.Component;
 import com.haulmont.cuba.gui.components.FileDescriptorResource;
@@ -30,6 +32,8 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
 
     @Inject
     protected UiComponents uiComponents;
+    @Inject
+    private FileStorageService fileStorageService;
 
     public void setOrganization(Organizations organization){
         this.organization = organization;
@@ -53,6 +57,13 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
         FileDescriptor imageFile = employees.getPhoto();
         if (imageFile == null) {
             return null;
+        }
+        try {
+            if (!fileStorageService.fileExists(imageFile)) {
+                return null;
+            }
+        } catch (FileStorageException e) {
+            throw new RuntimeException(e);
         }
         Image photo = smallPhotoImage();
         photo.setSource(FileDescriptorResource.class)

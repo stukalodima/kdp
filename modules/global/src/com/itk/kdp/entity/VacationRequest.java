@@ -55,7 +55,7 @@ public class VacationRequest extends StandardEntity {
     @JoinColumn(name = "COMPANY_ID")
     //@OnDelete(DeletePolicy.DENY)
     //@OnDeleteInverse(DeletePolicy.UNLINK)
-   private Organizations company;
+    private Organizations company;
 
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})

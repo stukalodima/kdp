@@ -1,8 +1,11 @@
 package com.itk.kdp.web.screens.employees;
 
+import com.haulmont.cuba.core.app.FileStorageService;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.FileStorageException;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.exception.FileStorageExceptionHandler;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
 import com.itk.kdp.entity.Departments;
@@ -28,6 +31,10 @@ public class EmployeesEdit extends StandardEditor<Employees> {
     private LookupPickerField<Departments> departmentField;
     @Inject
     private ScreenBuilders screenBuilders;
+    @Inject
+    private FileStorageExceptionHandler fileStorageExceptionHandler;
+    @Inject
+    private FileStorageService fileStorageService;
 
     @Subscribe("departmentField.lookup")
     public void onDepartmentFieldLookup(Action.ActionPerformedEvent event) {
@@ -41,12 +48,12 @@ public class EmployeesEdit extends StandardEditor<Employees> {
 
     @Subscribe("companyField")
     public void onCompanyFieldValueChange(HasValue.ValueChangeEvent<Organizations> event) {
-        departmentsesDl.setParameter( "organization", event.getValue());
+        departmentsesDl.setParameter("organization", event.getValue());
         departmentsesDl.load();
     }
 
     @Subscribe
-    public void onAfterShow(AfterShowEvent event) {
+    public void onAfterShow(AfterShowEvent event) throws FileStorageException {
         departmentsesDl.setParameter("organization", (Objects.isNull(getEditedEntity().getCompany()) ? dataManager.create(Organizations.class) : getEditedEntity().getCompany()));
         departmentsesDl.load();
 
@@ -54,13 +61,13 @@ public class EmployeesEdit extends StandardEditor<Employees> {
     }
 
     @Subscribe("photoField")
-    public void onPhotoFieldAfterValueClear(FileUploadField.AfterValueClearEvent event) {
+    public void onPhotoFieldAfterValueClear(FileUploadField.AfterValueClearEvent event) throws FileStorageException {
         getEditedEntity().setPhoto(null);
         displayImage();
     }
 
-    private void displayImage() {
-        if (getEditedEntity().getPhoto() != null) {
+    private void displayImage() throws FileStorageException {
+        if (getEditedEntity().getPhoto() != null && fileStorageService.fileExists(getEditedEntity().getPhoto())) {
             image.setSource(FileDescriptorResource.class).setFileDescriptor(getEditedEntity().getPhoto());
             image.setVisible(true);
         } else {
@@ -69,7 +76,7 @@ public class EmployeesEdit extends StandardEditor<Employees> {
     }
 
     @Subscribe("photoField")
-    public void onPhotoFieldFileUploadSucceed(FileUploadField.FileUploadSucceedEvent event) {
+    public void onPhotoFieldFileUploadSucceed(FileUploadField.FileUploadSucceedEvent event) throws FileStorageException {
         displayImage();
     }
 
