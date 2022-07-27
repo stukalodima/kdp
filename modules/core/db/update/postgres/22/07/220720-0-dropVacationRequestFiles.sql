@@ -1,1 +1,0 @@
-alter table kdp_vacation_request_files rename to KDP_VACATION_REQUEST_FILES__U65409 ;

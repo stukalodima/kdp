@@ -34,7 +34,7 @@ public class PurposeEdit extends StandardEditor<Purpose> {
             this.getWindow().setCaption(
                     messages.getMessage(PurposeEdit.class, "Цель поездки")
                             + ": "
-                            + getEditedEntity().getName()
+                            + getEditedEntity().getNameUa()
             );
         }
     }
