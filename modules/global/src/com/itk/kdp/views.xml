@@ -2,6 +2,10 @@
 <views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
     <view entity="kdp_Departments" name="departments-parent-id" extends="_local">
         <property name="parentId" view="_local"/>
+        <property name="approvalManager" view="_local"/>
+        <property name="managerId" view="_local"/>
+        <property name="organizationsId" view="_local"/>
+
     </view>
     <view class="com.itk.kdp.entity.Employees"
           extends="_local"
@@ -17,6 +21,14 @@
         <property name="manager" view="_local"/>
         <property name="position" view="_local"/>
         <property name="department" view="_local"/>
+    </view>
+    <view entity="kdp_Employees" name="employees-for-create-api" extends="_local">
+        <property name="company" view="_local"/>
+        <property name="manager" view="_local"/>
+        <property name="position" view="_local"/>
+        <property name="department" view="_local"/>
+        <property name="photo" view="_local"/>
+        <property name="user" view="_local"/>
     </view>
     <view entity="kdp_Departments" name="departments-organization-id" extends="_local">
         <property name="organizationsId" view="_local"/>

@@ -1,18 +1,21 @@
 package com.itk.kdp.web.screens.employees;
 
 import com.haulmont.cuba.core.entity.FileDescriptor;
+import com.haulmont.cuba.core.global.Messages;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.UiComponents;
-import com.haulmont.cuba.gui.components.Component;
-import com.haulmont.cuba.gui.components.FileDescriptorResource;
-import com.haulmont.cuba.gui.components.GroupTable;
-import com.haulmont.cuba.gui.components.Image;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.gui.screen.LookupComponent;
 import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.Organizations;
+import com.itk.kdp.service.EmployeeService;
+import com.itk.kdp.web.screens.organizations.OrganizationsBrowse;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.Objects;
 
 @UiController("kdp_Employees.browse")
@@ -33,6 +36,12 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
 
     @Inject
     protected UiComponents uiComponents;
+    @Inject
+    private EmployeeService employeeService;
+    @Inject
+    private Dialogs dialogs;
+    @Inject
+    private Messages messages;
 
     public void setOrganization(Organizations organization){
         this.organization = organization;
@@ -75,6 +84,20 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
         photo.setWidth("40");
         photo.setStyleName("avatar-icon-small");
         return photo;
+    }
+
+    @Subscribe("employeesesTable.fillFromExternal")
+    public void onEmployeesesTableFillFromExternal(Action.ActionPerformedEvent event) {
+        try {
+            employeeService.getEmployeeListFromExternal();
+        } catch (IOException e) {
+            dialogs.createMessageDialog()
+                    .withCaption(messages.getMessage(OrganizationsBrowse.class, "messages.getCompanyListError.caption"))
+                    .withMessage(messages.getMessage(OrganizationsBrowse.class, "messages.getCompanyListError.text")
+                            + "\n" + e.getMessage())
+                    .show();
+        }
+        employeesesDl.load();
     }
 
     public User getUser() {

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://accessRequestBrowse.caption"
+        focusComponent="accessRequestsTable"
+        messagesPack="com.itk.kdp.web.screens.accessrequest">
+    <data readOnly="true">
+        <collection id="accessRequestsDc"
+                    class="com.itk.kdp.entity.AccessRequest">
+            <view extends="_local">
+                <property name="employees" view="_minimal">
+                    <property name="fio"/>
+                </property>
+                <property name="company" view="_minimal"/>
+                <property name="manager" view="_minimal">
+                    <property name="fio"/>
+                </property>
+            </view>
+            <loader id="accessRequestsDl">
+                <query>
+                    <![CDATA[select e from kdp_AccessRequest e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="accessRequestsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="accessRequestsTable"
+                dataLoader="accessRequestsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="accessRequestsTable"
+                    width="100%"
+                    dataContainer="accessRequestsDc"
+                    multiselect="true"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="employees"/>
+                <column id="company"/>
+                <column id="manager"/>
+                <column id="accessType"/>
+                <column id="techInfo" maxTextLength="50"/>
+                <column id="businessInfo" maxTextLength="50"/>
+                <column id="startDate"/>
+                <column id="endDate"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="accessRequestsTable.create"/>
+                <button id="editBtn" action="accessRequestsTable.edit"/>
+                <button id="removeBtn" action="accessRequestsTable.remove"/>
+                <button id="excelBtn" action="accessRequestsTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

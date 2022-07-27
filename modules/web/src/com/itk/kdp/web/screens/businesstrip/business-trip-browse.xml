@@ -13,7 +13,7 @@
                     <property name="manager" view="_local"/>
                 </property>
                 <property name="purpose" view="_minimal">
-                    <property name="name"/>
+                    <property name="nameUa"/>
                 </property>
                 <property name="transport" view="_minimal">
                     <property name="name"/>
@@ -51,18 +51,24 @@
                 <action id="excel" type="excel"/>
             </actions>
             <columns>
-                <column id="number"/>
+                <column id="number" align="RIGHT"/>
                 <column id="onDate"/>
                 <column id="status"/>
                 <column id="organization"/>
                 <column id="employee.fio" caption="msg://businessTripEdit.employee.fio"/>
-                <column id="startDate"/>
-                <column id="endDate"/>
+                <column id="startDate" align="RIGHT">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yyyy"/>
+                </column>
+                <column id="endDate" align="RIGHT">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yyyy"/>
+                </column>
+                <column id="startPlace"/>
                 <column id="destination"/>
                 <column id="companyName"/>
                 <column id="isBudget"/>
                 <column id="budgetTrip"/>
                 <column id="employee.manager.fio" caption="msg://businessTripEdit.employee.manager.fio"/>
+                <column id="author"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

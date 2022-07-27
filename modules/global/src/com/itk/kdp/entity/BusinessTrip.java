@@ -15,7 +15,7 @@ import java.util.List;
 
 @Table(name = "KDP_BUSINESS_TRIP")
 @Entity(name = "kdp_BusinessTrip")
-@NamePattern("%s %s | number,onDate")
+@NamePattern("%s от %s | number,onDate")
 public class BusinessTrip extends StandardEntity {
     private static final long serialVersionUID = 5104939189800091445L;
 
@@ -78,6 +78,9 @@ public class BusinessTrip extends StandardEntity {
 
     @Column(name = "DESTINATION")
     private String destination;
+
+    @Column(name = "START_PLACE")
+    private String startPlace;
 
     @Column(name = "COMPANY_NAME")
     private String companyName;
@@ -365,5 +368,13 @@ public class BusinessTrip extends StandardEntity {
 
     public void setDocuments(List<BusinessTripFiles> documents) {
         this.documents = documents;
+    }
+
+    public String getStartPlace() {
+        return startPlace;
+    }
+
+    public void setStartPlace(String startPlace) {
+        this.startPlace = startPlace;
     }
 }

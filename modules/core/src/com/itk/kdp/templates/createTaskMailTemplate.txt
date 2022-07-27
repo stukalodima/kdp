@@ -1,0 +1,55 @@
+<html>
+<head>
+  <title>${systemName}</title>
+  <style type="text/css">
+     TD, TH {
+      padding: 3px;
+     }
+    </style>
+</head>
+<body>
+  <h2>${welcome}, ${userName}!</h2>
+  <h2>${YouHaveNewTask}</h2>
+  <p><a href="https://cbf.smart-holding.com/#login">${taskName}</a>
+  <h3>${BaseData}</h3>
+  <table cellspacing="0">
+  <col align="left">
+  <col align="left">
+     <tr>
+      <td>${titleFIO}:</td><td><h3>${FIO}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleCompany}:</td><td><h3>${company}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleDestination}:</td><td><h3>${destination}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleCompanyName}:</td><td><h3>${companyName}</h3></td>
+     </tr>
+     <tr>
+      <td>${titlePurpose}:</td><td><h3>${purpose}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleTransport}:</td><td><h3>${transport}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleStartDate}:</td><td><h3>${startDate}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleEndDate}:</td><td><h3>${endDate}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleBudget}:</td><td><h3>${budget}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleIsBudget}:</td><td><h3>${isBudget}</h3></td>
+     </tr>
+     <tr>
+      <td>${titleNumber}:</td><td><h3>${number}</h3></td>
+     </tr>
+    </table>
+  <p><a href="https://cbf.smart-holding.com/#login">${approve}</a>
+  <p><a href="https://cbf.smart-holding.com/#login">${terminate}</a>
+</body>
+</html>

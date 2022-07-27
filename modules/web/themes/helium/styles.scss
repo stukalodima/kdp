@@ -8,4 +8,49 @@
   @include app_components;
 
   @include com_itk_kdp-helium-ext;
+
+  .startProc {
+    background: khaki;
+    //color: white;
+  }
+  .terminated {
+    background: tomato;
+    //color: white;
+  }
+  .approved {
+    background: darkseagreen;
+    //color: white;
+  }
+  .v-table-row,
+  .v-table-row-odd {
+    &.startProc1 {
+      background-color: khaki !important;
+      font-weight: bold;
+      .c-grouptable-group-cell-expander:before {
+        background-color: khaki !important;
+      }
+    }
+  }
+
+  .v-table-row,
+  .v-table-row-odd {
+    &.terminated1 {
+      background-color: tomato !important;
+      font-weight: bold;
+      .c-grouptable-group-cell-expander:before {
+        background-color: tomato !important;
+      }
+    }
+  }
+
+  .v-table-row,
+  .v-table-row-odd {
+    &.approved1 {
+      background-color: darkseagreen !important;
+      font-weight: bold;
+      .c-grouptable-group-cell-expander:before {
+        background-color: darkseagreen !important;
+      }
+    }
+  }
 }

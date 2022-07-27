@@ -37,7 +37,7 @@
                     <checkBox id="activeField" property="active" width="100%"/>
                 </column>
                 <column width="100%">
-                    <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="organizations1cIdField"
+                    <textField id="organizations1cIdField"
                                  property="organizations1cId" width="100%"  colspan="2"/>
                     <textField id="organizationsUaField" property="organizationsUa" width="100%" colspan="2"/>
                     <textField id="organizationsRuField" property="organizationsRu" width="100%" colspan="2"/>

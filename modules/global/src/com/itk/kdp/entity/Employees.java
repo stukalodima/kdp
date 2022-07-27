@@ -27,58 +27,56 @@ public class Employees extends StandardEntity {
     @MetaProperty
     private String fio;
     @NotNull
-    @Column(name = "SURNAME_UA", nullable = false, length = 250)
+    @Column(name = "SURNAME_UA")
     private String surnameUa;
 
     @NotNull
-    @Column(name = "NAME_UA", nullable = false, length = 250)
+    @Column(name = "NAME_UA")
     private String nameUa;
 
     @NotNull
-    @Column(name = "MIDDLE_NAME_UA", nullable = false, length = 250)
+    @Column(name = "MIDDLE_NAME_UA")
     private String middleNameUa;
 
     @NotNull
-    @Column(name = "SURNAME_RU", nullable = false, length = 250)
+    @Column(name = "SURNAME_RU")
     private String surnameRu;
 
     @NotNull
-    @Column(name = "NAME_RU", nullable = false, length = 250)
+    @Column(name = "NAME_RU")
     private String nameRu;
 
     @NotNull
-    @Column(name = "MIDDLE_NAME_RU", nullable = false, length = 250)
+    @Column(name = "MIDDLE_NAME_RU")
     private String middleNameRu;
 
     @NotNull
-    @Column(name = "SURNAME_EN", nullable = false, length = 250)
+    @Column(name = "SURNAME_EN")
     private String surnameEn;
 
     @NotNull
-    @Column(name = "NAME_EN", nullable = false, length = 250)
+    @Column(name = "NAME_EN")
     private String nameEn;
 
-    @Column(name = "MIDDLE_NAME_EN", length = 250)
+    @Column(name = "MIDDLE_NAME_EN")
     private String middleNameEn;
 
     @NotNull
-    @Column(name = "WORK_EMAIL", nullable = false, length = 100)
+    @Column(name = "WORK_EMAIL")
     private String workEmail;
 
-    @Column(name = "OTHER_EMAIL", length = 100)
+    @Column(name = "OTHER_EMAIL")
     private String otherEmail;
 
-    @Column(name = "WORK_PHONE", length = 15)
-    @Length(message = "{msg://kdp_Employees.workPhone.validation.Length}", min = 13, max = 15)
+    @Column(name = "WORK_PHONE")
     private String workPhone;
 
-    @Column(name = "MOBILE_PHONE", length = 15)
-    @Length(message = "{msg://kdp_Employees.mobilePhone.validation.Length}", min = 13, max = 15)
+    @Column(name = "MOBILE_PHONE")
     private String mobilePhone;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_ID")
     @OnDelete(DeletePolicy.DENY)
     @OnDeleteInverse(DeletePolicy.UNLINK)
@@ -88,7 +86,7 @@ public class Employees extends StandardEntity {
     @NotNull
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.DENY)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEPARTMENT_ID")
     private Departments department;
 
@@ -96,7 +94,7 @@ public class Employees extends StandardEntity {
     @NotNull
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.DENY)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POSITION_ID")
     private Position position;
 
@@ -116,14 +114,14 @@ public class Employees extends StandardEntity {
     private Date employmentDate;
 
     @NotNull
-    @Column(name = "LOGIN_NAME", nullable = false, length = 250)
+    @Column(name = "LOGIN_NAME")
     private String loginName;
 
     @Column(name = "FORM_EMPLOYMENT")
     private Boolean formEmployment;
 
     @Column(name = "EMPLOYEE_1C_ID")
-    private UUID employee1cId;
+    private String employee1cId;
 
     @Composition
     @OnDeleteInverse(DeletePolicy.UNLINK)
@@ -137,11 +135,11 @@ public class Employees extends StandardEntity {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    public UUID getEmployee1cId() {
+    public String getEmployee1cId() {
         return employee1cId;
     }
 
-    public void setEmployee1cId(UUID employee1cId){
+    public void setEmployee1cId(String employee1cId){
         this.employee1cId = employee1cId;
     }
 

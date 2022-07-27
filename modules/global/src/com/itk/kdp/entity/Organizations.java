@@ -27,11 +27,11 @@ public class Organizations extends StandardEntity {
     private static final long serialVersionUID = -7946626287646661870L;
 
     @NotNull
-    @Column(name = "CODE", nullable = false, length = 9)
+    @Column(name = "CODE", length = 9)
     private String code;
 
     @NotNull
-    @Column(name = "PREFIX", nullable = false, length = 3)
+    @Column(name = "PREFIX", length = 3)
     private String prefix;
 
     @NotNull
@@ -43,7 +43,7 @@ public class Organizations extends StandardEntity {
     private String fullName;
 
     @NotNull
-    @Column(name = "ORGANIZATIONS_EN", nullable = false)
+    @Column(name = "ORGANIZATIONS_EN")
     private String organizationsEn;
 
     @NotNull
@@ -55,7 +55,7 @@ public class Organizations extends StandardEntity {
     private String organizationsRu;
 
     @NotNull
-    @Column(name = "CODE_OCPO", nullable = false, length = 12)
+    @Column(name = "CODE_OCPO", length = 12)
     private String codeRegistration;
 
     @Column(name = "DATE_REGISTRATION")
@@ -66,12 +66,12 @@ public class Organizations extends StandardEntity {
     @NotNull
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COUNTRY_REGISTRATION_ID")
     private Countries countryRegistration;
 
     @Column(name = "ORGANIZATIONS1C_ID")
-    private UUID organizations1cId;
+    private String organizations1cId;
 
     @Column(name = "ENTITY")
     private Boolean entity;
@@ -95,11 +95,11 @@ public class Organizations extends StandardEntity {
         this.active = active;
     }
 
-    public UUID getOrganizations1cId() {
+    public String getOrganizations1cId() {
         return organizations1cId;
     }
 
-    public void setOrganizations1cId(UUID organizations1cId) {
+    public void setOrganizations1cId(String organizations1cId) {
         this.organizations1cId = organizations1cId;
     }
 

@@ -18,7 +18,7 @@
                     </property>
                 </property>
                 <property name="purpose" view="_minimal">
-                    <property name="name"/>
+                    <property name="nameUa"/>
                 </property>
                 <property name="transport" view="_minimal">
                     <property name="name"/>
@@ -32,6 +32,7 @@
                 <property name="procInstance" view="procInstance-full"/>
                 <property name="documents" view="_local">
                     <property name="document" view="browse"/>
+                    <property name="author" view="_local"/>
                 </property>
             </view>
             <loader id="businessTripDl"/>
@@ -66,22 +67,32 @@
             </loader>
         </collection>
         <collection id="procTasksDs"
-                              class="com.haulmont.bpm.entity.ProcTask"
-                              view="procTask-frame">
+                    class="com.haulmont.bpm.entity.ProcTask"
+                    view="procTask-frame">
             <loader id="procTasksDl">
-            <query>
-                <![CDATA[select e from bpm$ProcTask e
+                <query>
+                    <![CDATA[select e from bpm$ProcTask e
                 where e.procInstance.id = :procInstance
                 order by e.createTs desc]]>
-            </query>
+                </query>
+            </loader>
+        </collection>
+        <collection id="messagesDc"
+                    class="de.diedavids.cuba.userinbox.entity.Message"
+                    view="message-with-users-view">
+            <loader id="messagesDl">
+                <query>
+                    <![CDATA[select e from ddcui$Message e where e.shareable = :shareable]]>
+                </query>
             </loader>
         </collection>
     </data>
     <dialogMode height="AUTO"
-                width="65%"
+                width="75%"
                 modal="true"
+                resizable="true"
                 forceDialog="true"/>
-    <layout spacing="true" width="100%">
+    <layout spacing="true" width="100%" expand="editActions">
         <tabSheet id="body" width="100%" height="AUTO">
             <tab id="mainTab" caption="Заявка" expand="scrollBox" spacing="true" margin="true,false,false,false">
                 <scrollBox id="scrollBox" spacing="true" width="100%" contentMinHeight="400px">
@@ -103,14 +114,10 @@
 
                             <lookupPickerField id="positionField" property="position" editable="false" width="100%"/>
 
-                            <dateField id="startDateField" property="startDate" width="100%"
+                            <dateField id="startDateField" property="startDate" width="100%" resolution="DAY"
                                        contextHelpText="С учетом дороги" required="true">
-                                <validators>
-                                    <futureOrPresent checkSeconds="false"
-                                                     message="Дата начала командировки не может быть меньше текущей"/>
-                                </validators>
                             </dateField>
-
+                            <textField id="startPlaceField" property="startPlace" width="100%" required="true"/>
                             <textField id="detailsField" property="details" colspan="2" width="100%" required="true"
                                        contextHelpText="Пункт назначения (страна, город), предприятие.
 Если известно: рейс, номер поезда, удобное время выезда и возврата, локация отеля, даты проживания. Необходимость раннего заезда в отель или позднего выезда и т.п."/>
@@ -122,24 +129,25 @@
                                     <action id="clear" type="picker_clear"/>
                                 </actions>
                             </lookupPickerField>
-                            <groupBox caption="Транспорт" width="100%" colspan="2" spacing="false" align="MIDDLE_RIGHT"
+                            <groupBox caption="msg://businessTripEdit.transport" width="100%" colspan="2"
+                                      spacing="false" align="MIDDLE_LEFT"
                                       collapsable="true" collapsed="false">
                                 <form id="formTransport" dataContainer="businessTripDc" width="100%" colspan="2"
-                                      align="MIDDLE_RIGHT">
-                                    <column width="25%">
+                                      align="MIDDLE_LEFT">
+                                    <column width="20%">
                                         <checkBox id="plainTransportField" property="plainTransport" width="100%"/>
                                     </column>
-                                    <column width="25%">
+                                    <column width="20%">
                                         <checkBox id="trainTransportField" property="trainTransport" width="100%"/>
                                     </column>
-                                    <column width="25%">
+                                    <column width="20%">
                                         <checkBox id="busTransportField" property="busTransport" width="100%"/>
                                     </column>
-                                    <column width="25%">
+                                    <column width="20%">
                                         <checkBox id="autoCompanyTransportField" property="autoCompanyTransport"
                                                   width="100%"/>
                                     </column>
-                                    <column width="25%">
+                                    <column width="20%">
                                         <checkBox id="autoSelfTransportField" property="autoSelfTransport"
                                                   width="100%"/>
                                     </column>
@@ -156,34 +164,36 @@
                                        contextHelpText="Мобильный телефон" width="100%"/>
                             <dateField id="endDateField" property="endDate" resolution="DAY"
                                        contextHelpText="С учетом дороги" width="100%" required="true">
-                                <validators>
-                                    <futureOrPresent checkSeconds="false"
-                                                     message="Дата окончания командировки не может быть меньше текущей"/>
-                                </validators>
                             </dateField>
+                            <label/>
                             <checkBox id="visaField" property="visa" width="100%"/>
                         </column>
                     </form>
-                    <groupBox caption="Поля, заполняемые исполнителем" colspan="2" collapsable="true" collapsed="true"
+                    <groupBox caption="Поля, заполняемые исполнителем" colspan="2" collapsable="true" collapsed="false"
                               width="100%" spacing="false" id="bpmGroup">
                         <form id="bpmField" dataContainer="businessTripDc" width="100%" colspan="2" editable="false">
                             <column width="50%">
                                 <textField id="destinationField" property="destination" width="100%"
-                                contextHelpText="Заполняет бухгалтер: Город, страна (На укр.языке для приказа)"/>
+                                           contextHelpText="Заполняет бухгалтер: Город, страна (На укр.языке для приказа)"/>
                                 <lookupField id="payCenterField" property="payCenter" width="100%"
-                                contextHelpText="Заполняет бухгалтер: на основании пункта назначения, предприятия и цели командировки."/>
+                                             contextHelpText="Заполняет бухгалтер: на основании пункта назначения, предприятия и цели командировки."/>
                                 <textField id="budgetField" property="budgetTrip" width="100%"
-                                contextHelpText="Заполняет Travel manager: Расшифровка бюджета по каждой статье будет представлена во вкладке 'Документы'"/>
+                                           contextHelpText="Заполняет Travel manager: Расшифровка бюджета по каждой статье будет представлена во вкладке 'Документы'"/>
                                 <textField id="commentField" property="comment" colspan="2" width="100%"/>
                             </column>
                             <column width="50%">
                                 <textField id="companyNameField" property="companyName" width="100%"
-                                contextHelpText="Заполняет бухгалтер: Юридическое, в которое направляется работник (На укр.языке для приказа)"/>
+                                           contextHelpText="Заполняет бухгалтер: Юридическое, в которое направляется работник (На укр.языке для приказа)"/>
                                 <textField id="isBudgetField" property="isBudget" width="100%"
-                                contextHelpText="Заполняет Travel manager"/>
+                                           contextHelpText="Заполняет Travel manager"/>
                             </column>
                         </form>
                     </groupBox>
+                    <form dataContainer="businessTripDc" width="100%">
+                        <column width="100%">
+                            <lookupField id="authorField" property="author" editable="false" width="100%"/>
+                        </column>
+                    </form>
                     <groupBox id="procActionsBox"
                               caption="msg://process"
                               spacing="true"
@@ -195,14 +205,14 @@
             </tab>
             <tab id="otherTab" caption="Ход согласования" margin="true,false,false,false" expand="procTaskScroll">
                 <scrollBox id="procTaskScroll" width="100%" height="100%" contentMinHeight="400px">
-                    <groupTable dataContainer="procTasksDs" width="100%" height="400" >
+                    <groupTable dataContainer="procTasksDs" width="100%" height="400">
                         <columns>
-                            <column id="locName" caption="Этап процесса" expandRatio="4" maxTextLength="30"/>
-                            <column id="procActor" caption="Исполнитель" expandRatio="3" maxTextLength="20"/>
+                            <column id="locName" caption="Этап процесса" expandRatio="4" maxTextLength="40"/>
+                            <column id="procActor" caption="Исполнитель" expandRatio="3" maxTextLength="40"/>
                             <column id="startDate" expandRatio="2"/>
                             <column id="endDate" expandRatio="2"/>
                             <column id="locOutcome" caption="Результат" expandRatio="2"/>
-                            <column id="comment" maxTextLength="20" expandRatio="3"/>
+                            <column id="comment" maxTextLength="50" expandRatio="3"/>
                         </columns>
                         <rows/>
                     </groupTable>
@@ -210,10 +220,10 @@
             </tab>
             <tab id="fileTab" caption="Файлы" margin="true,false,false,false">
                 <scrollBox
-                          height="AUTO"
-                          spacing="true"
-                          width="100%"
-                          contentMinHeight="400px"
+                        height="AUTO"
+                        spacing="true"
+                        width="100%"
+                        contentMinHeight="400px"
                 >
                     <table id="attachmentsTable"
                            dataContainer="procAttachmentsDc"
@@ -221,18 +231,52 @@
                            width="100%" minHeight="300px">
                         <actions>
                             <action id="create" type="create"/>
+                            <action id="edit" type="edit"/>
+                            <action id="remove" type="remove"/>
                         </actions>
                         <buttonsPanel>
                             <button id="attachmentsTableCreate" action="attachmentsTable.create"/>
                         </buttonsPanel>
                         <columns>
                             <column id="document.name"/>
+                            <column id="author"/>
                             <column id="document.size"/>
                             <column id="document.createDate"/>
+                            <column id="task" maxTextLength="100"/>
                             <column id="comment" maxTextLength="100"/>
                         </columns>
                     </table>
                 </scrollBox>
+            </tab>
+            <tab id="messageTab" caption="Сообщения" margin="true,false,false,false">
+                <table id="messagesTable"
+                       width="100%"
+                       height="400"
+                       dataContainer="messagesDc">
+                    <actions>
+                        <action id="create"
+                                caption="msg://businessTripEdit.newMessage"/>
+                        <action id="edit" type="edit" caption="mainMsg://actions.View" icon="font-icon:SEARCH">
+                            <properties>
+                                <property name="screenClass"
+                                          value="de.diedavids.cuba.userinbox.web.message.MessageDetails"/>
+                                <property name="openMode" value="DIALOG"/>
+                            </properties>
+                        </action>
+                    </actions>
+                    <columns>
+                        <column id="sender"/>
+                        <column id="subject"/>
+                        <column id="read"/>
+                        <column id="receivedAt" sort="DESCENDING"/>
+                    </columns>
+                    <rowsCount/>
+                    <buttonsPanel id="buttonsPanel"
+                                  alwaysVisible="true">
+                        <button id="createBtn" action="messagesTable.create"/>
+                        <button id="editBtn" action="messagesTable.edit"/>
+                    </buttonsPanel>
+                </table>
             </tab>
         </tabSheet>
         <hbox id="editActions" spacing="true">

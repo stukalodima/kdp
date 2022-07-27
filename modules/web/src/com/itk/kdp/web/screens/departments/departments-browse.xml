@@ -40,7 +40,7 @@
             <properties include=".*"/>
         </filter>
         <treeTable id="departmentsesTable"
-                   width="100%"
+                   width="100%" multiselect="true"
                    dataContainer="departmentsesDc"
                    hierarchyProperty="parentId">
 
@@ -49,6 +49,7 @@
                 <action id="edit" type="edit"/>
                 <action id="remove" type="remove"/>
                 <action id="excel" type="excel"/>
+                <action id="fillFromExternal" caption="msg://departmentsBrowse.fillFromExternal"/>
             </actions>
             <columns>
                 <column id="name" expandRatio="2" />
@@ -59,7 +60,7 @@
                 <column id="approvalManager" expandRatio="3" />
                 <column id="managerId" expandRatio="3" />
                 <column id="parentId" expandRatio="2" />
-                <column id="departmentId" expandRatio="5" />
+                <column id="department1cId" expandRatio="5" />
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
@@ -68,6 +69,7 @@
                 <button id="editBtn" action="departmentsesTable.edit"/>
                 <button id="removeBtn" action="departmentsesTable.remove"/>
                 <button id="excelBtn" action="departmentsesTable.excel"/>
+                <button id="fillFromExternalBtn" action="departmentsesTable.fillFromExternal"/>
             </buttonsPanel>
         </treeTable>
         <hbox id="lookupActions" spacing="true" visible="false">

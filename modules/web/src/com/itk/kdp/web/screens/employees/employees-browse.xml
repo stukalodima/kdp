@@ -47,7 +47,7 @@
             <properties include=".*"/>
         </filter>
         <groupTable id="employeesesTable"
-                    width="100%"
+                    width="100%" multiselect="true"
                     dataContainer="employeesesDc" presentations="true">
             <actions>
                 <action id="create" type="create"/>
@@ -55,8 +55,12 @@
                 <action id="remove" type="remove"/>
                 <action id="refresh" type="refresh"/>
                 <action id="excel" type="excel"/>
+                <action id="fillFromExternal" caption="msg://employeesBrowse.fillFromExternal"/>
             </actions>
             <columns>
+                <group>
+                    <column id="company" expandRatio="4" align="CENTER"/>
+                </group>
                 <column id="photo"/>
                 <column id="surnameUa" expandRatio="5" sort="ASCENDING" align="CENTER"/>
                 <column id="nameUa" expandRatio="3" align="CENTER"/>
@@ -71,7 +75,6 @@
                 <column id="otherEmail" expandRatio="4" align="CENTER"/>
                 <column id="workPhone" expandRatio="3" align="CENTER"/>
                 <column id="mobilePhone" expandRatio="3" align="CENTER"/>
-                <column id="company" expandRatio="4" align="CENTER"/>
                 <column id="department" expandRatio="6" align="CENTER"/>
                 <column id="position" expandRatio="5" align="CENTER"/>
                 <column id="manager" expandRatio="6" align="CENTER"/>
@@ -88,6 +91,7 @@
                 <button id="removeBtn" action="employeesesTable.remove"/>
                 <button id="refreshBtn" action="employeesesTable.refresh"/>
                 <button id="excelBtn" action="employeesesTable.excel"/>
+                <button id="fillFromExternalBtn" action="employeesesTable.fillFromExternal"/>
             </buttonsPanel>
         </groupTable>
 

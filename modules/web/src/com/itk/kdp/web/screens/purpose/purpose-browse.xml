@@ -36,7 +36,7 @@
                 <action id="excel" type="excel"/>
             </actions>
             <columns>
-                <column id="name"/>
+                <column id="nameUa"/>
                 <column id="active"/>
             </columns>
             <rowsCount/>

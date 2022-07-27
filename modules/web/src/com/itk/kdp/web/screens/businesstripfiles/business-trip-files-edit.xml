@@ -7,6 +7,7 @@
         <instance id="businessTripFilesDc"
                   class="com.itk.kdp.entity.BusinessTripFiles">
             <view extends="_local">
+                <property name="author" view="employees-for-create-api"/>
                 <property name="document" view="browse"/>
                 <property name="businessTrip" view="_minimal"/>
             </view>

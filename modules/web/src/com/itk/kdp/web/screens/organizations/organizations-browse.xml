@@ -34,6 +34,7 @@
                 <action id="remove" type="remove"/>
                 <action id="refresh" type="refresh"/>
                 <action id="excel" type="excel"/>
+                <action id="fillFromExternal" caption="msg://organizationsBrowse.fillFromExternal"/>
             </actions>
             <columns>
                 <column id="code" expandRatio="2"/>
@@ -56,6 +57,7 @@
                 <button id="editBtn" action="organizationsesTable.edit"/>
                 <button id="removeBtn" action="organizationsesTable.remove"/>
                 <button id="excelBtn" action="organizationsesTable.excel"/>
+                <button id="fillFromExternalBtn" action="organizationsesTable.fillFromExternal"/>
             </buttonsPanel>
         </groupTable>
         <hbox id="lookupActions" spacing="true" visible="false">

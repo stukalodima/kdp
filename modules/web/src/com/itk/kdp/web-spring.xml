@@ -13,6 +13,12 @@
             <map>
                 <entry key="kdp_EmployeeOrganizationService" value="com.itk.kdp.service.EmployeeOrganizationService"/>
                 <entry key="kdp_GetDepartmensService" value="com.itk.kdp.service.GetDepartmensService"/>
+                <entry key="kdp_RestClientService" value="com.itk.kdp.service.RestClientService"/>
+                <entry key="kdp_CompanyService" value="com.itk.kdp.service.CompanyService"/>
+                <entry key="kdp_PositionService" value="com.itk.kdp.service.PositionService"/>
+                <entry key="kdp_DepartmentService" value="com.itk.kdp.service.DepartmentService"/>
+                <entry key="kdp_EmployeeService" value="com.itk.kdp.service.EmployeeService"/>
+                <entry key="kdp_EmailService" value="com.itk.kdp.service.EmailService"/>
             </map>
         </property>
     </bean>

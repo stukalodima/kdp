@@ -11,6 +11,7 @@ import com.haulmont.bpm.service.BpmEntitiesService;
 import com.haulmont.bpm.service.ProcessFormService;
 import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
+import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
@@ -24,7 +25,10 @@ import com.haulmont.cuba.gui.util.OperationResult;
 import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.entity.*;
+import com.itk.kdp.service.EmployeeService;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
+import de.diedavids.cuba.userinbox.entity.Message;
+import de.diedavids.cuba.userinbox.entity.SendMessageEntity;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -113,7 +117,23 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
     @Inject
     private ScreenBuilders screenBuilders;
     @Inject
-    private GroupBoxLayout bpmGroup;
+    private EmployeeService employeeService;
+    @Inject
+    private Button commitBtn;
+    @Inject
+    private Button closeBtn;
+    @Inject
+    private TextField<String> startPlaceField;
+    @Inject
+    private UserSessionSource userSessionSource;
+    @Inject
+    private MetadataTools metadataTools;
+
+    String SHARE_SUBJECT_KEY = "share.subject";
+    String SHARE_TEXT_KEY = "share.text";
+    String SHARE_NEW_MESSAGE_SCREEN_ID = "ddcui$send-message";
+    @Inject
+    private CollectionLoader<Message> messagesDl;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -126,6 +146,8 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
                     .build();
             employeesBrowse.setUser(userSession.getUser());
             employeesBrowse.show();
+        } else {
+            fillParameterFromEmployee(getEditedEntity().getEmployee());
         }
     }
 
@@ -162,20 +184,27 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
         formTransport.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
         startDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         endDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
-//        bpmGroup.is
+        startPlaceField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         bpmField.setEditable(false);
         if (!Objects.isNull(procTask) && !Objects.isNull(procTask.getProcActor()) && procTask.getProcActor().getUser().equals(userSession.getUser())) {
             if (procTask.getActTaskDefinitionKey().equals("buhApprove")) {
-                detailsField.setEditable(true);
                 purposeField.setEditable(true);
                 analyticsField.setEditable(true);
                 bpmField.setEditable(true);
                 destinationField.setRequired(true);
                 companyNameField.setRequired(true);
                 payCenterField.setRequired(true);
+                budgetField.setEditable(false);
+                isBudgetField.setEditable(false);
             }
             if (procTask.getActTaskDefinitionKey().equals("logistic")) {
                 bpmField.setEditable(true);
+                destinationField.setRequired(false);
+                companyNameField.setRequired(false);
+                payCenterField.setRequired(false);
+                destinationField.setEditable(false);
+                companyNameField.setEditable(false);
+                payCenterField.setEditable(false);
                 budgetField.setRequired(true);
                 isBudgetField.setRequired(true);
             }
@@ -186,6 +215,15 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
                 purposeField.setEditable(true);
                 analyticsField.setEditable(true);
                 bpmField.setEditable(false);
+            }
+        }
+        if (!Objects.isNull(getEditedEntity().getEmployee())
+                && !Objects.isNull(getEditedEntity().getEmployee().getManager())
+                && !Objects.isNull(employeeService.getEmployeeByUser(userSession.getUser()))
+        ) {
+            if (employeeService.getEmployeeByUser(userSession.getUser()).equals(getEditedEntity().getEmployee().getManager())) {
+                commitBtn.setVisible(false);
+                closeBtn.setVisible(false);
             }
         }
     }
@@ -199,6 +237,7 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
         hotelField.setEditable(editable);
         visaField.setEditable(editable);
         analyticsField.setEditable(editable);
+        startPlaceField.setEditable(editable);
     }
 
     private void initProcAction() {
@@ -223,6 +262,8 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
             procTasksDl.setParameter("procInstance", getEditedEntity().getProcInstance().getId());
         }
         procTasksDl.load();
+        messagesDl.setParameter("shareable", getEditedEntity());
+        messagesDl.load();
     }
 
     private void initClaimTaskUI() {
@@ -290,10 +331,14 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
+        if (Objects.isNull(getEditedEntity().getNumber())) {
+            getEditedEntity().setNumber(uniqueNumbersService.getNextNumber("trip"));
+        }
+        if (Objects.isNull(getEditedEntity().getStatus())) {
+            getEditedEntity().setStatus("Проект заявки");
+        }
         if (Objects.isNull(getEditedEntity().getOnDate())) {
             getEditedEntity().setOnDate(timeSource.currentTimestamp());
-            getEditedEntity().setNumber(uniqueNumbersService.getNextNumber("trip"));
-            getEditedEntity().setStatus("Проект заявки");
         }
     }
 
@@ -387,5 +432,70 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
         } else if (!employees.isEmpty()) {
             chooseEmployee = true;
         }
+        getEditedEntity().setOnDate(timeSource.currentTimestamp());
+        event.getEntity().setPayCenter(PayCenterEnum.A);
+    }
+
+    @Subscribe("startDateField")
+    public void onStartDateFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
+        if (Objects.isNull(getEditedEntity().getOnDate())) {
+            getEditedEntity().setOnDate(timeSource.currentTimestamp());
+        }
+        if (event.isUserOriginated() && !Objects.isNull(event.getValue()) && !Objects.isNull(getEditedEntity().getOnDate())) {
+            checkEndDateBeforeStartDate(getEditedEntity().getEndDate());
+            if (event.getValue().before(getEditedEntity().getOnDate())) {
+                notifications.create().withCaption("Внимание!!!")
+                        .withDescription("Вы оформляете заявку задним числом. Дата начала командировки меньше даты заявки!")
+                        .show();
+            }
+        }
+    }
+
+    @Subscribe("endDateField")
+    public void onEndDateFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
+        if (event.isUserOriginated() && !Objects.isNull(event.getValue()) && !Objects.isNull(getEditedEntity().getStartDate())) {
+            checkEndDateBeforeStartDate(event.getValue());
+        }
+    }
+
+    private void checkEndDateBeforeStartDate(Date endDate) {
+        if (!Objects.isNull(endDate) && !Objects.isNull(getEditedEntity().getStartDate())) {
+            if (endDate.before(getEditedEntity().getStartDate())) {
+                notifications.create().withCaption("Внимание!!!")
+                        .withDescription("Дата начала командировки не может бить больше даты окончания!")
+                        .show();
+            }
+        }
+    }
+
+    @Subscribe("messagesTable.create")
+    public void onMessagesTableCreate(Action.ActionPerformedEvent event) {
+        screenBuilders.editor(SendMessageEntity.class, this)
+                .withScreenId(SHARE_NEW_MESSAGE_SCREEN_ID)
+                .withInitializer(message -> {
+                    Entity shareable = getEditedEntity();
+                    String currentUsername = userSessionSource.getUserSession().getCurrentOrSubstitutedUser().getName();
+                    String entityCaption = messages.getTools().getEntityCaption(shareable.getMetaClass());
+                    String shareableInstanceName = metadataTools.getInstanceName(shareable);
+                    message.setSubject(
+                            messages.formatMainMessage(
+                                    SHARE_SUBJECT_KEY,
+                                    currentUsername,
+                                    entityCaption,
+                                    shareableInstanceName
+                            )
+                    );
+                    message.setText(
+                            messages.formatMainMessage(
+                                    SHARE_TEXT_KEY,
+                                    entityCaption,
+                                    shareableInstanceName,
+                                    currentUsername
+                            )
+                    );
+                    message.setShareable(shareable);
+                })
+                .withLaunchMode(OpenMode.DIALOG)
+                .show();
     }
 }

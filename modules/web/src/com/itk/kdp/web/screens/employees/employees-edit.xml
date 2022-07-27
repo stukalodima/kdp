@@ -63,7 +63,7 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="73%"
+    <dialogMode height="82%"
                 width="75%" forceDialog="true" resizable="true"/>
     <layout spacing="true" width="100%" expand="tabBody">
         <tabSheet id="tabBody" width="100%">
@@ -163,8 +163,7 @@
                             </column>
                             <column>
                                 <textField id="otherEmailField" property="otherEmail" width="100%"/>
-                                <maskedField mask="(###)###-##-##" id="mobilePhoneField" property="mobilePhone"
-                                             valueMode="masked" width="100%"/>
+                                <textField id="mobilePhoneField" property="mobilePhone" width="100%"/>
                             </column>
                         </form>
                     </groupBox>
@@ -178,8 +177,6 @@
                             <column width="100%">
                                 <checkBox id="formEmploymentField" property="formEmployment" width="100%"/>
                                 <dateField id="employmentDateField" property="employmentDate" width="100%"/>
-                                <!--                            <maskedField mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh" id="employee1cIdField"-->
-                                <!--                                         property="employee1cId" width="100%"/>-->
                             </column>
                         </form>
                     </groupBox>

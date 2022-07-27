@@ -38,19 +38,22 @@ public class Departments extends StandardEntity {
     private String name;
 
     @NotNull
-    @Column(name = "DEPARTMENT_EN", nullable = false)
+    @Column(name = "DEPARTMENT_EN")
     private String departmentEn;
 
     @NotNull
-    @Column(name = "DEPARTMENT_UA", nullable = false)
+    @Column(name = "DEPARTMENT_UA")
     private String departmentUa;
 
     @NotNull
-    @Column(name = "DEPARTMENT_RU", nullable = false)
+    @Column(name = "DEPARTMENT_RU")
     private String departmentRu;
 
     @Column(name = "DEPARTMENT_ID")
     private UUID departmentId;
+
+    @Column(name = "DEPARTMENT_1C_ID")
+    private String department1cId;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
@@ -163,5 +166,13 @@ public class Departments extends StandardEntity {
     private Long generateNewCode() {
         UniqueNumbersService numbersService = AppBeans.get(UniqueNumbersService.class);
         return numbersService.getNextNumber("countryCode");
+    }
+
+    public String getDepartment1cId() {
+        return department1cId;
+    }
+
+    public void setDepartment1cId(String department1cId) {
+        this.department1cId = department1cId;
     }
 }

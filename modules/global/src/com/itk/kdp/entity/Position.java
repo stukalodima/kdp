@@ -21,14 +21,17 @@ public class Position extends StandardEntity {
     @NotNull
     private String name;
 
-    @Column(name = "POSITION_EN", nullable = false)
+    @Column(name = "POSITION_EN")
     private String positionEn;
 
-    @Column(name = "POSITION_UA", nullable = false)
+    @Column(name = "POSITION_UA")
     private String positionUa;
 
-    @Column(name = "POSITION_RU", nullable = false)
+    @Column(name = "POSITION_RU")
     private String positionRu;
+
+    @Column(name = "POSITION_1C_ID")
+    private String position1cId;
 
     @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
     @NotNull
@@ -76,5 +79,13 @@ public class Position extends StandardEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPosition1cId() {
+        return position1cId;
+    }
+
+    public void setPosition1cId(String position1cId) {
+        this.position1cId = position1cId;
     }
 }

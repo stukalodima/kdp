@@ -82,8 +82,8 @@
                     </lookupPickerField>
                 </column>
                 <column>
-                    <maskedField id="departmentIdField" mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh"
-                                 property="departmentId" width="100%"/>
+                    <textField id="departmentIdField"
+                                 property="department1cId" width="100%"/>
                     <textField id="departmentUaField" property="departmentUa" width="100%"/>
                     <textField id="departmentEnField" property="departmentEn" width="100%"/>
                     <lookupPickerField id="managerIdField" property="managerId" width="100%" optionsContainer="employeesesDc">

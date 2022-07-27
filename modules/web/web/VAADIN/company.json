@@ -1,0 +1,30 @@
+[
+{
+"companyUa": "ПОДІЛ-2000 ТОВ",
+"companyRu": "ПОДОЛ-2000 ООО",
+"companyId": "POD$MD0000004",
+"GUID": "b895f534-e500-11e4-80be-000d3a205642",
+"managerId": "POD$MD0000004#0000000205"
+},
+{
+"companyUa": "СМАРТ-ХОЛДИНГ ТОВ",
+"companyRu": "СМАРТ-ХОЛДИНГ ООО",
+"companyId": "SHH$MD0000005",
+"GUID": "d92ad99d-e500-11e4-80be-000d3a205642",
+"managerId": ""
+},
+{
+"companyUa": "СМАРТ БІЗНЕС СЕРВІС ТОВ",
+"companyRu": "СМАРТ БИЗНЕС СЕРВИС ООО",
+"companyId": "SBS$MD-000049",
+"GUID": "b69d07e2-c62f-11e7-80d7-000d3a28fa09",
+"managerId": "SBS$MD-000049#0000000002"
+},
+{
+"companyUa": "ІТ КАПІТАЛ ТОВ",
+"companyRu": "ИТ КАПИТАЛ ООО",
+"companyId": "ITC$MD0000255",
+"GUID": "6e58d1c8-e3a5-11e4-8ec4-3085a9a0f9fe",
+"managerId": ""
+}
+]

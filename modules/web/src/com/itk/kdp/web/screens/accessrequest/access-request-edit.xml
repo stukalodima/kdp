@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://accessRequestEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.accessrequest">
+    <data>
+        <instance id="accessRequestDc"
+                  class="com.itk.kdp.entity.AccessRequest">
+            <view extends="_local">
+                <property name="employees" view="_minimal">
+                    <property name="fio"/>
+                </property>
+                <property name="company" view="_minimal"/>
+                <property name="manager" view="_minimal">
+                    <property name="fio"/>
+                </property>
+                <property name="procInstance" view="procInstance-full"/>
+            </view>
+            <loader/>
+        </instance>
+        <collection id="employeesesDc" class="com.itk.kdp.entity.Employees" view="employees-for-create-api">
+            <loader id="employeesesDl">
+                <query>
+                    <![CDATA[select e from kdp_Employees e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="companiesDc" class="com.itk.kdp.entity.Organizations" view="_minimal">
+            <loader id="companiesDl">
+                <query>
+                    <![CDATA[select e from kdp_Organizations e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="managersDc" class="com.itk.kdp.entity.Employees" view="employees-for-create-api">
+            <loader id="managersDl">
+                <query>
+                    <![CDATA[select e from kdp_Employees e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="procInstancesDc" class="com.haulmont.bpm.entity.ProcInstance" view="_minimal">
+            <loader id="procInstancesDl">
+                <query>
+                    <![CDATA[select e from bpm$ProcInstance e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="accessRequestDc" captionPosition="TOP">
+            <column width="400px">
+                <lookupPickerField id="employeesField" optionsContainer="employeesesDc" property="employees">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="open" type="picker_open"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </lookupPickerField>
+                <lookupPickerField id="companyField" optionsContainer="companiesDc" property="company" editable="false">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="open" type="picker_open"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </lookupPickerField>
+                <lookupPickerField id="managerField" optionsContainer="managersDc" property="manager" editable="false">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="open" type="picker_open"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </lookupPickerField>
+                <lookupField id="accessTypeField" property="accessType"/>
+                <textArea id="techInfoField" property="techInfo" cols="3"/>
+                <textArea id="businessInfoField" property="businessInfo" cols="3"/>
+                <groupBox caption="msg://accessRequestEdit.periodGroup">
+                    <form width="100%" dataContainer="accessRequestDc" captionPosition="TOP">
+                        <column width="100%">
+                            <dateField id="startDateField" property="startDate" resolution="DAY"/>
+                        </column>
+                        <column width="100%" childrenCaptionWidth="0">
+                            <dateField id="endDateField" property="endDate" resolution="DAY"/>
+                        </column>
+                    </form>
+                </groupBox>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="commitBtn" action="windowCommit"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

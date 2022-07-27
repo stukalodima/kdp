@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-    <menu id="documents-kdp" insertBefore="administration" caption="mainMsg://menu_config.documents-kdp"
+    <menu id="admin-service" insertBefore="hr-service" caption="mainMsg://menu_config.admin-service"
     icon="font-icon:BOOK">
-        <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
         <item screen="kdp_BusinessTrip.browse" caption="mainMsg://menu_config.kdp_BusinessTrip.browse"/>
     </menu>
-    <menu id="application-kdp" insertBefore="documents-kdp" caption="mainMsg://menu_config.application-kdp"
+    <menu id="hr-service" insertBefore="it-service" caption="mainMsg://menu_config.hr-service"
+          icon="font-icon:BOOK">
+        <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
+    </menu>
+    <menu id="it-service" insertBefore="administration" caption="mainMsg://menu_config.it-service"
+          icon="font-icon:BOOK">
+        <item screen="kdp_AccessRequest.browse" caption="mainMsg://menu_config.kdp_AccessRequest.browse"/>
+    </menu>
+    <menu id="application-kdp" insertBefore="admin-service" caption="mainMsg://menu_config.application-kdp"
     icon="ADDRESS_BOOK">
         <item screen="kdp_Organizations.browse" caption="mainMsg://menu_config.kdp_Organizations.browse"/>
         <item screen="kdp_Departments.browse" caption="mainMsg://menu_config.kdp_Department.browse"/>

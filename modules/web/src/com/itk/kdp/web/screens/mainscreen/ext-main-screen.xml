@@ -1,5 +1,8 @@
 <window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
         caption="msg://application.caption">
+    <facets>
+        <timer id="updateCountersTimer" delay="3000"  autostart="true" repeating="true" />
+    </facets>
     <layout>
         <cssLayout id="horizontalWrap"
                    stylename="c-sidemenu-layout"
@@ -20,7 +23,7 @@
                                stylename="c-app-title"
                                value="msg://application.logoLabel"/>
                     </cssLayout>
-                    <sideMenu id="sideMenu"
+                    <sideMenu id="sideMenu" selectOnClick="true" showSingleExpandedMenu="true"
                               width="100%"/>
                     <ftsField id="ftsField"
                               width="100%"/>
