@@ -53,5 +53,4 @@ public class PositionBrowse extends StandardLookup<Position> {
         positionsDl.setParameter("parOrganization", organization);
         positionsDl.load();
     }
-
 }

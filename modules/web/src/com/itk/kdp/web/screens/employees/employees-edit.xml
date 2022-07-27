@@ -15,7 +15,9 @@
                 <property name="department" view="_minimal">
                     <property name="code"/>
                 </property>
-                <property name="position" view="_minimal"/>
+                <property name="position" view="_minimal">
+                    <property name="positionRu"/>
+                </property>
                 <property name="manager" view="_minimal">
                     <property name="surnameUa"/>
                     <property name="nameUa"/>
@@ -49,6 +51,18 @@
                     <condition>
                         <c:jpql>
                             <c:where>e.organizationsId = :organization</c:where>
+                        </c:jpql>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+        <collection id="positionDc" class="com.itk.kdp.entity.Position" view="_local">
+            <loader id="positionDl">
+                <query>
+                    <![CDATA[select e from kdp_Position e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where> e.organizationsId = :organization </c:where>
                         </c:jpql>
                     </condition>
                 </query>
@@ -89,7 +103,7 @@
                     <rows>
                         <row>
                             <groupBox spacing="true"
-                                      height="450px" width="420px" expand="image">
+                                      height="450px" width="400px" expand="image">
                                 <image id="image"
                                        width="100%"
                                        dataContainer="employeesDc"
