@@ -1,6 +1,8 @@
 package com.itk.kdp.web.screens.departments;
 
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.EntityStates;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.actions.picker.LookupAction;
 import com.haulmont.cuba.gui.components.Action;
@@ -14,6 +16,7 @@ import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.service.GetDepartmensService;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
+import com.itk.kdp.web.screens.employees.EmployeesEdit;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,10 +45,14 @@ public class DepartmentsEdit extends StandardEditor<Departments> {
     private LookupPickerField<Employees> managerIdField;
     @Inject
     private LookupPickerField<Departments> pIdField;
+    @Inject
+    private EntityStates entityStates;
+    @Inject
+    private Messages messages;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-
+        updateFromCaption();
         departmentsesDl.setParameter("department", departmensService.getDepartmentsFilter(getEditedEntity()));
         departmentsesDl.setParameter("parOrganization", (Objects.isNull(getEditedEntity().getOrganizationsId()) ? dataManager.create(Organizations.class) : getEditedEntity().getOrganizationsId()));
         departmentsesDl.load();
@@ -98,5 +105,21 @@ public class DepartmentsEdit extends StandardEditor<Departments> {
                 .build();
         employeesBrowse.setOrganization(getEditedEntity().getOrganizationsId());
         employeesBrowse.show();
+    }
+
+    private void updateFromCaption(){
+        if (entityStates.isNew(getEditedEntity())){
+            this.getWindow().setCaption(
+                    messages.getMessage(DepartmentsEdit.class, "Подразделение организации")
+                            + ": "
+                            + messages.getMessage(DepartmentsEdit.class, "(cоздание)")
+            );
+        } else {
+            this.getWindow().setCaption(
+                    messages.getMessage(DepartmentsEdit.class, "Подразделение организации")
+                            + ": "
+                            + getEditedEntity().getName()
+            );
+        }
     }
 }

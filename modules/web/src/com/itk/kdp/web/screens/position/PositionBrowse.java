@@ -5,6 +5,7 @@ import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
+import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.entity.Position;
 import com.itk.kdp.service.PositionService;
 import com.itk.kdp.web.screens.organizations.OrganizationsBrowse;
@@ -26,6 +27,8 @@ public class PositionBrowse extends StandardLookup<Position> {
     @Inject
     private CollectionLoader<Position> positionsDl;
 
+    private Organizations organization;
+
     @Subscribe("positionsTable.fillFromExternal")
     public void onPositionsTableFillFromExternal(Action.ActionPerformedEvent event) {
         try {
@@ -39,4 +42,16 @@ public class PositionBrowse extends StandardLookup<Position> {
         }
         positionsDl.load();
     }
+
+    public void setOrganization(Organizations organization) {
+        this.organization = organization;
+    }
+
+    @Subscribe
+    public void onBeforeShow(BeforeShowEvent event) {
+
+        positionsDl.setParameter("parOrganization", organization);
+        positionsDl.load();
+    }
+
 }
