@@ -8,9 +8,8 @@
         <collection id="businessTripsDc"
                     class="com.itk.kdp.entity.BusinessTrip">
             <view extends="_local">
-                <property name="employee" view="_minimal">
-                    <property name="fio"/>
-                    <property name="manager" view="_local"/>
+                <property name="employee" view="_base">
+                    <property name="manager" view="_base"/>
                 </property>
                 <property name="purpose" view="_minimal">
                     <property name="nameUa"/>
@@ -18,8 +17,7 @@
                 <property name="transport" view="_minimal">
                     <property name="name"/>
                 </property>
-                <property name="author" view="_minimal">
-                    <property name="fio"/>
+                <property name="author" view="_base">
                 </property>
                 <property name="organization" view="_minimal"/>
             </view>
@@ -55,7 +53,7 @@
                 <column id="onDate"/>
                 <column id="status"/>
                 <column id="organization"/>
-                <column id="employee.fio" caption="msg://businessTripEdit.employee.fio"/>
+                <column id="employee" caption="msg://businessTripEdit.employee.fio"/>
                 <column id="startDate" align="RIGHT">
                     <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.yyyy"/>
                 </column>
@@ -67,7 +65,7 @@
                 <column id="companyName"/>
                 <column id="isBudget"/>
                 <column id="budgetTrip"/>
-                <column id="employee.manager.fio" caption="msg://businessTripEdit.employee.manager.fio"/>
+                <column id="employee.manager" caption="msg://businessTripEdit.employee.manager.fio"/>
                 <column id="author"/>
             </columns>
             <rowsCount/>

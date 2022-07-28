@@ -53,14 +53,9 @@
             </actions>
             <columns>
                 <column id="name" expandRatio="2" />
-                <column id="departmentRu" expandRatio="2" />
-                <column id="departmentUa" expandRatio="2" />
-                <column id="departmentEn" expandRatio="2" />
                 <column id="organizationsId" expandRatio="3" />
                 <column id="approvalManager" expandRatio="3" />
                 <column id="managerId" expandRatio="3" />
-                <column id="parentId" expandRatio="2" />
-                <column id="department1cId" expandRatio="5" />
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
@@ -72,9 +67,5 @@
                 <button id="fillFromExternalBtn" action="departmentsesTable.fillFromExternal"/>
             </buttonsPanel>
         </treeTable>
-        <hbox id="lookupActions" spacing="true" visible="false">
-            <button action="lookupSelectAction"/>
-            <button action="lookupCancelAction"/>
-        </hbox>
     </layout>
 </window>

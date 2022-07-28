@@ -9,25 +9,19 @@
 
   @include com_itk_kdp-helium-ext;
 
-  .startProc {
-    background: khaki;
-    //color: white;
-  }
-  .terminated {
-    background: tomato;
-    //color: white;
-  }
-  .approved {
-    background: darkseagreen;
-    //color: white;
-  }
   .v-table-row,
   .v-table-row-odd {
     &.startProc1 {
-      background-color: khaki !important;
-      font-weight: bold;
+      background-color: #FFFFD5 !important;
+      //font-weight: bold;
+      color: black;
       .c-grouptable-group-cell-expander:before {
-        background-color: khaki !important;
+        background-color: #FFFFD5 !important;
+        color: black;
+      }
+      .v-selected:before {
+        background: #6F5CC3;
+        color: #F2F2F2;
       }
     }
   }
@@ -35,10 +29,16 @@
   .v-table-row,
   .v-table-row-odd {
     &.terminated1 {
-      background-color: tomato !important;
-      font-weight: bold;
+      background-color: #FFE0E6 !important;
+      //font-weight: bold;
+      color: black;
       .c-grouptable-group-cell-expander:before {
-        background-color: tomato !important;
+        background-color: #FFE0E6 !important;
+        color: black;
+      }
+      .v-selected:before {
+        background: #6F5CC3;
+        color: #F2F2F2;
       }
     }
   }
@@ -46,10 +46,16 @@
   .v-table-row,
   .v-table-row-odd {
     &.approved1 {
-      background-color: darkseagreen !important;
-      font-weight: bold;
+      background-color: #E6FFE6 !important;
+      //font-weight: bold;
+      color: black;
       .c-grouptable-group-cell-expander:before {
-        background-color: darkseagreen !important;
+        background-color: #E6FFE6 !important;
+        color: black;
+      }
+      .v-selected:before {
+        background: #6F5CC3;
+        color: #F2F2F2;
       }
     }
   }

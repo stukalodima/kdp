@@ -9,12 +9,12 @@
                     class="com.itk.kdp.entity.VacationRequest">
             <view extends="_local">
                 <property name="employee" view="_minimal"/>
-<!--                <property name="company" view="_minimal"/>-->
-<!--                <property name="department" view="_minimal"/>-->
-<!--                <property name="position" view="_minimal"/>-->
+                <property name="company" view="_minimal"/>
+                <property name="department" view="_minimal"/>
+                <property name="position" view="_minimal"/>
                 <property name="coordinator" view="_minimal"/>
                 <property name="vacationType" view="_minimal"/>
-<!--                <property name="initiator" view="_minimal"/>-->
+                <property name="initiator" view="_minimal"/>
             </view>
             <loader id="vacationRequestsDl">
                 <query>
@@ -44,18 +44,25 @@
             </actions>
             <columns>
                 <column id="applicationNumber"/>
+                <column id="applicationDate">
+<!--                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.YYYY"/>-->
+                </column>
                 <column id="status"/>
                 <column id="employee"/>
-<!--                <column id="company"/>-->
-<!--                <column id="department"/>-->
-<!--                <column id="position"/>-->
+                <column id="company"/>
+                <column id="department"/>
+                <column id="position"/>
                 <column id="vacationType"/>
 <!--                <column id="remainingVacationDays"/>-->
-                <column id="dateFrom"/>
-                <column id="dateBy"/>
+                <column id="dateFrom">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.YYYY"/>
+                </column>
+                <column id="dateBy">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.YYYY"/>
+                </column>
                 <column id="vacationDays"/>
 <!--                <column id="informationForConsultations"/>-->
-<!--                <column id="note"/>-->
+<!--                <column id="note" maxTextLength="50"/>-->
 <!--                <column id="consentToBilling"/>-->
 <!--                <column id="document"/>-->
 <!--                <column id="initiator"/>-->

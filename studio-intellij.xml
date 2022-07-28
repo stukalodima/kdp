@@ -20,12 +20,12 @@
           <option name="databaseName" value="kdp" />
           <option name="dbType" value="postgres" />
           <option name="dbmsVersion" />
-          <option name="host" value="smart-platform-db.postgres.database.azure.com" />
-          <option name="pass" value="Q!42623311" />
+          <option name="host" value="localhost" />
+          <option name="pass" value="postgres" />
           <option name="systemPassword" value="" />
           <option name="systemUser" value="" />
-          <option name="url" value="jdbc:postgresql://smart-platform-db.postgres.database.azure.com/kdp" />
-          <option name="user" value="devel" />
+          <option name="url" value="jdbc:postgresql://localhost/kdp" />
+          <option name="user" value="postgres" />
         </SavedDbProperties>
       </list>
     </option>

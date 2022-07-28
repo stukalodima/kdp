@@ -1,27 +1,29 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.bpm.entity.ProcInstance;
 import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
-import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
-import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
-import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.core.global.AppBeans;
+import com.haulmont.cuba.core.global.DeletePolicy;
+import com.haulmont.cuba.core.global.Metadata;
+import com.haulmont.cuba.core.global.TimeSource;
 import com.haulmont.cuba.core.global.validation.groups.UiCrossFieldChecks;
-import com.haulmont.cuba.security.entity.User;
+import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.service.EmployeeOrganizationService;
+import com.itk.kdp.service.EmployeeService;
 import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Table(name = "KDP_VACATION_REQUEST")
 @Entity(name = "kdp_VacationRequest")
@@ -44,44 +46,33 @@ public class VacationRequest extends StandardEntity {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "EMPLOYEES_ID")
-  //@OnDelete(DeletePolicy.UNLINK)
-  //@OnDeleteInverse(DeletePolicy.DENY)
     private Employees employee;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "COMPANY_ID")
-    //@OnDelete(DeletePolicy.DENY)
-    //@OnDeleteInverse(DeletePolicy.UNLINK)
    private Organizations company;
 
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEPARTMENTS_ID")
-//    @OnDelete(DeletePolicy.DENY)
-//    @OnDeleteInverse(DeletePolicy.UNLINK)
     private Departments department;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POSITION_ID")
-//    @OnDelete(DeletePolicy.DENY)
-//    @OnDeleteInverse(DeletePolicy.UNLINK)
     private Position position;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
-//    @OnDeleteInverse(DeletePolicy.UNLINK)
-//    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "COORDINATOR_ID")
     private Employees coordinator;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-//    @OnDeleteInverse(DeletePolicy.UNLINK)
-//    @OnDelete(DeletePolicy.DENY)
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "VACATION_TYPE_ID")
     private VacationType vacationType;
@@ -102,9 +93,6 @@ public class VacationRequest extends StandardEntity {
     @Column(name = "VACATION_DAYS")
     private Integer vacationDays;
 
-//    @Column(name = "INFORMATION_FOR_CONSULTATIONS")
-//    private String informationForConsultations;
-
     @Column(name = "NOTE")
     private String note;
 
@@ -112,18 +100,14 @@ public class VacationRequest extends StandardEntity {
     private Boolean consentToBilling;
 
     @Composition
-//    @OnDeleteInverse(DeletePolicy.UNLINK)
-//    @OnDelete(DeletePolicy.CASCADE)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_ID")
-    private FileDescriptor document;
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "vacation")
+    private List<VacationFiles> documents;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-//    @OnDeleteInverse(DeletePolicy.UNLINK)
-   // @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "INITIATOR_ID")
-    private User initiator;
+    private Employees initiator;
 
     @Column(name = "UPLOAD_TO_1C")
     private Boolean uploadTo1C;
@@ -134,7 +118,13 @@ public class VacationRequest extends StandardEntity {
     @Column(name = "COMMENT")
     private String comment;
 
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROC_INSTANCE_ID")
+    private ProcInstance procInstance;
 
+    @Column(name = "PHONE_NUMBER")
+    private String phoneNumber;
     public Employees getEmployee() {
         return employee;
     }
@@ -207,14 +197,6 @@ public class VacationRequest extends StandardEntity {
     public void setVacationDays(Integer vacationDays) {
         this.vacationDays = vacationDays;
     }
-//
-//    public String getInformationForConsultations() {
-//        return informationForConsultations;
-//    }
-
-//    public void setInformationForConsultations(String informationForConsultations) {
-//        this.informationForConsultations = informationForConsultations;
-//    }
 
     public String getNote() {
         return note;
@@ -224,11 +206,11 @@ public class VacationRequest extends StandardEntity {
         this.note = note;
     }
 
-    public User getInitiator() {
+    public Employees getInitiator() {
         return initiator;
     }
 
-    public void setInitiator(User initiator) {
+    public void setInitiator(Employees initiator) {
         this.initiator = initiator;
     }
 
@@ -288,20 +270,14 @@ public class VacationRequest extends StandardEntity {
         this.uploadTo1C = uploadTo1C;
     }
 
-    public FileDescriptor getDocument() {
-        return document;
-    }
-
-    public void setDocument(FileDescriptor document) {
-        this.document = document;
-    }
-
     @PostConstruct
     private void initEntity(Metadata metadata) {
-        List<Employees> employees = new ArrayList<>();
-        EmployeeOrganizationService EmployeeOrganizationService = AppBeans.get(EmployeeOrganizationService.class);
-        initiator = EmployeeOrganizationService.getUser();
-        employees = EmployeeOrganizationService.getEmployeeOrganization();
+        List<Employees> employees;
+        EmployeeOrganizationService employeeOrganizationService = AppBeans.get(EmployeeOrganizationService.class);
+        EmployeeService employeeService = AppBeans.get(EmployeeService.class);
+        UserSession userSession = AppBeans.get(UserSession.class);
+        initiator = employeeService.getEmployeeByUser(userSession.getUser());
+        employees = employeeOrganizationService.getEmployeeOrganization();
         if (employees.size() == 1) {
             employee = employees.get(0);
             if (!Objects.isNull(employee)) {
@@ -317,6 +293,30 @@ public class VacationRequest extends StandardEntity {
     public static  Date today() {
         TimeSource timeSource = AppBeans.get(TimeSource.class);
         return DateUtils.truncate(timeSource.currentTimestamp(), Calendar.DATE);
+    }
+
+    public ProcInstance getProcInstance() {
+        return procInstance;
+    }
+
+    public void setProcInstance(ProcInstance procInstance) {
+        this.procInstance = procInstance;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public List<VacationFiles> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<VacationFiles> documents) {
+        this.documents = documents;
     }
 }
 

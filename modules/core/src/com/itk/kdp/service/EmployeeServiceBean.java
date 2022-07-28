@@ -217,12 +217,12 @@ public class EmployeeServiceBean implements EmployeeService {
                     .list();
 
             user.setLogin(login);
-            user.setName(employees.getFio());
+            user.setName(employees.getCaption(false));
             user.setFirstName(employees.getNameUa());
             user.setMiddleName(employees.getMiddleNameUa());
             user.setLastName(employees.getSurnameUa());
             user.setEmail(employees.getWorkEmail());
-            user.setPosition(employees.getPosition().getName());
+            user.setPosition(employees.getPosition().getCaption());
             user.setTimeZoneAuto(true);
             user.setLanguage(messageTools.getDefaultLocale().getLanguage());
             if (!groupList.isEmpty()) {

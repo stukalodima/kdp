@@ -8,21 +8,10 @@
         <instance id="employeesDc"
                   class="com.itk.kdp.entity.Employees">
             <view extends="_local">
-                <property name="company" view="_minimal">
-                    <property name="code"/>
-                    <property name="shortName"/>
-                </property>
-                <property name="department" view="_minimal">
-                    <property name="code"/>
-                </property>
-                <property name="position" view="_minimal">
-                    <property name="positionRu"/>
-                </property>
-                <property name="manager" view="_minimal">
-                    <property name="surnameUa"/>
-                    <property name="nameUa"/>
-                    <property name="middleNameUa"/>
-                </property>
+                <property name="company" view="_base"/>
+                <property name="department" view="_base"/>
+                <property name="position" view="_base"/>
+                <property name="manager" view="_base"/>
                 <property name="photo" view="_minimal"/>
                 <property name="user" view="_minimal"/>
             </view>
@@ -90,9 +79,9 @@
             </loader>
         </collection>
     </data>
-    <dialogMode height="82%"
+    <dialogMode height="AUTO"
                 width="75%" forceDialog="true" resizable="true"/>
-    <layout spacing="true" width="100%" expand="tabBody">
+    <layout spacing="true" width="100%" expand="editActions">
         <tabSheet id="tabBody" width="100%">
             <tab id="main" spacing="true" caption="msg://tab.main" margin="true,false,false,false">
                 <grid spacing="true" margin="true" width="100%">
@@ -222,9 +211,8 @@
                 </scrollBox>
             </tab>
         </tabSheet>
-        <hbox id="editActions" margin="true" spacing="true">
+        <hbox id="editActions" margin="true" spacing="true" align="MIDDLE_CENTER">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
-            <button id="commitBtn" action="windowCommit"/>
             <button id="closeBtn" action="windowClose"/>
         </hbox>
     </layout>

@@ -17,6 +17,7 @@ import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.service.GetDepartmensService;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import com.itk.kdp.web.screens.employees.EmployeesEdit;
+import com.itk.kdp.web.screens.form.StandardEditorITK;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,7 +27,7 @@ import java.util.Objects;
 @UiDescriptor("departments-edit.xml")
 @EditedEntityContainer("departmentsDc")
 @LoadDataBeforeShow
-public class DepartmentsEdit extends StandardEditor<Departments> {
+public class DepartmentsEdit extends StandardEditorITK<Departments> {
 
     @Inject
     private CollectionLoader<Departments> departmentsesDl;
@@ -47,12 +48,10 @@ public class DepartmentsEdit extends StandardEditor<Departments> {
     private LookupPickerField<Departments> pIdField;
     @Inject
     private EntityStates entityStates;
-    @Inject
-    private Messages messages;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-        updateFromCaption();
+        super.onAfterShow(event);
         departmentsesDl.setParameter("department", departmensService.getDepartmentsFilter(getEditedEntity()));
         departmentsesDl.setParameter("parOrganization", (Objects.isNull(getEditedEntity().getOrganizationsId()) ? dataManager.create(Organizations.class) : getEditedEntity().getOrganizationsId()));
         departmentsesDl.load();
@@ -107,19 +106,10 @@ public class DepartmentsEdit extends StandardEditor<Departments> {
         employeesBrowse.show();
     }
 
-    private void updateFromCaption(){
-        if (entityStates.isNew(getEditedEntity())){
-            this.getWindow().setCaption(
-                    messages.getMessage(DepartmentsEdit.class, "Подразделение организации")
-                            + ": "
-                            + messages.getMessage(DepartmentsEdit.class, "(cоздание)")
-            );
-        } else {
-            this.getWindow().setCaption(
-                    messages.getMessage(DepartmentsEdit.class, "Подразделение организации")
-                            + ": "
-                            + getEditedEntity().getName()
-            );
+    @Subscribe
+    public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
+        if (entityStates.isNew(getEditedEntity())) {
+            getEditedEntity().setCode(getEditedEntity().generateNewCode());
         }
     }
 }

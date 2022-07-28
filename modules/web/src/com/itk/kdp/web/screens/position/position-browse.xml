@@ -45,11 +45,10 @@
                 <action id="fillFromExternal" caption="msg://positionBrowse.fillFromExternal"/>
             </actions>
             <columns>
+                <group>
+                    <column id="organizationsId"/>
+                </group>
                 <column id="name"/>
-                <column id="positionEn"/>
-                <column id="positionUa"/>
-                <column id="positionRu"/>
-                <column id="organizationsId"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

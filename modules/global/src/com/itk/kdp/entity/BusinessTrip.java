@@ -7,16 +7,20 @@ import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
+import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DeletePolicy;
+import com.haulmont.cuba.core.global.Messages;
+import com.itk.kdp.base.itk.StandardEntityITK;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Table(name = "KDP_BUSINESS_TRIP")
 @Entity(name = "kdp_BusinessTrip")
-@NamePattern("%s от %s | number,onDate")
-public class BusinessTrip extends StandardEntity {
+@NamePattern("#getCaption| number,onDate")
+public class BusinessTrip extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = 5104939189800091445L;
 
     @Column(name = "NUMBER")
@@ -376,5 +380,16 @@ public class BusinessTrip extends StandardEntity {
 
     public void setStartPlace(String startPlace) {
         this.startPlace = startPlace;
+    }
+
+    @Override
+    public String getCaption() {
+        Messages messages = AppBeans.get(Messages.class);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return number +
+                " " +
+                messages.getMainMessage("entityCaption.dateFrom") +
+                " " +
+                simpleDateFormat.format(onDate);
     }
 }

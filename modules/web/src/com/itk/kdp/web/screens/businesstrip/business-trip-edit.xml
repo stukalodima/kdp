@@ -7,13 +7,10 @@
         <instance id="businessTripDc"
                   class="com.itk.kdp.entity.BusinessTrip">
             <view extends="_local">
-                <property name="employee" view="_minimal">
-                    <property name="fio"/>
-                    <property name="company" view="_local"/>
+                <property name="employee" view="_base">
                     <property name="department"/>
                     <property name="position"/>
-                    <property name="mobilePhone"/>
-                    <property name="manager" view="_local">
+                    <property name="manager" view="_base">
                         <property name="user" view="_local"/>
                     </property>
                 </property>
@@ -23,8 +20,7 @@
                 <property name="transport" view="_minimal">
                     <property name="name"/>
                 </property>
-                <property name="author" view="_minimal">
-                    <property name="fio"/>
+                <property name="author" view="_base">
                 </property>
                 <property name="organization" view="_minimal"/>
                 <property name="department" view="_minimal"/>
@@ -32,7 +28,7 @@
                 <property name="procInstance" view="procInstance-full"/>
                 <property name="documents" view="_local">
                     <property name="document" view="browse"/>
-                    <property name="author" view="_local"/>
+                    <property name="author" view="_base"/>
                 </property>
             </view>
             <loader id="businessTripDl"/>
@@ -92,15 +88,15 @@
                 modal="true"
                 resizable="true"
                 forceDialog="true"/>
-    <layout spacing="true" width="100%" expand="editActions">
-        <tabSheet id="body" width="100%" height="AUTO">
-            <tab id="mainTab" caption="Заявка" expand="scrollBox" spacing="true" margin="true,false,false,false">
-                <scrollBox id="scrollBox" spacing="true" width="100%" contentMinHeight="400px">
+    <layout spacing="true" width="100%" expand="body">
+        <hbox id="body" width="100%" expand="bodyTab">
+        <tabSheet id="bodyTab">
+            <tab id="mainTab" caption="msg://businessTripEdit.caption" spacing="true" margin="true,false,false,false">
                     <form id="form" dataContainer="businessTripDc" width="100%" colspan="2">
                         <column width="50%">
                             <lookupPickerField id="employeeField" optionsContainer="employeesDc" property="employee"
                                                width="100%" colspan="2"
-                                               contextHelpText="*в случае, если в командировку едет третье лицо, указать ФИО командируемого"
+                                               contextHelpText="msg://businessTripEdit.employee.contentHelp"
                                                required="true"
                             >
                                 <actions>
@@ -115,12 +111,11 @@
                             <lookupPickerField id="positionField" property="position" editable="false" width="100%"/>
 
                             <dateField id="startDateField" property="startDate" width="100%" resolution="DAY"
-                                       contextHelpText="С учетом дороги" required="true">
+                                       contextHelpText="msg://businessTripEdit.dateField.contentHelp" required="true">
                             </dateField>
                             <textField id="startPlaceField" property="startPlace" width="100%" required="true"/>
                             <textField id="detailsField" property="details" colspan="2" width="100%" required="true"
-                                       contextHelpText="Пункт назначения (страна, город), предприятие.
-Если известно: рейс, номер поезда, удобное время выезда и возврата, локация отеля, даты проживания. Необходимость раннего заезда в отель или позднего выезда и т.п."/>
+                                       contextHelpText="msg://businessTripEdit.detailsField.contentHelp"/>
                             <lookupPickerField id="purposeField" optionsContainer="purposesDc" property="purpose"
                                                width="100%" colspan="2" required="true">
                                 <actions>
@@ -155,37 +150,37 @@
                             </groupBox>
                             <checkBox id="hotelField" property="hotel"/>
                             <textField id="analyticsField" property="analytics" colspan="2" width="100%" required="true"
-                                       contextHelpText="ЦФО, Проект и МВЗ в соответствии с 1С 'Казначейство'"/>
+                                       contextHelpText="msg://businessTripEdit.analytic.contentHelp"/>
                         </column>
                         <column width="50%">
                             <lookupPickerField id="departmentField" property="department" editable="false"
                                                width="100%"/>
                             <textField id="phoneNumberField" property="phoneNumber" editable="false"
-                                       contextHelpText="Мобильный телефон" width="100%"/>
+                                       contextHelpText="msg://businessTripEdit.phoneNumber.contentHelp" width="100%"/>
                             <dateField id="endDateField" property="endDate" resolution="DAY"
-                                       contextHelpText="С учетом дороги" width="100%" required="true">
+                                       contextHelpText="msg://businessTripEdit.dateField.contentHelp" width="100%" required="true">
                             </dateField>
                             <label/>
                             <checkBox id="visaField" property="visa" width="100%"/>
                         </column>
                     </form>
-                    <groupBox caption="Поля, заполняемые исполнителем" colspan="2" collapsable="true" collapsed="false"
+                    <groupBox caption="msg://businessTripEdit.executorFields" colspan="2" collapsable="true" collapsed="false"
                               width="100%" spacing="false" id="bpmGroup">
                         <form id="bpmField" dataContainer="businessTripDc" width="100%" colspan="2" editable="false">
                             <column width="50%">
                                 <textField id="destinationField" property="destination" width="100%"
-                                           contextHelpText="Заполняет бухгалтер: Город, страна (На укр.языке для приказа)"/>
+                                           contextHelpText="msg://businessTripEdit.destination.contentHelp"/>
                                 <lookupField id="payCenterField" property="payCenter" width="100%"
-                                             contextHelpText="Заполняет бухгалтер: на основании пункта назначения, предприятия и цели командировки."/>
+                                             contextHelpText="msg://businessTripEdit.payCenter.contentHelp"/>
                                 <textField id="budgetField" property="budgetTrip" width="100%"
-                                           contextHelpText="Заполняет Travel manager: Расшифровка бюджета по каждой статье будет представлена во вкладке 'Документы'"/>
+                                           contextHelpText="msg://businessTripEdit.budget.contentHelp"/>
                                 <textField id="commentField" property="comment" colspan="2" width="100%"/>
                             </column>
                             <column width="50%">
                                 <textField id="companyNameField" property="companyName" width="100%"
-                                           contextHelpText="Заполняет бухгалтер: Юридическое, в которое направляется работник (На укр.языке для приказа)"/>
+                                           contextHelpText="msg://businessTripEdit.companyName.contentHelp"/>
                                 <textField id="isBudgetField" property="isBudget" width="100%"
-                                           contextHelpText="Заполняет Travel manager"/>
+                                           contextHelpText="msg://businessTripEdit.isBudget.contentHelp"/>
                             </column>
                         </form>
                     </groupBox>
@@ -194,41 +189,24 @@
                             <lookupField id="authorField" property="author" editable="false" width="100%"/>
                         </column>
                     </form>
-                    <groupBox id="procActionsBox"
-                              caption="msg://process"
-                              spacing="true"
-                              width="400px" visible="false">
-                        <fragment id="procActionsFragment" width="100%"
-                                  screen="bpm_ProcActionsFragment"/>
-                    </groupBox>
-                </scrollBox>
             </tab>
-            <tab id="otherTab" caption="Ход согласования" margin="true,false,false,false" expand="procTaskScroll">
-                <scrollBox id="procTaskScroll" width="100%" height="100%" contentMinHeight="400px">
-                    <groupTable dataContainer="procTasksDs" width="100%" height="400">
+            <tab id="otherTab" caption="msg://businessTripEdit.tasks.caption" margin="true,false,false,false">
+                    <groupTable dataContainer="procTasksDs" width="100%" minHeight="300px" height="100%">
                         <columns>
-                            <column id="locName" caption="Этап процесса" expandRatio="4" maxTextLength="40"/>
-                            <column id="procActor" caption="Исполнитель" expandRatio="3" maxTextLength="40"/>
+                            <column id="locName" expandRatio="4" maxTextLength="40"/>
+                            <column id="procActor" expandRatio="3" maxTextLength="40"/>
                             <column id="startDate" expandRatio="2"/>
                             <column id="endDate" expandRatio="2"/>
                             <column id="locOutcome" caption="Результат" expandRatio="2"/>
-                            <column id="comment" maxTextLength="50" expandRatio="3"/>
+                            <column id="comment" maxTextLength="20" expandRatio="3"/>
                         </columns>
                         <rows/>
                     </groupTable>
-                </scrollBox>
             </tab>
-            <tab id="fileTab" caption="Файлы" margin="true,false,false,false">
-                <scrollBox
-                        height="AUTO"
-                        spacing="true"
-                        width="100%"
-                        contentMinHeight="400px"
-                >
+            <tab id="fileTab" caption="msg://businessTripEdit.files.caption" margin="true,false,false,false">
                     <table id="attachmentsTable"
                            dataContainer="procAttachmentsDc"
-                           height="400"
-                           width="100%" minHeight="300px">
+                           width="100%" minHeight="300px" height="100%">
                         <actions>
                             <action id="create" type="create"/>
                             <action id="edit" type="edit"/>
@@ -243,15 +221,15 @@
                             <column id="document.size"/>
                             <column id="document.createDate"/>
                             <column id="task" maxTextLength="100"/>
-                            <column id="comment" maxTextLength="100"/>
+                            <column id="comment" maxTextLength="50"/>
                         </columns>
                     </table>
-                </scrollBox>
             </tab>
-            <tab id="messageTab" caption="Сообщения" margin="true,false,false,false">
+            <tab id="messageTab" caption="msg://businessTripEdit.message.caption" margin="true,false,false,false">
                 <table id="messagesTable"
                        width="100%"
-                       height="400"
+                       minHeight="300px"
+                       height="100%"
                        dataContainer="messagesDc">
                     <actions>
                         <action id="create"
@@ -279,11 +257,12 @@
                 </table>
             </tab>
         </tabSheet>
+        </hbox>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="commitBtn" action="windowCommit"/>
             <button id="closeBtn" action="windowClose"/>
-            <button id="sendToApprove" caption="Отправить на согласование"/>
+            <button id="sendToApprove" caption="msg://businessTripEdit.sendToApprove"/>
             <hbox id="actionsBox" spacing="true"/>
         </hbox>
     </layout>

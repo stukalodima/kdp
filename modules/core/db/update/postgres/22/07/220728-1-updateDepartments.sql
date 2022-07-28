@@ -1,0 +1,1 @@
+drop index IDX_KDP_DEPARTMENTS_UK_CODE ;

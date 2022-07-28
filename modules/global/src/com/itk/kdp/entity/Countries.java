@@ -1,35 +1,39 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.chile.core.annotations.NamePattern;
-import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.StandardEntity;
-import com.haulmont.cuba.core.global.AppBeans;
+import com.itk.kdp.base.itk.StandardEntityITK;
+import com.itk.kdp.entity.helper.MessageHelperITK;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 @Table(name = "KDP_COUNTRIES")
 @Entity(name = "kdp_Countries")
-@NamePattern("%s|name")
-public class Countries extends StandardEntity {
+@NamePattern("#getCaption|nameUa, nameEn, nameRu")
+public class Countries extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = 824192924430334148L;
 
-    @NotNull
-    @Column(name = "CODE", nullable = false, unique = true)
-    @Max(message = "{msg://kdp_Countries.code.validation.Max}", value = 999)
+    @Column(name = "CODE")
     private Integer code;
 
-    @NotNull
-    @Column(name = "NAME", nullable = false)
+    @MetaProperty
+    @Transient
     private String name;
 
-    @NotNull
-    @Column(name = "FULL_NAME", nullable = false)
-    private String fullName;
+    @Column(name = "NAME_UA")
+    private String nameUa;
+
+    @Column(name = "NAME_EN")
+    private String nameEn;
+
+    @Column(name = "NAME_Ru")
+    private String nameRu;
 
     public Integer getCode() {
         return code;
@@ -39,20 +43,39 @@ public class Countries extends StandardEntity {
         this.code = code;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getNameUa() {
+        return nameUa;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setNameUa(String nameUa) {
+        this.nameUa = nameUa;
+    }
+
+    public String getNameEn() {
+        return nameEn;
+    }
+
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
+    }
+
+    public String getNameRu() {
+        return nameRu;
+    }
+
+    public void setNameRu(String nameRu) {
+        this.nameRu = nameRu;
     }
 
     public String getName() {
-        return name;
+        return getCaption();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = getCaption();
     }
 
+    public String getCaption() {
+        return MessageHelperITK.getCaption(nameUa, nameEn, nameRu);
+    }
 }

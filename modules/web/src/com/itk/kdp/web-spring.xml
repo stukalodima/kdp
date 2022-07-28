@@ -19,6 +19,8 @@
                 <entry key="kdp_DepartmentService" value="com.itk.kdp.service.DepartmentService"/>
                 <entry key="kdp_EmployeeService" value="com.itk.kdp.service.EmployeeService"/>
                 <entry key="kdp_EmailService" value="com.itk.kdp.service.EmailService"/>
+                <entry key="kdp_VacationTypeService" value="com.itk.kdp.service.VacationTypeService"/>
+                <entry key="kdp_CountryService" value="com.itk.kdp.service.CountryService"/>
             </map>
         </property>
     </bean>

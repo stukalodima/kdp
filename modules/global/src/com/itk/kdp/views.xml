@@ -41,5 +41,8 @@
         <property name="procDefinition" view="procDefinition-procInstanceEdit"/>
         <property name="addressingDetail" view="addressingDetail-all-property"/>
     </view>
+    <view entity="kdp_Position" name="position-full" extends="_local">
+        <property name="organizationsId" view="_local"/>
+    </view>
 
 </views>

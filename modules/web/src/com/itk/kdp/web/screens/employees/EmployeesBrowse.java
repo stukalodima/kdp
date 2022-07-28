@@ -1,18 +1,17 @@
 package com.itk.kdp.web.screens.employees;
 
 import com.haulmont.cuba.core.entity.FileDescriptor;
-import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionLoader;
-import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.screen.LookupComponent;
+import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.entity.Employees;
 import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.service.EmployeeService;
-import com.itk.kdp.web.screens.organizations.OrganizationsBrowse;
+import com.itk.kdp.web.screens.form.DialogsITK;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -40,10 +39,8 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
     private EmployeeService employeeService;
     @Inject
     private Dialogs dialogs;
-    @Inject
-    private Messages messages;
 
-    public void setOrganization(Organizations organization){
+    public void setOrganization(Organizations organization) {
         this.organization = organization;
     }
 
@@ -66,6 +63,7 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
     protected void onInit(InitEvent event) {
         employeesesTable.addGeneratedColumn("photo", this::renderAvatarImageComponent);
     }
+
     private Component renderAvatarImageComponent(Employees employees) {
         FileDescriptor imageFile = employees.getPhoto();
         if (imageFile == null) {
@@ -77,6 +75,7 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
 
         return photo;
     }
+
     private Image smallPhotoImage() {
         Image photo = uiComponents.create(Image.class);
         photo.setScaleMode(Image.ScaleMode.CONTAIN);
@@ -90,12 +89,9 @@ public class EmployeesBrowse extends StandardLookup<Employees> {
     public void onEmployeesesTableFillFromExternal(Action.ActionPerformedEvent event) {
         try {
             employeeService.getEmployeeListFromExternal();
+            DialogsITK.getDialogForImportSuccess(dialogs, EmployeesBrowse.class).show();
         } catch (IOException e) {
-            dialogs.createMessageDialog()
-                    .withCaption(messages.getMessage(OrganizationsBrowse.class, "messages.getCompanyListError.caption"))
-                    .withMessage(messages.getMessage(OrganizationsBrowse.class, "messages.getCompanyListError.text")
-                            + "\n" + e.getMessage())
-                    .show();
+            DialogsITK.getDialogForImportError(dialogs, e, EmployeesBrowse.class).show();
         }
         employeesesDl.load();
     }

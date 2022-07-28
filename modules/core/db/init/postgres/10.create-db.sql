@@ -9,7 +9,6 @@ create table KDP_POSITION (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NAME varchar(255) not null,
     POSITION_EN varchar(255),
     POSITION_UA varchar(255),
     POSITION_RU varchar(255),
@@ -44,11 +43,12 @@ create table KDP_VACATION_REQUEST (
     VACATION_DAYS integer,
     NOTE varchar(255),
     CONSENT_TO_BILLING boolean,
-    document_ID uuid,
     INITIATOR_ID uuid,
     UPLOAD_TO_1C boolean,
     STATUS varchar(255),
     COMMENT varchar(255),
+    PROC_INSTANCE_ID uuid,
+    PHONE_NUMBER varchar(255),
     --
     primary key (ID)
 )^
@@ -64,13 +64,11 @@ create table KDP_ORGANIZATIONS (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    CODE varchar(9),
-    PREFIX varchar(3),
-    SHORT_NAME varchar(255) not null,
-    FULL_NAME varchar(255) not null,
+    CODE varchar(255),
+    FULL_NAME varchar(255),
     ORGANIZATIONS_EN varchar(255),
-    ORGANIZATIONS_UA varchar(255) not null,
-    ORGANIZATIONS_RU varchar(255) not null,
+    ORGANIZATIONS_UA varchar(255),
+    ORGANIZATIONS_RU varchar(255),
     CODE_OCPO varchar(12),
     DATE_REGISTRATION date,
     COUNTRY_REGISTRATION_ID uuid,
@@ -92,7 +90,6 @@ create table KDP_EMPLOYEES (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    FIO varchar(255),
     SURNAME_UA varchar(255),
     NAME_UA varchar(255),
     MIDDLE_NAME_UA varchar(255),
@@ -148,15 +145,13 @@ create table KDP_DEPARTMENTS (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    CODE integer not null,
+    CODE bigint,
     APPROVAL_MANAGER_ID uuid,
-    NAME varchar(255) not null,
     DEPARTMENT_EN varchar(255),
     DEPARTMENT_UA varchar(255),
     DEPARTMENT_RU varchar(255),
-    DEPARTMENT_ID uuid,
     DEPARTMENT_1C_ID varchar(255),
-    ORGANIZATION_ID uuid not null,
+    ORGANIZATION_ID uuid,
     P_ID_ID uuid,
     MANAGER_ID_ID uuid,
     --
@@ -175,10 +170,13 @@ create table KDP_VACATION_TYPE (
     DELETED_BY varchar(50),
     --
     CODE varchar(255) not null,
-    NAME varchar(255) not null,
+    NAME_UA varchar(255),
+    NAME_EN varchar(255),
+    NAME_RU varchar(255),
+    VACATION_TYPE_1C varchar(255),
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_TYPE
 -- begin KDP_COUNTRIES
 create table KDP_COUNTRIES (
@@ -191,9 +189,10 @@ create table KDP_COUNTRIES (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    CODE integer not null,
-    NAME varchar(255) not null,
-    FULL_NAME varchar(255) not null,
+    CODE integer,
+    NAME_UA varchar(255),
+    NAME_EN varchar(255),
+    NAME_Ru varchar(255),
     --
     primary key (ID)
 )^
@@ -363,3 +362,23 @@ create table KDP_ACCESS_REQUEST (
     primary key (ID)
 )^
 -- end KDP_ACCESS_REQUEST
+-- begin KDP_VACATION_FILES
+create table KDP_VACATION_FILES (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    DOCUMENT_ID uuid,
+    VACATION_ID uuid,
+    COMMENT varchar(255),
+    TASK varchar(255),
+    AUTHOR_ID uuid,
+    --
+    primary key (ID)
+)^
+-- end KDP_VACATION_FILES

@@ -42,7 +42,7 @@ public class PositionServiceBean implements PositionService {
         List<Position> positionList = dataManager.load(Position.class)
                 .query("select e from kdp_Position e where e.position1cId = :code")
                 .parameter("code", code)
-                .view("_local")
+                .view("position-full")
                 .list();
         Position position = null;
         if (positionList.size() > 0) {
@@ -76,7 +76,6 @@ public class PositionServiceBean implements PositionService {
             positionMap.put("companyId", jsonObject.getAsJsonPrimitive("companyId").getAsString());
             positionMap.put("positionUa", jsonObject.getAsJsonPrimitive("positionUa").getAsString());
             positionMap.put("positionRu", jsonObject.getAsJsonPrimitive("positionRu").getAsString());
-            positionMap.put("name", jsonObject.getAsJsonPrimitive("positionUa").getAsString());
             positionMap.put("position1cId", jsonObject.getAsJsonPrimitive("positionId").getAsString());
 
             fillCompanyEntity(positionMap);
@@ -91,8 +90,7 @@ public class PositionServiceBean implements PositionService {
         }
 
         position.setPosition1cId(positionMap.get("companyId") + "$" + positionMap.get("position1cId"));
-        position.setName(positionMap.get("name"));
-        position.setPositionUa(positionMap.get("positionRu"));
+        position.setPositionUa(positionMap.get("positionUa"));
         position.setPositionRu(positionMap.get("positionRu"));
         position.setOrganizationsId(companyService.getCompanyByCode(positionMap.get("companyId")));
 

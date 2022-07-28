@@ -8,17 +8,11 @@
         <collection id="employeesesDc"
                     class="com.itk.kdp.entity.Employees">
             <view extends="_local">
-                <property name="company" view="_minimal">
-                    <property name="shortName"/>
-                </property>
                 <property name="department" view="_minimal"/>
                 <property name="position" view="_minimal"/>
-                <property name="manager" view="_minimal">
-                    <property name="surnameUa"/>
-                    <property name="nameUa"/>
-                    <property name="middleNameUa"/>
-                </property>
+                <property name="manager" view="_local"/>
                 <property name="photo" view="_minimal"/>
+                <property name="company" view="_minimal"/>
             </view>
             <loader id="employeesesDl">
                 <query>
@@ -62,26 +56,18 @@
                     <column id="company" expandRatio="4" align="CENTER"/>
                 </group>
                 <column id="photo"/>
-                <column id="surnameUa" expandRatio="5" sort="ASCENDING" align="CENTER"/>
-                <column id="nameUa" expandRatio="3" align="CENTER"/>
-                <column id="middleNameUa" expandRatio="6" align="CENTER"/>
-                <column id="surnameRu" expandRatio="5" align="CENTER"/>
-                <column id="nameRu" expandRatio="3" align="CENTER"/>
-                <column id="middleNameRu" expandRatio="6" align="CENTER"/>
-                <column id="surnameEn" expandRatio="5" align="CENTER"/>
-                <column id="nameEn" expandRatio="3" align="CENTER"/>
-                <column id="middleNameEn" expandRatio="6" align="CENTER"/>
-                <column id="workEmail" expandRatio="4" align="CENTER"/>
-                <column id="otherEmail" expandRatio="4" align="CENTER"/>
-                <column id="workPhone" expandRatio="3" align="CENTER"/>
-                <column id="mobilePhone" expandRatio="3" align="CENTER"/>
-                <column id="department" expandRatio="6" align="CENTER"/>
-                <column id="position" expandRatio="5" align="CENTER"/>
-                <column id="manager" expandRatio="6" align="CENTER"/>
-                <column id="birthday" expandRatio="3" align="CENTER"/>
-                <column id="employmentDate" expandRatio="3" align="CENTER"/>
-                <column id="loginName" expandRatio="4" align="CENTER"/>
-                <column id="formEmployment" expandRatio="2" align="CENTER"/>
+                <column id="fio" sort="ASCENDING" align="LEFT"/>
+                <column id="department" align="LEFT"/>
+                <column id="position" align="LEFT"/>
+                <column id="manager" align="LEFT"/>
+                <column id="workEmail" align="LEFT"/>
+                <column id="mobilePhone" align="LEFT"/>
+                <column id="otherEmail" align="LEFT"/>
+                <column id="workPhone" align="LEFT"/>
+                <column id="employmentDate" align="RIGHT">
+                    <formatter class="com.haulmont.cuba.gui.components.formatters.DateFormatter" format="dd.MM.YYYY"/>
+                </column>
+                <column id="formEmployment" align="CENTER"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"

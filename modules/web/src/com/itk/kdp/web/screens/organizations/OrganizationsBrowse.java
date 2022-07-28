@@ -1,12 +1,12 @@
 package com.itk.kdp.web.screens.organizations;
 
-import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.components.Action;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
 import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.service.CompanyService;
+import com.itk.kdp.web.screens.form.DialogsITK;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -21,20 +21,19 @@ public class OrganizationsBrowse extends StandardLookup<Organizations> {
     @Inject
     private Dialogs dialogs;
     @Inject
-    private Messages messages;
-    @Inject
     private CollectionLoader<Organizations> organizationsesDl;
 
     @Subscribe("organizationsesTable.fillFromExternal")
     public void onOrganizationsesTableFillFromExternal(Action.ActionPerformedEvent event) {
         try {
             companyService.getCompanyListFromExternal();
+            DialogsITK.getDialogForImportSuccess(
+                    dialogs, OrganizationsBrowse.class
+            ).show();
         } catch (IOException e) {
-            dialogs.createMessageDialog()
-                    .withCaption(messages.getMessage(OrganizationsBrowse.class, "messages.getCompanyListError.caption"))
-                    .withMessage(messages.getMessage(OrganizationsBrowse.class, "messages.getCompanyListError.text")
-                            + "\n" + e.getMessage())
-                    .show();
+            DialogsITK.getDialogForImportError(
+                    dialogs, e, OrganizationsBrowse.class
+            ).show();
         }
         organizationsesDl.load();
     }

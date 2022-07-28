@@ -17,5 +17,6 @@
         <class>com.itk.kdp.entity.AddressingDetail</class>
         <class>com.itk.kdp.entity.BusinessTripFiles</class>
         <class>com.itk.kdp.entity.AccessRequest</class>
+        <class>com.itk.kdp.entity.VacationFiles</class>
     </persistence-unit>
 </persistence>

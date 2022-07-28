@@ -129,7 +129,7 @@ public class CreateTaskListener implements TaskListener {
         mapParam.put("endDate", checkStringFieldIsEmpty(simpleDateFormat.format(businessTrip.getEndDate()),emptyString));
         mapParam.put("titleBudget", messages.getMessage(BusinessTrip.class, "BusinessTrip.budgetTrip"));
         mapParam.put("budget", checkStringFieldIsEmpty(businessTrip.getBudgetTrip(),emptyString));
-        mapParam.put("titleIsBudget", messages.getMessage(BusinessTrip.class, "BusinessTrip.budgetTrip"));
+        mapParam.put("titleIsBudget", messages.getMessage(BusinessTrip.class, "BusinessTrip.isBudget"));
         mapParam.put("isBudget", checkStringFieldIsEmpty(businessTrip.getIsBudget(),emptyString));
         mapParam.put("titleNumber", messages.getMessage(BusinessTrip.class, "BusinessTrip.number"));
         mapParam.put("number", checkStringFieldIsEmpty(businessTrip.getNumber().toString(),emptyString));

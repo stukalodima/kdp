@@ -1,5 +1,6 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -9,22 +10,26 @@ import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DeletePolicy;
+import com.itk.kdp.base.itk.StandardEntityITK;
+import com.itk.kdp.entity.helper.MessageHelperITK;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
 
 
 @Table(name = "KDP_DEPARTMENTS")
 @Entity(name = "kdp_Departments")
-@NamePattern("%s|name")
-public class Departments extends StandardEntity {
+@NamePattern("#getCaption|departmentUa, departmentEn, departmentRu")
+public class Departments extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = -179585123169757061L;
 
     @NotNull
-    @Column(name = "CODE", nullable = false, unique = true)
-    private Integer code;
+    @Column(name = "CODE")
+    private Long code;
+
+    @MetaProperty
+    @Transient
+    private String name;
 
     @Lookup(type = LookupType.SCREEN, actions = {"lookup", "open", "clear"})
     @OnDeleteInverse(DeletePolicy.DENY)
@@ -32,10 +37,6 @@ public class Departments extends StandardEntity {
     @JoinColumn(name = "APPROVAL_MANAGER_ID")
     @OnDelete(DeletePolicy.DENY)
     private Employees approvalManager;
-
-    @NotNull
-    @Column(name = "NAME", nullable = false)
-    private String name;
 
     @NotNull
     @Column(name = "DEPARTMENT_EN")
@@ -49,16 +50,13 @@ public class Departments extends StandardEntity {
     @Column(name = "DEPARTMENT_RU")
     private String departmentRu;
 
-    @Column(name = "DEPARTMENT_ID")
-    private UUID departmentId;
-
     @Column(name = "DEPARTMENT_1C_ID")
     private String department1cId;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
     @OnDeleteInverse(DeletePolicy.DENY)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORGANIZATION_ID")
     private Organizations organizationsId;
 
@@ -100,14 +98,6 @@ public class Departments extends StandardEntity {
         return parentId;
     }
 
-    public UUID getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(UUID departmentId) {
-        this.departmentId = departmentId;
-    }
-
     public String getDepartmentRu() {
         return departmentRu;
     }
@@ -140,32 +130,25 @@ public class Departments extends StandardEntity {
         this.organizationsId = organizationsId;
     }
 
-    public Integer getCode() {
+    public Long getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(Long code) {
         this.code = code;
     }
 
     public String getName() {
-        return name;
+        return getCaption();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = getCaption();
     }
 
-    @PostConstruct
-    private void initVisitDate() {
-        if (code == null) {
-            setCode((int) (long) generateNewCode());
-        }
-    }
-
-    private Long generateNewCode() {
+    public Long generateNewCode() {
         UniqueNumbersService numbersService = AppBeans.get(UniqueNumbersService.class);
-        return numbersService.getNextNumber("countryCode");
+        return numbersService.getNextNumber("department");
     }
 
     public String getDepartment1cId() {
@@ -174,5 +157,9 @@ public class Departments extends StandardEntity {
 
     public void setDepartment1cId(String department1cId) {
         this.department1cId = department1cId;
+    }
+
+    public String getCaption() {
+        return MessageHelperITK.getCaption(departmentUa, departmentEn, departmentRu);
     }
 }

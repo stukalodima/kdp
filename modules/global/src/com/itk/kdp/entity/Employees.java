@@ -11,21 +11,24 @@ import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 import com.haulmont.cuba.security.entity.User;
-import org.hibernate.validator.constraints.Length;
+import com.itk.kdp.base.itk.StandardEntityITK;
+import com.itk.kdp.entity.helper.MessageHelperITK;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.UUID;
+import java.util.Objects;
 
 @Table(name = "KDP_EMPLOYEES")
 @Entity(name = "kdp_Employees")
-@NamePattern("%s %s %s (%s)|surnameUa, nameUa, middleNameUa, company")
-public class Employees extends StandardEntity {
+@NamePattern("#getCaption|surnameUa, nameUa,surnameEn, nameEn,surnameRu, nameRu, company")
+public class Employees extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = -3233447108705407573L;
 
     @MetaProperty
+    @Transient
     private String fio;
+
     @NotNull
     @Column(name = "SURNAME_UA")
     private String surnameUa;
@@ -71,6 +74,7 @@ public class Employees extends StandardEntity {
     @Column(name = "WORK_PHONE")
     private String workPhone;
 
+    @NotNull
     @Column(name = "MOBILE_PHONE")
     private String mobilePhone;
 
@@ -113,7 +117,6 @@ public class Employees extends StandardEntity {
     @Column(name = "EMPLOYMENT_DATE")
     private Date employmentDate;
 
-    @NotNull
     @Column(name = "LOGIN_NAME")
     private String loginName;
 
@@ -139,7 +142,7 @@ public class Employees extends StandardEntity {
         return employee1cId;
     }
 
-    public void setEmployee1cId(String employee1cId){
+    public void setEmployee1cId(String employee1cId) {
         this.employee1cId = employee1cId;
     }
 
@@ -319,20 +322,67 @@ public class Employees extends StandardEntity {
         this.nameUa = nameUa;
     }
 
-
-    public String getFio() {
-        return surnameUa + " " + nameUa + " " + middleNameUa;
-    }
-
-    public void setFio(String fio) {
-        this.fio = fio;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getFio() {
+        return getCaption();
+    }
+
+    public void setFio(String fio) {
+        this.fio = getCaption();
+    }
+
+    @Override
+    public String getCaption() {
+        return getCaption(true);
+    }
+
+    public String getCaption(Boolean withCompany) {
+        return MessageHelperITK.getCaption(getFioUa(withCompany), getFioEn(withCompany), getFioRu(withCompany));
+    }
+
+    private String getFioRu(Boolean withCompany) {
+        return getFioByLoc(surnameRu, nameRu, withCompany);
+    }
+
+    private String getFioEn(Boolean withCompany) {
+        return getFioByLoc(surnameEn, nameEn, withCompany);
+    }
+
+    private String getFioUa(Boolean withCompany) {
+        return getFioByLoc(surnameUa, nameUa, withCompany);
+    }
+
+    private String getFioUa() {
+        return getFioUa(true);
+    }
+
+    private String getFioEn() {
+        return getFioEn(true);
+    }
+
+    private String getFioRu() {
+        return getFioRu(true);
+    }
+
+    private String getFioByLoc(String surname, String name) {
+        return getFioByLoc(surname, name, true);
+    }
+
+    private String getFioByLoc(String surname, String name, Boolean withCompany) {
+        if (!Objects.isNull(surname) && !Objects.isNull(name)) {
+            return surname +
+                    " " +
+                    name +
+                    (Boolean.TRUE.equals(withCompany) ? " (" + company.getCaption() + ")" : "");
+        } else {
+            return "<>";
+        }
     }
 }

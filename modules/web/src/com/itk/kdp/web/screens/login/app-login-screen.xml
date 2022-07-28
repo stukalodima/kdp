@@ -82,7 +82,7 @@
                            align="MIDDLE_LEFT"
                            htmlEnabled="true"
                            stylename="c-login-powered-by-link"
-                           value="msg://cuba.poweredBy"/>
+                           value="mainMsg://cuba.poweredBy"/>
                 </hbox>
             </vbox>
             <image id="backgroundImage"

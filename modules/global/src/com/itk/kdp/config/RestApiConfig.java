@@ -24,4 +24,12 @@ public interface RestApiConfig extends Config {
     @Property("REST-API_POSITION_SERVICE")
     @Default("http://localhost:6060/vacation/VAADIN/position.json")
     String getRestApiPositionService();
+
+    @Property("REST-API_VACATION_TYPE_SERVICE")
+    @Default("http://localhost:6060/vacation/VAADIN/vacationType.json")
+    String getRestApiVacationTypeService();
+
+    @Property("REST-API_COUNTRY_SERVICE")
+    @Default("http://localhost:6060/vacation/VAADIN/country.json")
+    String getRestApiCountryService();
 }

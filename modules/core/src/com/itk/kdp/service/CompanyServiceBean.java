@@ -65,7 +65,7 @@ public class CompanyServiceBean implements CompanyService {
     }
 
     private void parseJsonString(String jsonString) {
-        JsonArray jsonArray = new JsonParser().parse(jsonString).getAsJsonArray();
+        JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
         HashMap<String, String> companyMap = new HashMap<>();
         for (JsonElement jsonElement:jsonArray) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -74,7 +74,6 @@ public class CompanyServiceBean implements CompanyService {
             companyMap.put("id", jsonObject.getAsJsonPrimitive("companyId").getAsString());
             companyMap.put("organizationsUa", jsonObject.getAsJsonPrimitive("companyUa").getAsString());
             companyMap.put("organizationsRu", jsonObject.getAsJsonPrimitive("companyRu").getAsString());
-            companyMap.put("shortName", jsonObject.getAsJsonPrimitive("companyUa").getAsString());
             companyMap.put("fullName", jsonObject.getAsJsonPrimitive("companyUa").getAsString());
             companyMap.put("managerId", jsonObject.getAsJsonPrimitive("managerId").getAsString());
             companyMap.put("GUID", jsonObject.getAsJsonPrimitive("GUID").getAsString());
@@ -92,7 +91,6 @@ public class CompanyServiceBean implements CompanyService {
 
         company.setId(UUID.fromString(companyMap.get("GUID")));
         company.setFullName(companyMap.get("organizationsUa"));
-        company.setShortName(companyMap.get("organizationsUa"));
         company.setOrganizationsUa(companyMap.get("organizationsUa"));
         company.setOrganizationsRu(companyMap.get("organizationsRu"));
         company.setOrganizations1cId(companyMap.get("id"));

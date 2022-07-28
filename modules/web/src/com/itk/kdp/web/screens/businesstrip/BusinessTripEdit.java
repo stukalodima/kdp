@@ -27,20 +27,19 @@ import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.entity.*;
 import com.itk.kdp.service.EmployeeService;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
+import com.itk.kdp.web.screens.form.StandardEditorITK;
 import de.diedavids.cuba.userinbox.entity.Message;
 import de.diedavids.cuba.userinbox.entity.SendMessageEntity;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @UiController("kdp_BusinessTrip.edit")
 @UiDescriptor("business-trip-edit.xml")
 @EditedEntityContainer("businessTripDc")
 @LoadDataBeforeShow
-public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
+public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     protected ProcTask procTask;
     @Inject
     private InstanceLoader<BusinessTrip> businessTripDl;
@@ -137,7 +136,8 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-        updateFormCaption();
+//        updateFormCaption();
+        super.onAfterShow(event);
         initProcAction();
         updateVisible();
         if (chooseEmployee) {
@@ -148,33 +148,6 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
             employeesBrowse.show();
         } else {
             fillParameterFromEmployee(getEditedEntity().getEmployee());
-        }
-    }
-
-    @Subscribe
-    public void onAfterCommitChanges(AfterCommitChangesEvent event) {
-        updateFormCaption();
-    }
-
-    private void updateFormCaption() {
-        if (entityStates.isNew(getEditedEntity())) {
-            this.getWindow().setCaption(
-                    messages.getMessage(BusinessTripEdit.class, "businessTripEdit.caption")
-                            + " "
-                            + messages.getMessage(BusinessTripEdit.class, "businessTripEdit.newCaption")
-            );
-        } else {
-            DateFormat format = new SimpleDateFormat("dd.MM.yyy");
-
-            this.getWindow().setCaption(
-                    messages.getMessage(BusinessTripEdit.class, "businessTripEdit.caption")
-                            + " "
-                            + getEditedEntity().getNumber()
-                            + " "
-                            + messages.getMessage(BusinessTripEdit.class, "businessTripEdit.dateCaption")
-                            + " "
-                            + format.format(getEditedEntity().getOnDate())
-            );
         }
     }
 
@@ -331,13 +304,9 @@ public class BusinessTripEdit extends StandardEditor<BusinessTrip> {
 
     @Subscribe
     public void onBeforeCommitChanges(BeforeCommitChangesEvent event) {
-        if (Objects.isNull(getEditedEntity().getNumber())) {
+        if (entityStates.isNew(getEditedEntity())) {
             getEditedEntity().setNumber(uniqueNumbersService.getNextNumber("trip"));
-        }
-        if (Objects.isNull(getEditedEntity().getStatus())) {
             getEditedEntity().setStatus("Проект заявки");
-        }
-        if (Objects.isNull(getEditedEntity().getOnDate())) {
             getEditedEntity().setOnDate(timeSource.currentTimestamp());
         }
     }

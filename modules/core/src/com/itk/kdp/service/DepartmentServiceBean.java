@@ -79,7 +79,6 @@ public class DepartmentServiceBean implements DepartmentService {
             departmentMap.put("companyId", jsonObject.getAsJsonPrimitive("companyId").getAsString());
             departmentMap.put("departmentUa", jsonObject.getAsJsonPrimitive("departmentUa").getAsString());
             departmentMap.put("departmentRu", jsonObject.getAsJsonPrimitive("departmentRu").getAsString());
-            departmentMap.put("name", jsonObject.getAsJsonPrimitive("departmentUa").getAsString());
             departmentMap.put("department1cId", jsonObject.getAsJsonPrimitive("departmentId").getAsString());
             departmentMap.put("pId", jsonObject.getAsJsonPrimitive("pId").getAsString());
             departmentMap.put("managerId", jsonObject.getAsJsonPrimitive("approvalManager").getAsString());
@@ -98,7 +97,6 @@ public class DepartmentServiceBean implements DepartmentService {
 
         department.setId(UUID.fromString(departmentMap.get("GUID")));
         department.setDepartment1cId(departmentMap.get("companyId") + "$" + departmentMap.get("department1cId"));
-        department.setName(departmentMap.get("name"));
         department.setDepartmentUa(departmentMap.get("departmentUa"));
         department.setDepartmentRu(departmentMap.get("departmentRu"));
         department.setParentId(getDepartmentByCode(departmentMap.get("companyId") + "$" + departmentMap.get("pId")));

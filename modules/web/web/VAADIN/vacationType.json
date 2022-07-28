@@ -1,0 +1,47 @@
+[
+  {
+    "vacationTypeUa": "Чорнобильська відпустка",
+    "vacationTypeRu": "Чернобыльский отпуск",
+    "vacationTypeId": "000000009"
+  },
+  {
+    "vacationTypeUa": "Навчальна відпустка без оплати",
+    "vacationTypeRu": "Учебный отпуск без оплаты",
+    "vacationTypeId": "000000006"
+  },
+  {
+    "vacationTypeUa": "Основна щорічна відпустка",
+    "vacationTypeRu": "Основной ежегодный отпуск",
+    "vacationTypeId": "000000001"
+  },
+  {
+    "vacationTypeUa": "Відпустка за свій рахунок (обов`язкова)",
+    "vacationTypeRu": "Отпуск за свой счет (обязательный)",
+    "vacationTypeId": "000000007"
+  },
+  {
+    "vacationTypeUa": "Додаткова щорічна відпустка",
+    "vacationTypeRu": "Дополнительный ежегодный отпуск",
+    "vacationTypeId": "000000002"
+  },
+  {
+    "vacationTypeUa": "Додаткова відпустка на дітей",
+    "vacationTypeRu": "Дополнительный отпуск на детей",
+    "vacationTypeId": "000000004"
+  },
+  {
+    "vacationTypeUa": "Навчальна відпустка",
+    "vacationTypeRu": "Учебный отпуск",
+    "vacationTypeId": "000000005"
+  },
+  {
+    "vacationTypeUa": "Інша додаткова відпустка",
+    "vacationTypeRu": "Другой дополнительный отпуск",
+    "vacationTypeId": "000000003"
+  },
+  {
+    "vacationTypeUa": "Відпустка за свій рахунок (за згодою сторін)",
+    "vacationTypeRu": "Отпуск за свой счет (по соглашению сторон)",
+    "vacationTypeId": "000000008"
+  }
+]

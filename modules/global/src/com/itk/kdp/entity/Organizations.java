@@ -1,5 +1,6 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.chile.core.annotations.MetaProperty;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.StandardEntity;
@@ -7,50 +8,40 @@ import com.haulmont.cuba.core.entity.annotation.*;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.DeletePolicy;
+import com.itk.kdp.base.itk.StandardEntityITK;
+import com.itk.kdp.entity.helper.MessageHelperITK;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @PublishEntityChangedEvents
 @Table(name = "KDP_ORGANIZATIONS")
 @Entity(name = "kdp_Organizations")
-@NamePattern("%s|shortName")
-public class Organizations extends StandardEntity {
+@NamePattern("#getCaption|organizationsEn,organizationsRu,organizationsUa")
+public class Organizations extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = -7946626287646661870L;
 
-    @NotNull
-    @Column(name = "CODE", length = 9)
+    @Column(name = "CODE")
     private String code;
 
-    @NotNull
-    @Column(name = "PREFIX", length = 3)
-    private String prefix;
+    @MetaProperty
+    @Transient
+    private String name;
 
-    @NotNull
-    @Column(name = "SHORT_NAME", nullable = false)
-    private String shortName;
-
-    @NotNull
-    @Column(name = "FULL_NAME", nullable = false)
+    @Column(name = "FULL_NAME")
     private String fullName;
 
-    @NotNull
     @Column(name = "ORGANIZATIONS_EN")
     private String organizationsEn;
 
-    @NotNull
-    @Column(name = "ORGANIZATIONS_UA", nullable = false)
+    @Column(name = "ORGANIZATIONS_UA")
     private String organizationsUa;
 
-    @NotNull
-    @Column(name = "ORGANIZATIONS_RU", nullable = false)
+    @Column(name = "ORGANIZATIONS_RU")
     private String organizationsRu;
 
-    @NotNull
     @Column(name = "CODE_OCPO", length = 12)
     private String codeRegistration;
 
@@ -59,7 +50,6 @@ public class Organizations extends StandardEntity {
     private Date dateRegistration;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-    @NotNull
     @OnDeleteInverse(DeletePolicy.DENY)
     @OnDelete(DeletePolicy.UNLINK)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -147,14 +137,6 @@ public class Organizations extends StandardEntity {
         this.entity = entity;
     }
 
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -171,22 +153,18 @@ public class Organizations extends StandardEntity {
         this.code = code;
     }
 
-    public String getShortName() {
-        return shortName;
+    public String getName() {
+        return getCaption();
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setName(String name) {
+        this.name = getCaption();
     }
 
     @PostConstruct
     private void initVisitDate() {
-
-        if (code == null) {
-            setCode(generateNewCode().toString());
-        }
-
-        setActive(true);
+        active = true;
+        entity = true;
 
         DataManager dataManager = AppBeans.get(DataManager.class);
 
@@ -196,15 +174,18 @@ public class Organizations extends StandardEntity {
                 .view("_minimal")
                 .list();
 
-        if (listCountry.size() == 1) {
-            setCountryRegistration(listCountry.get(0));
+        if (!listCountry.isEmpty()) {
+            countryRegistration = listCountry.get(0);
         }
-
     }
 
-    private Long generateNewCode() {
+    public Long generateNewCode() {
         UniqueNumbersService numbersService = AppBeans.get(UniqueNumbersService.class);
-        return numbersService.getNextNumber("organizationCode");
+        return numbersService.getNextNumber("organization");
+    }
+
+    public String getCaption(){
+        return MessageHelperITK.getCaption(organizationsUa, organizationsEn, organizationsRu);
     }
 
 }

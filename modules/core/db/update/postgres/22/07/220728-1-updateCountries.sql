@@ -1,0 +1,1 @@
+drop index IDX_KDP_COUNTRIES_UK_CODE ;

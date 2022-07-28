@@ -37,13 +37,7 @@
                 <action id="fillFromExternal" caption="msg://organizationsBrowse.fillFromExternal"/>
             </actions>
             <columns>
-                <column id="code" expandRatio="2"/>
-                <column id="prefix" expandRatio="1"/>
-                <column id="shortName" expandRatio="3"/>
-                <column id="fullName" expandRatio="5"/>
-                <column id="organizationsEn" expandRatio="5"/>
-                <column id="organizationsUa" expandRatio="5"/>
-                <column id="organizationsRu" expandRatio="5"/>
+                <column id="name" expandRatio="5"/>
                 <column id="codeRegistration" expandRatio="3"/>
                 <column id="dateRegistration" expandRatio="3"/>
                 <column id="countryRegistration" expandRatio="2"/>
