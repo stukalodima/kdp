@@ -32,10 +32,10 @@ cuba {
         isSnapshot = true
     }
     tomcat {
-        port = '6060'
-        ajpPort = '6009'
-        shutdownPort = '6005'
-        debugPort = '6767'
+        port = '5050'
+        ajpPort = '5009'
+        shutdownPort = '5005'
+        debugPort = '5757'
     }
 }
 
@@ -194,13 +194,13 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
 restart.finalizedBy start
 
 task buildUberJar(type: CubaUberJarBuilding) {
-    webPort = 6060
+    webPort = 5050
     logbackConfigurationFile = 'etc/uber-jar-logback.xml'
     singleJar = true
     appProperties = ['cuba.automaticDatabaseUpdate': true,
                      'cuba.dataSource.username'    : 'postgres',
                      'cuba.dataSource.password'    : 'postgres',
-                     'cuba.dataSource.dbName'      : 'kdp',
+                     'cuba.dataSource.dbName'      : 'kdp_test',
                      'cuba.dataSource.host'        : 'localhost',
                      'cuba.dataSource.port'        : '',
                      'cuba.dataSourceProvider'     : 'application']
