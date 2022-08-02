@@ -397,7 +397,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         List<Employees> employees = dataManager.load(Employees.class)
                 .query("select e from kdp_Employees e where e.user = :user")
                 .parameter("user", userSession.getUser())
-                .view("employees-view")
+                .view("employees-for-create-api")
                 .list();
         if (employees.size() == 1) {
             event.getEntity().setEmployee(employees.get(0));
