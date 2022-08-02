@@ -272,7 +272,9 @@ create table KDP_TRANSPORT (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NAME varchar(255),
+    NAME_UA varchar(255),
+    NAME_EN varchar(255),
+    NAME_RU varchar(255),
     ACTIVE boolean,
     --
     primary key (ID)
@@ -382,3 +384,21 @@ create table KDP_VACATION_FILES (
     primary key (ID)
 )^
 -- end KDP_VACATION_FILES
+-- begin KDP_VACATION_BALANCE
+create table KDP_VACATION_BALANCE (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    EMPLOYEE_ID uuid,
+    VACATION_TYPE_ID uuid,
+    days integer,
+    --
+    primary key (ID)
+)^
+-- end KDP_VACATION_BALANCE

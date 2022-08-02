@@ -110,7 +110,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     private Messages messages;
     @Inject
     private ScreenValidation screenValidation;
-    @Named("body.mainTab")
+    @Named("bodyTab.mainTab")
     private VBoxLayout mainTab;
     private boolean chooseEmployee;
     @Inject
@@ -133,6 +133,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     String SHARE_NEW_MESSAGE_SCREEN_ID = "ddcui$send-message";
     @Inject
     private CollectionLoader<Message> messagesDl;
+//    @Inject
+//    private CheckBoxGroup<Transport> transportOptionGroup;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -155,6 +157,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         sendToApprove.setVisible(Objects.isNull(getEditedEntity().getProcInstance()));
         baseFormSetEditable(Objects.isNull(getEditedEntity().getProcInstance()));
         formTransport.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
+//        transportOptionGroup.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
         startDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         endDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         startPlaceField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
@@ -184,6 +187,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             if (procTask.getActTaskDefinitionKey().equals("correction")) {
                 baseFormSetEditable(true);
                 formTransport.setEditable(true);
+//                transportOptionGroup.setEditable(true);
                 detailsField.setEditable(true);
                 purposeField.setEditable(true);
                 analyticsField.setEditable(true);
@@ -261,7 +265,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             for (Map.Entry<String, ProcFormDefinition> entry : outcomesWithForms.entrySet()) {
                 ProcAction.BeforeActionPredicate beforeActionPredicate = () -> {
                     boolean result;
-                    if (entry.getKey().equals("Согласовано")) {
+                    if (entry.getKey().equals("Погоджено")) {
                         ValidationErrors validationErrors = screenValidation.validateUiComponents(mainTab);
                         result = validationErrors.isEmpty();
                         if (!result) {
@@ -335,7 +339,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Subscribe("sendToApprove")
     public void onSendToApproveClick(Button.ClickEvent event) {
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
-            getEditedEntity().setStatus("На согласовании");
+            getEditedEntity().setStatus("На погодженні");
             if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
 
                 List<Addressing> addressingList = dataManager.load(Addressing.class)
@@ -378,7 +382,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                 HashMap<String, Object> processVariables = new HashMap<>();
                 processRuntimeService.startProcess(procInstance, "Process started programmatically", processVariables);
                 notifications.create()
-                        .withCaption("Отправлено по маршруту")
+                        .withCaption("Відправлено по маршруту")
                         .withType(Notifications.NotificationType.HUMANIZED)
                         .show();
                 businessTripDl.load();
@@ -413,8 +417,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         if (event.isUserOriginated() && !Objects.isNull(event.getValue()) && !Objects.isNull(getEditedEntity().getOnDate())) {
             checkEndDateBeforeStartDate(getEditedEntity().getEndDate());
             if (event.getValue().before(getEditedEntity().getOnDate())) {
-                notifications.create().withCaption("Внимание!!!")
-                        .withDescription("Вы оформляете заявку задним числом. Дата начала командировки меньше даты заявки!")
+                notifications.create().withCaption("Увага!!!")
+                        .withDescription("Ви створюєте заявку заднім числом. Дата початку заявки менше за поточну дату!")
                         .show();
             }
         }
@@ -430,8 +434,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     private void checkEndDateBeforeStartDate(Date endDate) {
         if (!Objects.isNull(endDate) && !Objects.isNull(getEditedEntity().getStartDate())) {
             if (endDate.before(getEditedEntity().getStartDate())) {
-                notifications.create().withCaption("Внимание!!!")
-                        .withDescription("Дата начала командировки не может бить больше даты окончания!")
+                notifications.create().withCaption("Увага!!!")
+                        .withDescription("Дата початку відрядження не може бути менше дати закінчення!")
                         .show();
             }
         }
@@ -467,4 +471,17 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                 .withLaunchMode(OpenMode.DIALOG)
                 .show();
     }
+
+    @Subscribe
+    public void onInit(InitEvent event) {
+//        List<Transport> transportList = dataManager.load(Transport.class)
+//                .query("e.active = TRUE")
+//                .view("_base")
+//                .list();
+//
+//        Map<String, Transport> map = new LinkedHashMap<>();
+//        transportList.forEach(e->map.put(e.getName(),e));
+//        transportOptionGroup.setOptionsMap(map);
+    }
+
 }

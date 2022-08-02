@@ -32,6 +32,7 @@
         <item screen="kdp_Purpose.browse" caption="mainMsg://menu_config.kdp_Purpose.browse"/>
         <item screen="kdp_Transport.browse" caption="mainMsg://menu_config.kdp_Transport.browse"/>
         <item screen="kdp_Addressing.browse" caption="mainMsg://menu_config.kdp_Addressing.browse"/>
+        <item screen="kdp_VacationBalance.browse" caption="mainMsg://menu_config.kdp_VacationBalance.browse"/>
     </menu>
     <menu id="bpm" icon="font-icon:AREA_CHART" caption="mainMsg://menu_config.bpm">
         <item id="bpm$ProcModel.lookup"/>
@@ -68,5 +69,11 @@
         <separator/>
         <item id="settings"/>
         <item screen="helium_ThemeSettingsScreen"/>
+    </menu>
+    <menu id="application-ldap" icon="font-icon:Y_COMBINATOR"
+          insertBefore="help">
+        <item screen="ldap$LdapPropertiesConfig.edit"/>
+        <item screen="ldap$matchingRuleScreen"/>
+        <item screen="ldap$UserSynchronizationLog.browse"/>
     </menu>
 </menu-config>

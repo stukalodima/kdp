@@ -8,9 +8,11 @@
                   class="com.itk.kdp.entity.VacationRequest">
             <view extends="_local">
                 <property name="employee" view="_base">
+                    <property name="company"/>
                     <property name="department"/>
                     <property name="position"/>
                     <property name="manager" view="_base">
+                        <property name="company"/>
                         <property name="user" view="_local"/>
                     </property>
                 </property>
@@ -18,9 +20,11 @@
                 <property name="department" view="_local"/>
                 <property name="position" view="_local"/>
                 <property name="coordinator" view="_base">
+                    <property name="company"/>
                     <property name="department"/>
                     <property name="position"/>
                     <property name="manager" view="_base">
+                        <property name="company"/>
                         <property name="user" view="_local"/>
                     </property>
                 </property>

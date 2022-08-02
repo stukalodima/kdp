@@ -64,6 +64,14 @@ public class CompanyServiceBean implements CompanyService {
         return company;
     }
 
+    @Override
+    public List<Organizations> getCompanyListByActive() {
+        return dataManager.load(Organizations.class)
+                .query("select e from kdp_Organizations e where e.active = TRUE")
+                .view("_local")
+                .list();
+    }
+
     private void parseJsonString(String jsonString) {
         JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
         HashMap<String, String> companyMap = new HashMap<>();

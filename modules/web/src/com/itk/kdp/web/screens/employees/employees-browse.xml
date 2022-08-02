@@ -10,7 +10,7 @@
             <view extends="_local">
                 <property name="department" view="_minimal"/>
                 <property name="position" view="_minimal"/>
-                <property name="manager" view="_local"/>
+                <property name="manager" view="_base"/>
                 <property name="photo" view="_minimal"/>
                 <property name="company" view="_minimal"/>
             </view>

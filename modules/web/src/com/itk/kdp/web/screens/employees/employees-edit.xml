@@ -98,7 +98,7 @@
                                        dataContainer="employeesDc"
                                        property="photo"
                                        align="MIDDLE_CENTER"
-                                       scaleMode="FILL"/>
+                                       scaleMode="SCALE_DOWN"/>
                                 <hbox align="BOTTOM_RIGHT"
                                       spacing="true">
                                     <upload id="photoField"

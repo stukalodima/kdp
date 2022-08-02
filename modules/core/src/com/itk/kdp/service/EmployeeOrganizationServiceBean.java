@@ -30,7 +30,7 @@ public class EmployeeOrganizationServiceBean implements EmployeeOrganizationServ
             employees = dataManager.load(Employees.class)
                     .query("select e from kdp_Employees e where e.workEmail = :workEmail")
                     .parameter("workEmail", email)
-                    .view("employees-view")
+                    .view("employees-for-create-api")
                     .list();
         }
         return employees;

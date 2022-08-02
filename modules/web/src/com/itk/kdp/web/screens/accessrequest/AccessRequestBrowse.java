@@ -1,5 +1,6 @@
 package com.itk.kdp.web.screens.accessrequest;
 
+import com.haulmont.cuba.gui.Route;
 import com.haulmont.cuba.gui.screen.*;
 import com.itk.kdp.entity.AccessRequest;
 
@@ -7,5 +8,6 @@ import com.itk.kdp.entity.AccessRequest;
 @UiDescriptor("access-request-browse.xml")
 @LookupComponent("accessRequestsTable")
 @LoadDataBeforeShow
+@Route("access-request")
 public class AccessRequestBrowse extends StandardLookup<AccessRequest> {
 }

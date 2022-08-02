@@ -1,5 +1,6 @@
 package com.itk.kdp.web.screens.vacationrequest;
 
+import com.haulmont.cuba.gui.Route;
 import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.data.GroupInfo;
 import com.haulmont.cuba.gui.screen.*;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 @UiDescriptor("vacation-request-browse.xml")
 @LookupComponent("vacationRequestsTable")
 @LoadDataBeforeShow
+@Route("vacation-request")
 public class VacationRequestBrowse extends StandardLookup<VacationRequest> {
     @Inject
     private GroupTable<VacationRequest> vacationRequestsTable;
@@ -26,9 +28,9 @@ public class VacationRequestBrowse extends StandardLookup<VacationRequest> {
             public String getStyleName(VacationRequest entity, @Nullable String property) {
                 if (property == null) {
                     switch (entity.getStatus()){
-                        case "На согласовании": return "startProc1";
-                        case "Согласована": return "approved1";
-                        case "Не согласована": return "terminated1";
+                        case "На погодженні": return "startProc1";
+                        case "Погоджена": return "approved1";
+                        case "Не погоджена": return "terminated1";
                     }
                 }
                 return null;

@@ -21,6 +21,7 @@
                 <entry key="kdp_EmailService" value="com.itk.kdp.service.EmailService"/>
                 <entry key="kdp_VacationTypeService" value="com.itk.kdp.service.VacationTypeService"/>
                 <entry key="kdp_CountryService" value="com.itk.kdp.service.CountryService"/>
+                <entry key="kdp_VacationBalanceService" value="com.itk.kdp.service.VacationBalanceService"/>
             </map>
         </property>
     </bean>

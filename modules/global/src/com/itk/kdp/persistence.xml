@@ -18,5 +18,6 @@
         <class>com.itk.kdp.entity.BusinessTripFiles</class>
         <class>com.itk.kdp.entity.AccessRequest</class>
         <class>com.itk.kdp.entity.VacationFiles</class>
+        <class>com.itk.kdp.entity.VacationBalance</class>
     </persistence-unit>
 </persistence>

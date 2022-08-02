@@ -6,6 +6,8 @@ import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.entity.BusinessTrip;
+import com.itk.kdp.entity.VacationBalance;
+import com.itk.kdp.entity.VacationRequest;
 import com.itk.kdp.service.EmailService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -42,7 +44,15 @@ public class CreateTaskListener implements TaskListener {
         MetaClass metaClass = metadata.getClass(entityName);
 
         EntityManager entityManager = persistence.getEntityManager();
-        BusinessTrip businessTrip = entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
+        BusinessTrip businessTrip = null;
+        VacationRequest vacationRequest = null;
+        if (Objects.requireNonNull(metaClass).getJavaClass().equals(BusinessTrip.class)) {
+            businessTrip = entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
+        } else if (Objects.requireNonNull(metaClass).getJavaClass().equals(VacationRequest.class)) {
+            vacationRequest = entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
+        } else {
+            return;
+        }
 
         if (users.isEmpty()) {
             String userStr = delegateTask.getAssignee();
@@ -55,6 +65,9 @@ public class CreateTaskListener implements TaskListener {
             if (!Objects.isNull(businessTrip)) {
                 sendMail(delegateTask, emailService, messages, businessTrip, user);
             }
+            if (!Objects.isNull(vacationRequest)) {
+                sendMailVacation(delegateTask, emailService, messages, vacationRequest, user);
+            }
         } else {
             for (IdentityLink userIdent : users) {
                 UUID userId = UUID.fromString(userIdent.getUserId());
@@ -65,8 +78,42 @@ public class CreateTaskListener implements TaskListener {
                 if (!Objects.isNull(businessTrip)) {
                     sendMail(delegateTask, emailService, messages, businessTrip, user);
                 }
+                if (!Objects.isNull(vacationRequest)) {
+                    sendMailVacation(delegateTask, emailService, messages, vacationRequest, user);
+                }
             }
         }
+    }
+
+    private void sendMailVacation(DelegateTask delegateTask, EmailService emailService, Messages messages, VacationRequest vacationRequest, User user) {
+        Map<String, Serializable> mapParam = new HashMap<>();
+
+        String emptyString = messages.getMessage(BusinessTrip.class, "BusinessTrip.emptyString");
+
+        mapParam.put("systemName", messages.getMessage(CreateTaskListener.class, "mail.systemName"));
+        mapParam.put("welcome", messages.getMessage(CreateTaskListener.class, "mail.welcome"));
+        mapParam.put("userName", user.getName());
+        mapParam.put("YouHaveNewTask", messages.getMessage(CreateTaskListener.class, "mail.newTask"));
+        mapParam.put("taskName", delegateTask.getName());
+        mapParam.put("BaseData", messages.getMessage(CreateTaskListener.class, "mail.BaseData"));
+        mapParam.put("titleFIO", messages.getMessage(VacationRequest.class, "employeesEdit.caption"));
+        mapParam.put("FIO", checkStringFieldIsEmpty(vacationRequest.getEmployee().getCaption(), emptyString));
+        mapParam.put("titleCompany", messages.getMessage(VacationRequest.class, "VacationRequest.company"));
+        mapParam.put("company", checkStringFieldIsEmpty(vacationRequest.getCompany().getCaption(), emptyString));
+        mapParam.put("titleDays", messages.getMessage(VacationRequest.class, "VacationRequest.vacationDays"));
+        mapParam.put("Days", checkStringFieldIsEmpty(vacationRequest.getVacationDays().toString(), emptyString));
+        mapParam.put("titleStartDate", messages.getMessage(VacationRequest.class, "VacationRequest.dateFrom"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        mapParam.put("startDate", checkStringFieldIsEmpty(simpleDateFormat.format(vacationRequest.getDateFrom()),emptyString));
+        mapParam.put("titleEndDate", messages.getMessage(VacationRequest.class, "VacationRequest.dateBy"));
+        mapParam.put("endDate", checkStringFieldIsEmpty(simpleDateFormat.format(vacationRequest.getDateBy()),emptyString));
+        mapParam.put("titleNumber", messages.getMessage(VacationRequest.class, "VacationRequest.applicationNumber"));
+        mapParam.put("number", checkStringFieldIsEmpty(vacationRequest.getApplicationNumber().toString(),emptyString));
+
+        emailService.sendEmail(user.getEmail(),
+                messages.getMessage(CreateTaskListener.class, "mail.createTaskListenerEmailCaptionVacation"),
+                messages.getMessage(CreateTaskListener.class, "mail.createTaskListenerEmailTemplateVacation"),
+                mapParam);
     }
 
     private User getUser(DataManager dataManager, UUID userId) {

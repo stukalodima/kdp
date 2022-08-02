@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://vacationBalanceBrowse.caption"
+        focusComponent="vacationBalancesTable"
+        messagesPack="com.itk.kdp.web.screens.vacationbalance">
+    <data readOnly="true">
+        <collection id="vacationBalancesDc"
+                    class="com.itk.kdp.entity.VacationBalance">
+            <view extends="_local">
+                <property name="employee" view="_base">
+                    <property name="fio"/>
+                    <property name="company" view="_minimal"/>
+                </property>
+                <property name="vacationType" view="_minimal"/>
+            </view>
+            <loader id="vacationBalancesDl">
+                <query>
+                    <![CDATA[select e from kdp_VacationBalance e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="vacationBalancesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="vacationBalancesTable"
+                dataLoader="vacationBalancesDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="vacationBalancesTable"
+                    width="100%"
+                    dataContainer="vacationBalancesDc"
+                    multiselect="true"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+                <action id="fillFromExternal" caption="mainMsg://import.fillFromExternal"/>
+            </actions>
+            <columns>
+                <column id="employee"/>
+                <column id="vacationType"/>
+                <column id="days"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="vacationBalancesTable.create"/>
+                <button id="editBtn" action="vacationBalancesTable.edit"/>
+                <button id="removeBtn" action="vacationBalancesTable.remove"/>
+                <button id="excelBtn" action="vacationBalancesTable.excel"/>
+                <button id="fillFromExternalBtn" action="vacationBalancesTable.fillFromExternal"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

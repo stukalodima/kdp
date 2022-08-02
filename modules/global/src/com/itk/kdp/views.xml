@@ -24,7 +24,7 @@
     </view>
     <view entity="kdp_Employees" name="employees-for-create-api" extends="_local">
         <property name="company" view="_local"/>
-        <property name="manager" view="_local"/>
+        <property name="manager" view="_base"/>
         <property name="position" view="_local"/>
         <property name="department" view="_local"/>
         <property name="photo" view="_local"/>

@@ -12,7 +12,8 @@ public class KdpWebTestContainer extends TestContainer {
                 "com.haulmont.cuba",
                 "com.haulmont.addon.helium",
                 "com.haulmont.bpm",
-                "de.diedavids.cuba.userinbox");
+                "de.diedavids.cuba.userinbox",
+                "com.haulmont.addon.ldap");
         appPropertiesFiles = Arrays.asList(
                 // List the files defined in your web.xml
                 // in appPropertiesConfig context parameter of the web module

@@ -67,5 +67,9 @@
                 <button id="fillFromExternalBtn" action="departmentsesTable.fillFromExternal"/>
             </buttonsPanel>
         </treeTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
     </layout>
 </window>

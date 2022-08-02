@@ -193,7 +193,7 @@ public class EmployeeServiceBean implements EmployeeService {
             commitContext.addInstanceToCommit(fileDescriptor);
         }
         if (!Objects.isNull(employees.getLoginName()) && !StringUtil.isBlank(employees.getLoginName())) {
-            String login = employees.getLoginName().toLowerCase();
+            String login = employees.getLoginName();
             int index = login.indexOf('@');
             login = login.substring(0, index);
 
@@ -216,7 +216,7 @@ public class EmployeeServiceBean implements EmployeeService {
                     .parameter("group", "Company")
                     .list();
 
-            user.setLogin(login);
+            user.setLogin(employees.getLoginName());
             user.setName(employees.getCaption(false));
             user.setFirstName(employees.getNameUa());
             user.setMiddleName(employees.getMiddleNameUa());

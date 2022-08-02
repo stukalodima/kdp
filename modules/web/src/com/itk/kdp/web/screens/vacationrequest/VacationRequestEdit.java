@@ -26,6 +26,7 @@ import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.config.ConsultationService;
 import com.itk.kdp.entity.*;
 import com.itk.kdp.service.EmployeeOrganizationService;
+import com.itk.kdp.service.VacationBalanceService;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import de.diedavids.cuba.userinbox.entity.Message;
 import org.slf4j.Logger;
@@ -98,6 +99,8 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private ProcessRuntimeService processRuntimeService;
     @Inject
     private Button sendToApprove;
+    @Inject
+    private VacationBalanceService vacationBalanceService;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -166,7 +169,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
             for (Map.Entry<String, ProcFormDefinition> entry : outcomesWithForms.entrySet()) {
                 ProcAction.BeforeActionPredicate beforeActionPredicate = () -> {
                     boolean result;
-                    if (entry.getKey().equals("Согласовано")) {
+                    if (entry.getKey().equals("Погоджено")) {
                         ValidationErrors validationErrors = screenValidation.validateUiComponents(mainTab);
                         result = validationErrors.isEmpty();
                         if (!result) {
@@ -279,7 +282,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
                             + " "
                             + messages.getMessage(VacationRequestEdit.class, "vacationRequestEdit.dateCaption")
                             + " "
-                            +format.format(getEditedEntity().getApplicationDate())
+                            + format.format(getEditedEntity().getApplicationDate())
             );
         }
     }
@@ -287,6 +290,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Subscribe("dateByField")
     public void onDateByFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
         if (event.isUserOriginated()) {
+            calcDaysVacation();
             ValidationErrors errors = screenValidation.validateCrossFieldRules(this, getEditedEntity());
             if (!errors.isEmpty()) {
                 screenValidation.showValidationErrors(this, errors);
@@ -324,7 +328,15 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Subscribe("dateFromField")
     public void onDateFromFieldValueChange(HasValue.ValueChangeEvent<Date> event) {
         if (event.isUserOriginated()) {
+            calcDaysVacation();
             this.validateScreen();
+        }
+    }
+
+    private void calcDaysVacation() {
+        if (!Objects.isNull(getEditedEntity().getDateFrom()) && !(Objects.isNull(getEditedEntity().getDateBy()))) {
+            long milliseconds = getEditedEntity().getDateBy().getTime() - getEditedEntity().getDateFrom().getTime();
+            getEditedEntity().setVacationDays((int) (milliseconds / (24 * 60 * 60 * 1000)));
         }
     }
 
@@ -349,6 +361,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Subscribe("employeeField")
     public void onEmployeeFieldValueChange(HasValue.ValueChangeEvent<Employees> event) {
         if (!Objects.isNull(event.getValue()) && event.isUserOriginated()) {
+            getVacationBalance();
             getEditedEntity().setDepartment(event.getValue().getDepartment());
             getEditedEntity().setCompany(event.getValue().getCompany());
             getEditedEntity().setPosition(event.getValue().getPosition());
@@ -356,10 +369,32 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
         }
     }
 
+    @Subscribe("vacationTypeField")
+    public void onVacationTypeFieldValueChange(HasValue.ValueChangeEvent<VacationType> event) {
+        if (event.isUserOriginated()) {
+            getVacationBalance();
+        }
+    }
+
+
+
+    private void getVacationBalance() {
+        if (!Objects.isNull(getEditedEntity().getEmployee()) && !Objects.isNull(getEditedEntity().getVacationType())) {
+            VacationBalance vacationBalance = vacationBalanceService.getVacationBalanceByEmployeeAndVacationType(
+                    getEditedEntity().getEmployee(), getEditedEntity().getVacationType()
+            );
+            if (!Objects.isNull(vacationBalance) && !Objects.isNull(vacationBalance.getDays())) {
+                getEditedEntity().setRemainingVacationDays(vacationBalance.getDays());
+            } else {
+                getEditedEntity().setRemainingVacationDays(0);
+            }
+        }
+    }
+
     @Subscribe("sendToApprove")
     public void onSendToApproveClick(Button.ClickEvent event) {
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
-            getEditedEntity().setStatus("На согласовании");
+            getEditedEntity().setStatus("На погодженні");
             if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
 
                 List<Addressing> addressingList = dataManager.load(Addressing.class)
@@ -402,7 +437,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
                 HashMap<String, Object> processVariables = new HashMap<>();
                 processRuntimeService.startProcess(procInstance, "Process started programmatically", processVariables);
                 notifications.create()
-                        .withCaption("Отправлено по маршруту")
+                        .withCaption("Відправлено по маршруту")
                         .withType(Notifications.NotificationType.HUMANIZED)
                         .show();
                 vacationRequestDl.load();

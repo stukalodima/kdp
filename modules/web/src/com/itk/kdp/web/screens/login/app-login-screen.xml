@@ -23,7 +23,7 @@
                           width="AUTO">
                         <image id="logoImage"
                                align="MIDDLE_CENTER"
-                               height="AUTO"
+                               height="150px"
                                scaleMode="SCALE_DOWN"
                                stylename="c-login-logo"
                                width="AUTO"/>

@@ -3,6 +3,7 @@ package com.itk.kdp.core;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.Transaction;
 import com.itk.kdp.entity.BusinessTrip;
+import com.itk.kdp.entity.VacationRequest;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -15,13 +16,29 @@ public class ApprovalHelperBean {
     @Inject
     private Persistence persistence;
 
-    public void updateStateRegister(UUID entityId, String state) {
-        try (Transaction tx = persistence.getTransaction()) {
-            BusinessTrip businessTrip = persistence.getEntityManager().find(BusinessTrip.class, entityId);
-            if (!Objects.isNull(businessTrip)) {
-                businessTrip.setStatus(state);
+    public void updateStateRegister(UUID entityId, String state, String type) {
+
+        switch (type) {
+            case "Trip": {
+                try (Transaction tx = persistence.getTransaction()) {
+                    BusinessTrip businessTrip = persistence.getEntityManager().find(BusinessTrip.class, entityId);
+                    if (!Objects.isNull(businessTrip)) {
+                        businessTrip.setStatus(state);
+                    }
+                    tx.commit();
+                    break;
+                }
             }
-            tx.commit();
+            case "Vacation": {
+                try (Transaction tx = persistence.getTransaction()) {
+                    VacationRequest vacationRequest = persistence.getEntityManager().find(VacationRequest.class, entityId);
+                    if (!Objects.isNull(vacationRequest)) {
+                        vacationRequest.setStatus(state);
+                    }
+                    tx.commit();
+                    break;
+                }
+            }
         }
     }
 }

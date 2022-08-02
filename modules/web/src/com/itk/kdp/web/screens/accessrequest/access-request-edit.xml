@@ -7,12 +7,15 @@
         <instance id="accessRequestDc"
                   class="com.itk.kdp.entity.AccessRequest">
             <view extends="_local">
-                <property name="employees" view="_minimal">
-                    <property name="fio"/>
+                <property name="employees" view="_base">
+                    <property name="company" view="_local"/>
+                    <property name="manager" view="_base">
+                        <property name="company" view="_local"/>
+                    </property>
                 </property>
                 <property name="company" view="_minimal"/>
-                <property name="manager" view="_minimal">
-                    <property name="fio"/>
+                <property name="manager" view="_base">
+                    <property name="company" view="_local"/>
                 </property>
                 <property name="procInstance" view="procInstance-full"/>
             </view>

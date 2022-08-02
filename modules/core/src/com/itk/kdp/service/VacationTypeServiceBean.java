@@ -29,7 +29,8 @@ public class VacationTypeServiceBean implements VacationTypeService {
     @Override
     public void getVacationTypeListFromExternal() throws IOException {
         String connectString = restApiConfig.getRestApiVacationTypeService();
-        String jsonString = restClientService.callGetMethod(connectString);
+
+        String jsonString = restClientService.callGetMethod(connectString,true);
         if (!jsonString.isEmpty()) {
             parseJsonString(jsonString);
         }

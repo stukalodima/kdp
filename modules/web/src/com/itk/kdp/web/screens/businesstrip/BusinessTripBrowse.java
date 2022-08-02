@@ -1,5 +1,6 @@
 package com.itk.kdp.web.screens.businesstrip;
 
+import com.haulmont.cuba.gui.Route;
 import com.haulmont.cuba.gui.components.ButtonsPanel;
 import com.haulmont.cuba.gui.components.GroupTable;
 import com.haulmont.cuba.gui.components.Table;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 @UiDescriptor("business-trip-browse.xml")
 @LookupComponent("businessTripsTable")
 @LoadDataBeforeShow
+@Route("business-trip")
 public class BusinessTripBrowse extends StandardLookup<BusinessTrip> implements WithEntitySharingSupport {
     @Inject
     private GroupTable<BusinessTrip> businessTripsTable;
@@ -29,9 +31,9 @@ public class BusinessTripBrowse extends StandardLookup<BusinessTrip> implements 
             public String getStyleName(BusinessTrip entity, @Nullable String property) {
                 if (property == null) {
                     switch (entity.getStatus()){
-                        case "На согласовании": return "startProc1";
-                        case "Согласована": return "approved1";
-                        case "Не согласована": return "terminated1";
+                        case "На погодженні": return "startProc1";
+                        case "Погоджена": return "approved1";
+                        case "Не погоджена": return "terminated1";
                     }
                 }
                 return null;

@@ -5,6 +5,7 @@ import com.haulmont.cuba.core.config.Property;
 import com.haulmont.cuba.core.config.Source;
 import com.haulmont.cuba.core.config.SourceType;
 import com.haulmont.cuba.core.config.defaults.Default;
+import com.haulmont.cuba.core.global.Secret;
 
 @Source(type = SourceType.DATABASE)
 public interface RestApiConfig extends Config {
@@ -26,10 +27,21 @@ public interface RestApiConfig extends Config {
     String getRestApiPositionService();
 
     @Property("REST-API_VACATION_TYPE_SERVICE")
-    @Default("http://localhost:6060/vacation/VAADIN/vacationType.json")
+    @Default("http://172.29.32.4/sbs_zup/hs/portal/getVacationTypes?all=1")
     String getRestApiVacationTypeService();
 
     @Property("REST-API_COUNTRY_SERVICE")
     @Default("http://localhost:6060/vacation/VAADIN/country.json")
     String getRestApiCountryService();
+
+    @Property("REST-API_VACATION_BALANCE_SERVICE")
+    @Default("http://172.29.32.4/sbs_zup/hs/portal/getVacationBalance")
+    String getRestApiVacationBalanceService();
+
+    @Property("REST-API_USER_VALUE")
+    String getRestApiUserService();
+
+    @Property("REST-API_PASSWORD_VALUE")
+    @Secret
+    String getRestApiPasswordService();
 }

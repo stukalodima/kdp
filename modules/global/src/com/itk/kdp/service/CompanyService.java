@@ -3,6 +3,7 @@ package com.itk.kdp.service;
 import com.itk.kdp.entity.Organizations;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface CompanyService {
     String NAME = "kdp_CompanyService";
@@ -10,5 +11,6 @@ public interface CompanyService {
     void getCompanyListFromExternal() throws IOException;
     Organizations getCompanyByCode(String code);
     Organizations getCompanyById(String id);
+    List<Organizations> getCompanyListByActive();
 
 }

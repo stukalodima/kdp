@@ -17,7 +17,9 @@
     <layout expand="editActions" spacing="true">
         <form id="form" dataContainer="transportDc">
             <column width="400px">
-                <textField id="nameField" property="name"/>
+                <textField id="nameUaField" property="nameUa"/>
+                <textField id="nameEnField" property="nameEn"/>
+                <textField id="nameRuField" property="nameRu"/>
                 <checkBox id="activeField" property="active"/>
             </column>
         </form>

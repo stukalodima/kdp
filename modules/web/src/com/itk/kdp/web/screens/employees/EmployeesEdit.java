@@ -1,8 +1,12 @@
 package com.itk.kdp.web.screens.employees;
 
+import com.haulmont.cuba.core.app.FileStorageService;
 import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.FileStorageException;
+import com.haulmont.cuba.core.global.Messages;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.components.*;
+import com.haulmont.cuba.gui.exception.FileStorageExceptionHandler;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.*;
 import com.itk.kdp.entity.Departments;
@@ -35,6 +39,10 @@ public class EmployeesEdit extends StandardEditorITK<Employees> {
     private CollectionLoader<Position> positionsDl;
     @Inject
     private LookupPickerField<Position> positionField;
+    @Inject
+    private FileStorageService fileStorageService;
+    @Inject
+    private Messages messages;
 
     @Subscribe("departmentField.lookup")
     public void onDepartmentFieldLookup(Action.ActionPerformedEvent event) {
@@ -89,11 +97,15 @@ public class EmployeesEdit extends StandardEditorITK<Employees> {
     }
 
     private void displayImage() {
-        if (getEditedEntity().getPhoto() != null) {
-            image.setSource(FileDescriptorResource.class).setFileDescriptor(getEditedEntity().getPhoto());
-            image.setVisible(true);
-        } else {
-            image.setVisible(false);
+        try {
+            if (getEditedEntity().getPhoto() != null && fileStorageService.fileExists(getEditedEntity().getPhoto())) {
+                image.setSource(FileDescriptorResource.class).setFileDescriptor(getEditedEntity().getPhoto());
+                image.setVisible(true);
+            } else {
+                image.setVisible(false);
+            }
+        } catch (FileStorageException e) {
+            throw new RuntimeException(messages.getMainMessage("employees.msg.fileError"), e);
         }
     }
 
