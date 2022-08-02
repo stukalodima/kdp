@@ -150,6 +150,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private void initClaimTaskUI() {
         Button claimTaskBtn = uiComponents.create(Button.class);
         claimTaskBtn.setWidth("100%");
+        claimTaskBtn.setCaption(messages.getMainMessage("form.claimTaskBtn"));
 
         ProcAction.AfterActionListener afterClaimTaskListener = () -> {
             actionsBox.removeAll();
