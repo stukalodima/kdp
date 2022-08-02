@@ -150,6 +150,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private void initClaimTaskUI() {
         Button claimTaskBtn = uiComponents.create(Button.class);
         claimTaskBtn.setWidth("100%");
+        claimTaskBtn.setCaption(messages.getMainMessage("form.claimTaskBtn"));
 
         ProcAction.AfterActionListener afterClaimTaskListener = () -> {
             actionsBox.removeAll();
@@ -336,7 +337,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private void calcDaysVacation() {
         if (!Objects.isNull(getEditedEntity().getDateFrom()) && !(Objects.isNull(getEditedEntity().getDateBy()))) {
             long milliseconds = getEditedEntity().getDateBy().getTime() - getEditedEntity().getDateFrom().getTime();
-            getEditedEntity().setVacationDays((int) (milliseconds / (24 * 60 * 60 * 1000)));
+            getEditedEntity().setVacationDays(((int) (milliseconds / (24 * 60 * 60 * 1000)) )+ 1);
         }
     }
 
