@@ -336,7 +336,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private void calcDaysVacation() {
         if (!Objects.isNull(getEditedEntity().getDateFrom()) && !(Objects.isNull(getEditedEntity().getDateBy()))) {
             long milliseconds = getEditedEntity().getDateBy().getTime() - getEditedEntity().getDateFrom().getTime();
-            getEditedEntity().setVacationDays((int) (milliseconds / (24 * 60 * 60 * 1000)));
+            getEditedEntity().setVacationDays(((int) (milliseconds / (24 * 60 * 60 * 1000)) )+ 1);
         }
     }
 
