@@ -113,7 +113,7 @@
                 forceDialog="true"/>
     <layout expand="editActions" spacing="true" width="100%">
         <tabSheet id="body">
-            <tab id="mainTab" caption="Заявка" spacing="true" margin="true,false,false,false">
+            <tab id="mainTab" caption="msg://request" spacing="true" margin="true,false,false,false">
                 <form id="form" dataContainer="vacationRequestDc" width="100%">
                     <column width="50%">
                         <lookupPickerField id="employeeField" optionsContainer="employeesDc" property="employee"
@@ -160,7 +160,7 @@
                         </lookupPickerField>
                         <dateField id="dateFromField" property="dateFrom" width="100%">
                             <validators>
-                                <futureOrPresent checkSeconds="false"/>
+                                <futureOrPresent checkSeconds="false" message="msg://dateStartFutureOrPresent"/>
                             </validators>
                         </dateField>
                         <textField id="vacationDaysField" property="vacationDays" editable="false" colspan="2"
@@ -183,12 +183,12 @@
                     </column>
                 </form>
             </tab>
-            <tab id="otherTab" caption="Ход согласования" margin="true,false,false,false" expand="procTaskScroll">
+            <tab id="otherTab" caption="msg://approval_progress" margin="true,false,false,false" expand="procTaskScroll">
                 <scrollBox id="procTaskScroll" width="100%" height="100%" contentMinHeight="400px">
                     <groupTable dataContainer="procTasksDs" width="100%" height="400">
                         <columns>
-                            <column id="locName" caption="Этап процесса" expandRatio="4" maxTextLength="40"/>
-                            <column id="procActor" caption="Исполнитель" expandRatio="3" maxTextLength="40"/>
+                            <column id="locName" caption="msg://process_step" expandRatio="4" maxTextLength="40"/>
+                            <column id="procActor" caption="msg://executor" expandRatio="3" maxTextLength="40"/>
                             <column id="startDate" expandRatio="2"/>
                             <column id="endDate" expandRatio="2"/>
                             <column id="locOutcome" caption="Результат" expandRatio="2"/>
@@ -198,7 +198,7 @@
                     </groupTable>
                 </scrollBox>
             </tab>
-            <tab id="fileTab" caption="Файлы" margin="true,false,false,false">
+            <tab id="fileTab" margin="true,false,false,false" caption="msg://files">
                 <scrollBox
                         height="AUTO"
                         spacing="true"
@@ -218,17 +218,17 @@
                             <button id="attachmentsTableCreate" action="attachmentsTable.create"/>
                         </buttonsPanel>
                         <columns>
-                            <column id="document.name"/>
+                            <column id="document.name" caption="msg://name"/>
                             <column id="author"/>
-                            <column id="document.size"/>
-                            <column id="document.createDate"/>
+                            <column id="document.size" caption="msg://size"/>
+                            <column id="document.createDate" caption="msg://createDate"/>
                             <column id="task" maxTextLength="100"/>
                             <column id="comment" maxTextLength="100"/>
                         </columns>
                     </table>
                 </scrollBox>
             </tab>
-            <tab id="messageTab" caption="Сообщения" margin="true,false,false,false">
+            <tab id="messageTab" caption="msg://messages" margin="true,false,false,false">
                 <table id="messagesTable"
                        width="100%"
                        height="400"
@@ -263,7 +263,7 @@
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="commitBtn" action="windowCommit"/>
             <button id="closeBtn" action="windowClose"/>
-            <button id="sendToApprove" caption="Отправить на согласование"/>
+            <button id="sendToApprove" caption="msg://send_for_approval"/>
             <hbox id="actionsBox" spacing="true"/>
         </hbox>
     </layout>
