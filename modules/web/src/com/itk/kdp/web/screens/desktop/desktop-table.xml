@@ -34,7 +34,7 @@
                 <group>
                     <column id="procInstance.procDefinition" expandRatio="4"/>
                 </group>
-                <column id="locName" expandRatio="5" maxTextLength="50"/>
+                <column id="locName" expandRatio="5" maxTextLength="30"/>
                 <column id="startDate" expandRatio="2"/>
                 <column id="assigned" expandRatio="1" caption="msg://desktopTable.assigned"/>
                 <column id="company" expandRatio="3" caption="msg://desktopTable.company"/>
