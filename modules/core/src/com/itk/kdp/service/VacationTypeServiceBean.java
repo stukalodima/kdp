@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import com.haulmont.cuba.core.global.DataManager;
 import com.itk.kdp.config.RestApiConfig;
 import com.itk.kdp.entity.VacationType;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -18,7 +19,6 @@ import java.util.UUID;
 
 @Service(VacationTypeService.NAME)
 public class VacationTypeServiceBean implements VacationTypeService {
-
     @Inject
     private RestClientService restClientService;
     @Inject
@@ -70,7 +70,6 @@ public class VacationTypeServiceBean implements VacationTypeService {
         HashMap<String, String> vacationTypeMap = new HashMap<>();
         for (JsonElement jsonElement:jsonArray) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
-
             //from accounts
             vacationTypeMap.put("vacationTypeId", jsonObject.getAsJsonPrimitive("vacationTypeId").getAsString());
             vacationTypeMap.put("nameUa", jsonObject.getAsJsonPrimitive("vacationTypeUa").getAsString());

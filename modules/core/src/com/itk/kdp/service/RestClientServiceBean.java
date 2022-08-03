@@ -30,6 +30,7 @@ public class RestClientServiceBean implements RestClientService {
         URL obj = new URL(restServiceUrl);
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
         connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
         if (withAuth) {
             String authHeaderValue = restApiConfig.getRestApiUserService() + ":" + restApiConfig.getRestApiPasswordService();
             byte[] encodedAuth = Base64.encodeBase64(authHeaderValue.getBytes(StandardCharsets.UTF_8));
@@ -37,7 +38,7 @@ public class RestClientServiceBean implements RestClientService {
             connection.setRequestProperty("Authorization", authValue);
         }
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
             String inputLine;
             while ((inputLine = bufferedReader.readLine()) != null) {
                 jsonString.append(inputLine);
