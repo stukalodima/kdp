@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
-    <item insertBefore="application-kdp" screen="bpm$ProcTask.lookup" icon="font-icon:TASKS"
-          id="desktop" caption="mainMsg://menu_config.bpm$ProcTask.lookup"/>
+<!--    <item insertBefore="application-kdp" screen="bpm$ProcTask.lookup" icon="font-icon:TASKS"-->
+<!--          id="desktop" caption="mainMsg://menu_config.bpm$ProcTask.lookup"/>-->
     <separator/>
     <menu id="admin-service" insertBefore="hr-service" caption="mainMsg://menu_config.admin-service"
     icon="font-icon:BOOK">

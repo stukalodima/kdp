@@ -14,6 +14,8 @@
                 <property name="manager" view="_base"/>
                 <property name="photo" view="_minimal"/>
                 <property name="user" view="_minimal"/>
+                <property name="vacationManager" view="_base"/>
+                <property name="approvalManager" view="_base"/>
             </view>
             <loader/>
             <instance id="photoDc" property="photo"/>
@@ -25,7 +27,7 @@
                 </query>
             </loader>
         </collection>
-        <collection id="managerDc" class="com.itk.kdp.entity.Employees" view="_minimal">
+        <collection id="managerDc" class="com.itk.kdp.entity.Employees" view="_base">
             <loader id="managerDl">
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>
@@ -141,6 +143,22 @@
                                         </actions>
                                     </lookupPickerField>
                                     <lookupPickerField id="managerField" optionsContainer="managerDc" property="manager"
+                                                       colspan="1" width="100%">
+                                        <actions>
+                                            <action id="lookup" type="picker_lookup"/>
+                                            <action id="open" type="picker_open"/>
+                                            <action id="clear" type="picker_clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                    <lookupPickerField id="approvalManagerField" optionsContainer="managerDc" property="approvalManager"
+                                                       colspan="1" width="100%">
+                                        <actions>
+                                            <action id="lookup" type="picker_lookup"/>
+                                            <action id="open" type="picker_open"/>
+                                            <action id="clear" type="picker_clear"/>
+                                        </actions>
+                                    </lookupPickerField>
+                                    <lookupPickerField id="vacationManagerField" optionsContainer="managerDc" property="vacationManager"
                                                        colspan="1" width="100%">
                                         <actions>
                                             <action id="lookup" type="picker_lookup"/>

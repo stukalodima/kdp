@@ -109,6 +109,20 @@ public class Employees extends StandardEntity implements StandardEntityITK {
     @JoinColumn(name = "MANAGER_ID")
     private Employees manager;
 
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.DENY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "APPROVAL_MANAGER_ID")
+    private Employees approvalManager;
+
+    @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.DENY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "VACATION_MANAGER_ID")
+    private Employees vacationManager;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "BIRTHDAY")
     private Date birthday;
@@ -384,5 +398,21 @@ public class Employees extends StandardEntity implements StandardEntityITK {
         } else {
             return "<>";
         }
+    }
+
+    public Employees getApprovalManager() {
+        return approvalManager;
+    }
+
+    public void setApprovalManager(Employees approvalManager) {
+        this.approvalManager = approvalManager;
+    }
+
+    public Employees getVacationManager() {
+        return vacationManager;
+    }
+
+    public void setVacationManager(Employees vacationManager) {
+        this.vacationManager = vacationManager;
     }
 }
