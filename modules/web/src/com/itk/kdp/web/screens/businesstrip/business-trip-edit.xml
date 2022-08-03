@@ -34,7 +34,7 @@
             <loader id="businessTripDl"/>
             <collection id="procAttachmentsDc" property="documents"/>
         </instance>
-        <collection id="employeesDc" class="com.itk.kdp.entity.Employees" view="employees-view">
+        <collection id="employeesDc" class="com.itk.kdp.entity.Employees" view="employees-for-start-process">
             <loader id="employeesDl">
                 <query>
                     <![CDATA[select e from kdp_Employees e]]>
@@ -264,7 +264,7 @@
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="commitBtn" action="windowCommit"/>
             <button id="closeBtn" action="windowClose"/>
-            <button id="sendToApprove" caption="msg://businessTripEdit.sendToApprove"/>
+            <button id="sendToApprove" caption="mainMsg://form.sendToApprove"/>
             <hbox id="actionsBox" spacing="true"/>
         </hbox>
     </layout>

@@ -96,7 +96,7 @@ public class CreateTaskListener implements TaskListener {
         mapParam.put("YouHaveNewTask", messages.getMessage(CreateTaskListener.class, "mail.newTask"));
         mapParam.put("taskName", delegateTask.getName());
         mapParam.put("BaseData", messages.getMessage(CreateTaskListener.class, "mail.BaseData"));
-        mapParam.put("titleFIO", messages.getMessage(VacationRequest.class, "employeesEdit.caption"));
+        mapParam.put("titleFIO", messages.getMessage(VacationRequest.class, "VacationBalance.employee"));
         mapParam.put("FIO", checkStringFieldIsEmpty(vacationRequest.getEmployee().getCaption(), emptyString));
         mapParam.put("titleCompany", messages.getMessage(VacationRequest.class, "VacationRequest.company"));
         mapParam.put("company", checkStringFieldIsEmpty(vacationRequest.getCompany().getCaption(), emptyString));

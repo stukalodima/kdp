@@ -107,6 +107,8 @@ create table KDP_EMPLOYEES (
     DEPARTMENT_ID uuid,
     POSITION_ID uuid,
     MANAGER_ID uuid,
+    APPROVAL_MANAGER_ID uuid,
+    VACATION_MANAGER_ID uuid,
     BIRTHDAY date,
     EMPLOYMENT_DATE date,
     LOGIN_NAME varchar(255),

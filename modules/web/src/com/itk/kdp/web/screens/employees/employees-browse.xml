@@ -13,6 +13,8 @@
                 <property name="manager" view="_base"/>
                 <property name="photo" view="_minimal"/>
                 <property name="company" view="_minimal"/>
+                <property name="approvalManager" view="_base"/>
+                <property name="vacationManager" view="_base"/>
             </view>
             <loader id="employeesesDl">
                 <query>
@@ -60,6 +62,8 @@
                 <column id="department" align="LEFT"/>
                 <column id="position" align="LEFT"/>
                 <column id="manager" align="LEFT"/>
+                <column id="approvalManager" align="LEFT"/>
+                <column id="vacationManager" align="LEFT"/>
                 <column id="workEmail" align="LEFT"/>
                 <column id="mobilePhone" align="LEFT"/>
                 <column id="otherEmail" align="LEFT"/>

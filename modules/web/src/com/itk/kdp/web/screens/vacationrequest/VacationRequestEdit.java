@@ -417,7 +417,7 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
                     if (Boolean.TRUE.equals(e.getIsInitial())) {
                         procInstanceDetails.addProcActor(e.getProcRole(), userSession.getUser());
                     } else if (Boolean.TRUE.equals(e.getIsManager())) {
-                        Employees manager = dataManager.reload(getEditedEntity().getEmployee().getManager(), "employees-edit");
+                        Employees manager = dataManager.reload(getEditedEntity().getEmployee().getVacationManager(), "employees-for-start-process");
                         procInstanceDetails.addProcActor(e.getProcRole(), manager.getUser());
                     } else if (Boolean.TRUE.equals(e.getAuto())) {
                         procInstanceDetails.addProcActor(

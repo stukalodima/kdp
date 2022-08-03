@@ -10,7 +10,7 @@
 <body>
   <h2>${welcome}, ${userName}!</h2>
   <h2>${YouHaveNewTask}</h2>
-  <p><a href="https://cbf.smart-holding.com/#login">${taskName}</a>
+  <p><a href="https://smart-platform.smart-holding.com/#login">${taskName}</a>
   <h3>${BaseData}</h3>
   <table cellspacing="0">
   <col align="left">

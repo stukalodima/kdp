@@ -11,6 +11,7 @@ import com.haulmont.cuba.security.entity.Group;
 import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.config.RestApiConfig;
 import com.itk.kdp.entity.Employees;
+import com.itk.kdp.entity.Organizations;
 import org.apache.commons.codec.binary.Base64;
 import org.jsoup.internal.StringUtil;
 import org.springframework.stereotype.Service;
@@ -49,12 +50,14 @@ public class EmployeeServiceBean implements EmployeeService {
     @Override
     public void getEmployeeListFromExternal() throws IOException {
         String connectString = restApiConfig.getRestApiEmployeeService();
-        String jsonString = restClientService.callGetMethod(connectString);
-        if (!jsonString.isEmpty()) {
-            try {
-                parseJsonString(jsonString);
-            } catch (ParseException e) {
-                throw new IOException(e);
+        for (Organizations organizations : companyService.getCompanyListByActive()) {
+            String jsonString = restClientService.callGetMethod(connectString+ "?companyId=" + organizations.getOrganizations1cId() + "&all=1", true);
+            if (!jsonString.isEmpty()) {
+                try {
+                    parseJsonString(jsonString);
+                } catch (ParseException e) {
+                    throw new IOException(e);
+                }
             }
         }
     }
@@ -125,7 +128,9 @@ public class EmployeeServiceBean implements EmployeeService {
             employeeMap.put("mobilePhone", jsonObject.getAsJsonPrimitive("mobilePhone").getAsString());
             employeeMap.put("departmentId", jsonObject.getAsJsonPrimitive("departmentId").getAsString());
             employeeMap.put("positionId", jsonObject.getAsJsonPrimitive("positionId").getAsString());
-            employeeMap.put("managerId", jsonObject.getAsJsonPrimitive("approvalManager").getAsString());
+            employeeMap.put("managerId", jsonObject.getAsJsonPrimitive("managerId").getAsString());
+            employeeMap.put("approvalManager", jsonObject.getAsJsonPrimitive("approvalManager").getAsString());
+            employeeMap.put("vacationManager", jsonObject.getAsJsonPrimitive("vacationManager").getAsString());
             employeeMap.put("GUID", jsonObject.getAsJsonPrimitive("GUID").getAsString());
             employeeMap.put("photo", jsonObject.getAsJsonPrimitive("photo").getAsString());
             employeeMap.put("formEmployment", jsonObject.getAsJsonPrimitive("formEmployment").getAsString());
@@ -170,6 +175,8 @@ public class EmployeeServiceBean implements EmployeeService {
         employees.setDepartment(departmentService.getDepartmentByCode(employeeMap.get("companyId") + "$" + employeeMap.get("departmentId")));
         employees.setPosition(positionService.getPositionByCode(employeeMap.get("companyId") + "$" + employeeMap.get("positionId")));
         employees.setManager(getEmployeeByCode(employeeMap.get("managerId")));
+        employees.setApprovalManager(getEmployeeByCode(employeeMap.get("approvalManager")));
+        employees.setVacationManager(getEmployeeByCode(employeeMap.get("vacationManager")));
         employees.setFormEmployment(employeeMap.get("formEmployment").equals("1"));
         employees.setBirthday(birthday);
         employees.setEmploymentDate(employmentDate);
@@ -200,7 +207,7 @@ public class EmployeeServiceBean implements EmployeeService {
             employees.setLoginName(login);
 
             List<User> userList = dataManager.load(User.class)
-                    .query("select e from sec$User e where e.login = :login")
+                    .query("select e from sec$User e where LOWER(e.login) = LOWER(:login)")
                     .parameter("login", login)
                     .view("user.edit")
                     .list();

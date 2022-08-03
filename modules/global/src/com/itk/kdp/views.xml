@@ -11,9 +11,33 @@
           extends="_local"
           name="employees-edit">
         <property name="photo" view="_local"/>
-        <property name="manager" view="_local">
+        <property name="manager" view="_base">
             <property name="user" view="_local"/>
         </property>
+        <property name="approvalManager" view="_base">
+            <property name="user" view="_local"/>
+        </property>
+        <property name="vacationManager" view="_base">
+            <property name="user" view="_local"/>
+        </property>
+        <property name="department" view="_base"/>
+        <property name="position" view="_base"/>
+        <property name="user" view="_local"/>
+    </view>
+    <view class="com.itk.kdp.entity.Employees"
+          extends="_base"
+          name="employees-for-start-process">
+        <property name="approvalManager" view="_base">
+            <property name="user" view="_local"/>
+        </property>
+        <property name="vacationManager" view="_base">
+            <property name="user" view="_local"/>
+        </property>
+        <property name="manager" view="_base">
+            <property name="user" view="_local"/>
+        </property>
+        <property name="position" view="_base"/>
+        <property name="department" view="_base"/>
         <property name="user" view="_local"/>
     </view>
     <view entity="kdp_Employees" name="employees-view" extends="_local">
@@ -25,6 +49,12 @@
     <view entity="kdp_Employees" name="employees-for-create-api" extends="_local">
         <property name="company" view="_local"/>
         <property name="manager" view="_base">
+            <property name="company" view="_local"/>
+        </property>
+        <property name="approvalManager" view="_base">
+            <property name="company" view="_local"/>
+        </property>
+        <property name="vacationManager" view="_base">
             <property name="company" view="_local"/>
         </property>
         <property name="position" view="_local"/>
@@ -45,6 +75,14 @@
     </view>
     <view entity="kdp_Position" name="position-full" extends="_local">
         <property name="organizationsId" view="_local"/>
+    </view>
+    <view entity="kdp_BusinessTrip" name="businessTrip-view" extends="_base">
+        <property name="organization" view="_base"/>
+        <property name="employee" view="_base"/>
+    </view>
+    <view entity="kdp_VacationRequest" name="vacationRequest-view" extends="_base">
+        <property name="company" view="_base"/>
+        <property name="employee" view="_base"/>
     </view>
 
 </views>

@@ -19,7 +19,7 @@ public interface RestApiConfig extends Config {
     String getRestApiDepartmentService();
 
     @Property("REST-API_EMPLOYEE_SERVICE")
-    @Default("http://localhost:6060/vacation/VAADIN/employee.json")
+    @Default("http://172.29.32.4/sbs_zup/hs/portal/getEmployee")
     String getRestApiEmployeeService();
 
     @Property("REST-API_POSITION_SERVICE")

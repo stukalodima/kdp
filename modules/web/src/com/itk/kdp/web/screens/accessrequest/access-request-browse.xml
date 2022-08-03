@@ -12,9 +12,10 @@
                     <property name="fio"/>
                 </property>
                 <property name="company" view="_minimal"/>
-                <property name="manager" view="_minimal">
+                <property name="manager" view="_base">
                     <property name="fio"/>
                 </property>
+
             </view>
             <loader id="accessRequestsDl">
                 <query>

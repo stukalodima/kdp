@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://desktopTable.caption"
+        messagesPack="com.itk.kdp.web.screens.desktop">
+    <data readOnly="true">
+        <collection id="myTasksDc"
+                    class="com.haulmont.bpm.entity.ProcTask">
+            <view extends="procTask-browse">
+            </view>
+            <loader id="myTasksDl">
+                <query>
+                    <![CDATA[select pt from bpm$ProcTask pt left join pt.procActor pa left join pa.user pau
+                where ((pau.id = :userId or
+				(pa is null and exists(select pt2 from bpm$ProcTask pt2 join pt2.candidateUsers cu where pt2.id = pt.id and cu.id = :userId)))
+				and pt.endDate is null)]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="100%"
+                width="100%"/>
+    <layout expand="myTasksTable"
+            spacing="true">
+        <filter id="filter"
+                dataLoader="myTasksDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="myTasksTable" dataContainer="myTasksDc"
+               width="100%">
+            <actions>
+                <action id="edit" type="edit"/>
+            </actions>
+            <columns>
+                <group>
+                    <column id="procInstance.procDefinition" expandRatio="4"/>
+                </group>
+                <column id="locName" expandRatio="5" maxTextLength="50"/>
+                <column id="startDate" expandRatio="2"/>
+                <column id="assigned" expandRatio="1" caption="msg://desktopTable.assigned"/>
+                <column id="company" expandRatio="3" caption="msg://desktopTable.company"/>
+                <column id="document" expandRatio="3" caption="msg://desktopTable.document"/>
+                <column id="employee" expandRatio="3" caption="msg://desktopTable.employee"/>
+            </columns>
+            <buttonsPanel>
+                <button id="openEntityEditorBtn" action="myTasksTable.edit" caption="msg://desktopTable.openEntityEditorBtn"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

@@ -7,12 +7,10 @@ import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
 import com.haulmont.cuba.core.entity.annotation.OnDelete;
-import com.haulmont.cuba.core.global.AppBeans;
-import com.haulmont.cuba.core.global.DeletePolicy;
-import com.haulmont.cuba.core.global.Metadata;
-import com.haulmont.cuba.core.global.TimeSource;
+import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.core.global.validation.groups.UiCrossFieldChecks;
 import com.haulmont.cuba.security.global.UserSession;
+import com.itk.kdp.base.itk.StandardEntityITK;
 import com.itk.kdp.service.EmployeeOrganizationService;
 import com.itk.kdp.service.EmployeeService;
 import org.apache.commons.lang3.time.DateUtils;
@@ -20,6 +18,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,9 +26,9 @@ import java.util.Objects;
 
 @Table(name = "KDP_VACATION_REQUEST")
 @Entity(name = "kdp_VacationRequest")
-@NamePattern("%s %s|applicationNumber,applicationDate")
 @EventDate(groups = UiCrossFieldChecks.class)
-public class VacationRequest extends StandardEntity {
+@NamePattern("#getCaption|applicationNumber,applicationDate")
+public class VacationRequest extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = 379968912838652266L;
 
     @NotNull
@@ -317,6 +316,17 @@ public class VacationRequest extends StandardEntity {
 
     public void setDocuments(List<VacationFiles> documents) {
         this.documents = documents;
+    }
+
+    @Override
+    public String getCaption() {
+        Messages messages = AppBeans.get(Messages.class);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return applicationNumber +
+                " " +
+                messages.getMainMessage("entityCaption.dateFrom") +
+                " " +
+                simpleDateFormat.format(applicationDate);
     }
 }
 
