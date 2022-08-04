@@ -117,10 +117,6 @@ public class DesktopTable extends Screen {
         Object entityId = procInstance.getObjectEntityId();
 
         MetaClass metaClass = metadata.getClass(procInstance.getEntityName());
-//            if (metaClass == null) {
-//                showNotification(formatMessage("metaClassNotFound", procInstance.getEntityName()), Frame.NotificationType.WARNING);
-//                return;
-//            }
         if (Objects.isNull(metaClass)) {
             return;
         }
@@ -131,10 +127,6 @@ public class DesktopTable extends Screen {
                                 referenceToEntitySupport.getPrimaryKeyForLoadingEntity(metaClass)))
                         .setParameter("entityId", entityId));
         Entity entity = dataManager.load(ctx);
-//            if (entity == null) {
-//                showNotification(formatMessage("entityNotFound", entityId), Frame.NotificationType.WARNING);
-//                return;
-//            }
 
         Screen screen = screenBuilders.editor(metaClass.getJavaClass(), this).
                 editEntity(entity)
@@ -159,44 +151,5 @@ public class DesktopTable extends Screen {
         }
         return null;
     }
-
-//    @Subscribe("openEntityEditorBtn")
-//    public void onOpenEntityEditorBtnClick(Button.ClickEvent event) {
-////        ProcTask selectedTask = myTasksTable.getSingleSelected();
-////        ProcInstance procInstance;
-////        if (selectedTask != null) {
-////            procInstance = selectedTask.getProcInstance();
-////        } else {
-////            return;
-////        }
-////        Object entityId = procInstance.getObjectEntityId();
-////
-////        MetaClass metaClass = metadata.getClass(procInstance.getEntityName());
-//////            if (metaClass == null) {
-//////                showNotification(formatMessage("metaClassNotFound", procInstance.getEntityName()), Frame.NotificationType.WARNING);
-//////                return;
-//////            }
-////        if (Objects.isNull(metaClass)) {
-////            return;
-////        }
-////
-////        LoadContext<Entity> ctx = new LoadContext<>(metaClass).setQuery(
-////                LoadContext.createQuery(String.format("select e from %s e where e.%s = :entityId",
-////                                metaClass.getName(),
-////                                referenceToEntitySupport.getPrimaryKeyForLoadingEntity(metaClass)))
-////                        .setParameter("entityId", entityId));
-////        Entity entity = dataManager.load(ctx);
-//////            if (entity == null) {
-//////                showNotification(formatMessage("entityNotFound", entityId), Frame.NotificationType.WARNING);
-//////                return;
-//////            }
-////
-////        Screen screen = screenBuilders.editor(metaClass.getJavaClass(), this).
-////                editEntity(entity)
-////                .build();
-////        screen.addAfterCloseListener(e -> myTasksDl.load());
-////        screen.show();
-//
-//    }
 
 }

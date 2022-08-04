@@ -14,14 +14,10 @@
     &.startProc1 {
       background-color: #FFFFD5 !important;
       //font-weight: bold;
-      color: black;
+      color: black !important;
       .c-grouptable-group-cell-expander:before {
         background-color: #FFFFD5 !important;
-        color: black;
-      }
-      .v-selected:before {
-        background: #6F5CC3;
-        color: #F2F2F2;
+        color: black !important;
       }
     }
   }
@@ -31,14 +27,10 @@
     &.terminated1 {
       background-color: #FFE0E6 !important;
       //font-weight: bold;
-      color: black;
+      color: black !important;
       .c-grouptable-group-cell-expander:before {
         background-color: #FFE0E6 !important;
-        color: black;
-      }
-      .v-selected:before {
-        background: #6F5CC3;
-        color: #F2F2F2;
+        color: black !important;
       }
     }
   }
@@ -48,14 +40,10 @@
     &.approved1 {
       background-color: #E6FFE6 !important;
       //font-weight: bold;
-      color: black;
+      color: black !important;
       .c-grouptable-group-cell-expander:before {
         background-color: #E6FFE6 !important;
-        color: black;
-      }
-      .v-selected:before {
-        background: #6F5CC3;
-        color: #F2F2F2;
+        color: black !important;
       }
     }
   }

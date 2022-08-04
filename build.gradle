@@ -191,7 +191,6 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
         }
     }
 }
-restart.finalizedBy start
 
 task buildUberJar(type: CubaUberJarBuilding) {
     webPort = 5050
@@ -206,3 +205,5 @@ task buildUberJar(type: CubaUberJarBuilding) {
                      'cuba.dataSourceProvider'     : 'application']
     webJettyConfPath = 'jetty.xml'
 }
+
+restart.finalizedBy start
