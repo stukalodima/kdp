@@ -218,10 +218,10 @@
                             <button id="attachmentsTableCreate" action="attachmentsTable.create"/>
                         </buttonsPanel>
                         <columns>
-                            <column id="document.name" caption="msg://name"/>
+                            <column id="document.name" caption="msg://fileDescriptor.name"/>
                             <column id="author"/>
-                            <column id="document.size" caption="msg://size"/>
-                            <column id="document.createDate" caption="msg://createDate"/>
+                            <column id="document.size" caption="msg://fileDescriptor.size"/>
+                            <column id="document.createDate" caption="msg://fileDescriptor.createDate"/>
                             <column id="task" maxTextLength="100"/>
                             <column id="comment" maxTextLength="100"/>
                         </columns>
