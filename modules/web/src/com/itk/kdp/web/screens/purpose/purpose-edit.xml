@@ -18,7 +18,7 @@
         <form id="form" dataContainer="purposeDc">
             <column width="400px">
                 <textField id="nameUaField" property="nameUa" required="true"/>
-                <textField id="nameRuField" property="nameRu" required="true"/>
+                <textField id="nameRuField" property="nameRu" required="true" caption="msg://nameRu"/>
                 <textField id="nameEnField" property="nameEn" required="true"/>
                 <checkBox id="activeField" property="active"/>
             </column>
