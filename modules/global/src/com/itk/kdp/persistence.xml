@@ -19,5 +19,7 @@
         <class>com.itk.kdp.entity.AccessRequest</class>
         <class>com.itk.kdp.entity.VacationFiles</class>
         <class>com.itk.kdp.entity.VacationBalance</class>
+        <class>com.itk.kdp.entity.UsersFpmnt</class>
+        <class>com.itk.kdp.entity.OperatorAccessRequest</class>
     </persistence-unit>
 </persistence>

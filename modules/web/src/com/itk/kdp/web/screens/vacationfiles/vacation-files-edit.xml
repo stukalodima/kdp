@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://vacationFilesEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.vacationfiles">
+    <data>
+        <instance id="vacationFilesDc"
+                  class="com.itk.kdp.entity.VacationFiles">
+            <view extends="_local">
+                <property name="document" view="_minimal"/>
+                <property name="vacation" view="_minimal"/>
+                <property name="author" view="_minimal"/>
+            </view>
+            <loader/>
+            <instance id="documentDc" property="document"/>
+        </instance>
+        <collection id="authorsDc" class="com.itk.kdp.entity.Employees" view="_minimal">
+            <loader id="authorsDl">
+                <query>
+                    <![CDATA[select e from kdp_Employees e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="vacationFilesDc">
+            <column width="400px">
+                <upload id="documentField" fileStoragePutMode="IMMEDIATE" property="document" showFileName="true"/>
+                <textField id="commentField" property="comment"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
