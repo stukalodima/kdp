@@ -6,13 +6,14 @@ import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.entity.StandardEntity;
 import com.haulmont.cuba.core.entity.annotation.Lookup;
 import com.haulmont.cuba.core.entity.annotation.LookupType;
+import com.itk.kdp.base.itk.StandardEntityITK;
 
 import javax.persistence.*;
 
 @Table(name = "KDP_VACATION_FILES")
 @Entity(name = "kdp_VacationFiles")
-@NamePattern("%s %s|vacation, document")
-public class VacationFiles extends StandardEntity {
+@NamePattern("|vacation, document")
+public class VacationFiles extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = 434079015524068039L;
 
     @Composition
@@ -73,5 +74,10 @@ public class VacationFiles extends StandardEntity {
 
     public void setAuthor(Employees author) {
         this.author = author;
+    }
+
+    @Override
+    public String getCaption() {
+        return vacation.getCaption() + "(" +document.getName() + ")";
     }
 }

@@ -23,6 +23,7 @@
                 <entry key="kdp_CountryService" value="com.itk.kdp.service.CountryService"/>
                 <entry key="kdp_VacationBalanceService" value="com.itk.kdp.service.VacationBalanceService"/>
                 <entry key="kdp_MyTasksService" value="com.itk.kdp.service.MyTasksService"/>
+                <entry key="kdp_OperatorAccessService" value="com.itk.kdp.service.OperatorAccessService"/>
             </map>
         </property>
     </bean>

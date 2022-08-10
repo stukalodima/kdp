@@ -404,3 +404,43 @@ create table KDP_VACATION_BALANCE (
     primary key (ID)
 )^
 -- end KDP_VACATION_BALANCE
+-- begin KDP_USERS_FPMNT
+create table KDP_USERS_FPMNT (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    NAME_UA varchar(255),
+    NAME_En varchar(255),
+    NAME_RU varchar(255),
+    USER_TYPE varchar(255),
+    --
+    primary key (ID)
+)^
+-- end KDP_USERS_FPMNT
+-- begin KDP_OPERATOR_ACCESS_REQUEST
+create table KDP_OPERATOR_ACCESS_REQUEST (
+    ID uuid,
+    VERSION integer not null,
+    CREATE_TS timestamp,
+    CREATED_BY varchar(50),
+    UPDATE_TS timestamp,
+    UPDATED_BY varchar(50),
+    DELETE_TS timestamp,
+    DELETED_BY varchar(50),
+    --
+    OPERATOR_ID uuid,
+    EMPLOYEE_ID uuid,
+    USER_ID uuid,
+    START_DATE date,
+    END_DATE date,
+    COMMENT text,
+    --
+    primary key (ID)
+)^
+-- end KDP_OPERATOR_ACCESS_REQUEST
