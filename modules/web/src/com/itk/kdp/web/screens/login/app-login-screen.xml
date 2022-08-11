@@ -38,7 +38,7 @@
                             <textField id="loginField"
                                        htmlName="loginField"
                                        icon="USER"
-                                       inputPrompt="mainMsg://loginWindow.loginPlaceholder"
+                                       inputPrompt="msg://loginWindow.loginPlaceholder"
                                        height="40px"
                                        width="350px"
                                        stylename="c-login-field inline-icon"/>
@@ -47,7 +47,7 @@
                                            capsLockIndicator="capsLockIndicator"
                                            htmlName="passwordField"
                                            icon="LOCK"
-                                           inputPrompt="mainMsg://loginWindow.passwordPlaceholder"
+                                           inputPrompt="msg://loginWindow.passwordPlaceholder"
                                            height="40px"
                                            width="350px"
                                            stylename="c-login-field inline-icon"/>
@@ -57,7 +57,7 @@
                                 <checkBox id="rememberMeCheckBox"
                                           align="MIDDLE_LEFT"
                                           stylename="c-login-remember-me-checkbox"
-                                          caption="mainMsg://loginWindow.rememberMe"/>
+                                          caption="msg://loginWindow.rememberMe"/>
                                 <lookupField id="localesSelect"
                                              align="MIDDLE_RIGHT"
                                              nullOptionVisible="false"
@@ -82,7 +82,7 @@
                            align="MIDDLE_LEFT"
                            htmlEnabled="true"
                            stylename="c-login-powered-by-link"
-                           value="mainMsg://cuba.poweredBy"/>
+                           value="msg://cuba.poweredBy"/>
                 </hbox>
             </vbox>
             <image id="backgroundImage"

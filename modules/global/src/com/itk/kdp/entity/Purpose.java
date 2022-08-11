@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 public class Purpose extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = -93324234198195206L;
 
+    @SuppressWarnings("all")
     @MetaProperty
     @Transient
     private String name;
@@ -74,6 +75,7 @@ public class Purpose extends StandardEntity implements StandardEntityITK {
         return getCaption();
     }
 
+    @SuppressWarnings("all")
     public void setName(String name) {
         this.name = getCaption();
     }

@@ -20,6 +20,7 @@ def modulePrefix = 'vacation'
 def globalModule = project(":${modulePrefix}-global")
 def coreModule = project(":${modulePrefix}-core")
 def webModule = project(":${modulePrefix}-web")
+def guiModule = project(":${modulePrefix}-gui")
 
 def servletApi = 'javax.servlet:javax.servlet-api:3.1.0'
 
@@ -49,7 +50,7 @@ dependencies {
 
 def postgres = 'org.postgresql:postgresql:42.2.9'
 
-configure([globalModule, coreModule, webModule]) {
+configure([globalModule, coreModule, webModule, guiModule]) {
     apply(plugin: 'java')
     apply(plugin: 'maven')
     apply(plugin: 'cuba')
@@ -119,6 +120,18 @@ configure(coreModule) {
     }
 }
 
+configure(guiModule) {
+    dependencies {
+        compile(globalModule)
+    }
+
+    task deployConf(type: Copy) {
+        from file('src')
+        include "com/itk/kdp/**"
+        into "$cuba.appHome/${modulePrefix}/conf"
+    }
+}
+
 
 configure(webModule) {
     configurations {
@@ -127,7 +140,7 @@ configure(webModule) {
 
     dependencies {
         compileOnly(servletApi)
-        compile(globalModule)
+        compile(guiModule)
     }
 
     task webArchive(type: Zip) {
@@ -157,7 +170,7 @@ configure(webModule) {
 
     task deploy(dependsOn: [assemble, cleanConf], type: CubaDeployment) {
         appName = "${modulePrefix}"
-        appJars(modulePrefix + '-global', modulePrefix + '-web')
+        appJars(modulePrefix + '-global', modulePrefix + '-gui', modulePrefix + '-web')
     }
 
     task buildScssThemes(type: CubaWebScssThemeCreation)

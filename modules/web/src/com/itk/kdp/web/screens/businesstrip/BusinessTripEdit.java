@@ -12,6 +12,7 @@ import com.haulmont.bpm.service.ProcessFormService;
 import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.Entity;
+import com.haulmont.cuba.core.entity.KeyValueEntity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
@@ -30,10 +31,12 @@ import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import com.itk.kdp.web.screens.form.StandardEditorITK;
 import de.diedavids.cuba.userinbox.entity.Message;
 import de.diedavids.cuba.userinbox.entity.SendMessageEntity;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @UiController("kdp_BusinessTrip.edit")
 @UiDescriptor("business-trip-edit.xml")
@@ -95,7 +98,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private TextField<String> analyticsField;
     @Inject
-    private TextField<String> destinationField;
+    private SuggestionField<String> destinationField;
     @Inject
     private TextField<String> companyNameField;
     @Inject
@@ -133,6 +136,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     String SHARE_NEW_MESSAGE_SCREEN_ID = "ddcui$send-message";
     @Inject
     private CollectionLoader<Message> messagesDl;
+    @Inject
+    private CheckBoxGroup<Transport> transportOptionGroup;
 //    @Inject
 //    private CheckBoxGroup<Transport> transportOptionGroup;
 
@@ -475,14 +480,28 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
     @Subscribe
     public void onInit(InitEvent event) {
-//        List<Transport> transportList = dataManager.load(Transport.class)
-//                .query("e.active = TRUE")
-//                .view("_base")
-//                .list();
-//
-//        Map<String, Transport> map = new LinkedHashMap<>();
-//        transportList.forEach(e->map.put(e.getName(),e));
-//        transportOptionGroup.setOptionsMap(map);
+        List<KeyValueEntity> list = dataManager.loadValues("select o.destination as destination from kdp_BusinessTrip o group by o.destination")
+                .properties("destination")
+                .list();
+        List<String> strings = new ArrayList<>();
+        for (KeyValueEntity keyValueEntity : list) {
+            strings.add(keyValueEntity.getValue("destination"));
+        }
+        destinationField.setSearchExecutor((searchString, searchParams) -> {
+                    strings.add(searchString);
+                    return strings.stream()
+                            .filter(str -> StringUtils.containsIgnoreCase(str, searchString))
+                            .collect(Collectors.toList());
+                }
+        );
+        List<Transport> transportList = dataManager.load(Transport.class)
+                .query("e.active = TRUE")
+                .view("_base")
+                .list();
+
+        Map<String, Transport> map = new LinkedHashMap<>();
+        transportList.forEach(e -> map.put(e.getName(), e));
+        transportOptionGroup.setOptionsMap(map);
     }
 
 }
