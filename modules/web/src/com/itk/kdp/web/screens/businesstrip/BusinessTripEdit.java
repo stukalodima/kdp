@@ -436,7 +436,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         if (!Objects.isNull(endDate) && !Objects.isNull(getEditedEntity().getStartDate())) {
             if (endDate.before(getEditedEntity().getStartDate())) {
                 notifications.create().withCaption("Увага!!!")
-                        .withDescription("Дата початку відрядження не може бути менше дати закінчення!")
+                        .withDescription("Дата закінчення не може бути меншою за дату початку!")
                         .show();
             }
         }
