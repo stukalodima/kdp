@@ -26,7 +26,6 @@ import java.util.Objects;
 
 @Table(name = "KDP_VACATION_REQUEST")
 @Entity(name = "kdp_VacationRequest")
-@EventDate(groups = UiCrossFieldChecks.class)
 @NamePattern("#getCaption|applicationNumber,applicationDate")
 public class VacationRequest extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = 379968912838652266L;

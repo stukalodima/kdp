@@ -167,11 +167,7 @@
                                 <action id="clear" type="picker_clear"/>
                             </actions>
                         </lookupPickerField>
-                        <dateField id="dateFromField" property="dateFrom" width="100%">
-                            <validators>
-                                <futureOrPresent checkSeconds="false" message="msg://dateStartFutureOrPresent"/>
-                            </validators>
-                        </dateField>
+                        <dateField id="dateFromField" property="dateFrom" width="100%"/>
                         <textField id="vacationDaysField" property="vacationDays" editable="false" colspan="2"
                                    width="100%"/>
                         <textArea id="note" rows="5" colspan="2" property="note" width="100%"/>
