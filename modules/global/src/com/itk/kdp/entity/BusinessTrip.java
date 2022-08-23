@@ -106,6 +106,11 @@ public class BusinessTrip extends StandardEntity implements StandardEntityITK {
     @OneToMany(mappedBy = "businessTrip")
     private List<BusinessTripFiles> documents;
 
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "businessTrip")
+    private List<BusinessTripTransport> transports;
+
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AUTHOR_ID")
@@ -391,5 +396,13 @@ public class BusinessTrip extends StandardEntity implements StandardEntityITK {
                 messages.getMainMessage("entityCaption.dateFrom") +
                 " " +
                 simpleDateFormat.format(onDate);
+    }
+
+    public List<BusinessTripTransport> getTransports() {
+        return transports;
+    }
+
+    public void setTransports(List<BusinessTripTransport> transports) {
+        this.transports = transports;
     }
 }

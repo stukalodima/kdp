@@ -30,6 +30,7 @@
                     <property name="document" view="browse"/>
                     <property name="author" view="_base"/>
                 </property>
+                <property name="transports" view="_base"/>
             </view>
             <loader id="businessTripDl"/>
             <collection id="procAttachmentsDc" property="documents"/>
@@ -88,10 +89,11 @@
                 modal="true"
                 resizable="true"
                 forceDialog="true"/>
-    <layout spacing="true" width="100%" expand="body">
+    <layout spacing="true" width="100%" expand="editActions">
         <hbox id="body" width="100%" expand="bodyTab">
-        <tabSheet id="bodyTab">
-            <tab id="mainTab" caption="msg://businessTripEdit.caption" spacing="true" margin="true,false,false,false">
+            <tabSheet id="bodyTab">
+                <tab id="mainTab" caption="msg://businessTripEdit.caption" spacing="true"
+                     margin="true,false,false,false">
                     <form id="form" dataContainer="businessTripDc" width="100%" colspan="2">
                         <column width="50%">
                             <lookupPickerField id="employeeField" optionsContainer="employeesDc" property="employee"
@@ -114,8 +116,6 @@
                                        contextHelpText="msg://businessTripEdit.dateField.contentHelp" required="true">
                             </dateField>
                             <textField id="startPlaceField" property="startPlace" width="100%" required="true"/>
-                            <textField id="detailsField" property="details" colspan="2" width="100%" required="true"
-                                       contextHelpText="msg://businessTripEdit.detailsField.contentHelp"/>
                             <lookupPickerField id="purposeField" optionsContainer="purposesDc" property="purpose"
                                                width="100%" colspan="2" required="true">
                                 <actions>
@@ -124,35 +124,12 @@
                                     <action id="clear" type="picker_clear"/>
                                 </actions>
                             </lookupPickerField>
-                            <checkBoxGroup id="transportOptionGroup" align="BOTTOM_CENTER" orientation="horizontal" colspan="2"
-                            caption="msg://businessTripEdit.transport" width="100%" responsive="true"/>
-                            <groupBox caption="msg://businessTripEdit.transport" width="100%" colspan="2"
-                                      spacing="false" align="MIDDLE_LEFT"
-                                      collapsable="true" collapsed="false">
-                                <form id="formTransport" dataContainer="businessTripDc" width="100%" colspan="2"
-                                      align="MIDDLE_LEFT">
-                                    <column width="20%">
-                                        <checkBox id="plainTransportField" property="plainTransport" width="100%"/>
-                                    </column>
-                                    <column width="20%">
-                                        <checkBox id="trainTransportField" property="trainTransport" width="100%"/>
-                                    </column>
-                                    <column width="20%">
-                                        <checkBox id="busTransportField" property="busTransport" width="100%"/>
-                                    </column>
-                                    <column width="20%">
-                                        <checkBox id="autoCompanyTransportField" property="autoCompanyTransport"
-                                                  width="100%"/>
-                                    </column>
-                                    <column width="20%">
-                                        <checkBox id="autoSelfTransportField" property="autoSelfTransport"
-                                                  width="100%"/>
-                                    </column>
-                                </form>
-                            </groupBox>
+                            <checkBoxGroup id="transportOptionGroup" align="BOTTOM_CENTER" orientation="horizontal"
+                                           colspan="2"
+                                           caption="msg://businessTripEdit.transport" width="100%" responsive="true"/>
+                            <textArea id="detailsField" property="details" rows="3" width="100%" required="true"
+                                      contextHelpText="msg://businessTripEdit.detailsField.contentHelp"/>
                             <checkBox id="hotelField" property="hotel"/>
-                            <textField id="analyticsField" property="analytics" colspan="2" width="100%" required="true"
-                                       contextHelpText="msg://businessTripEdit.analytic.contentHelp"/>
                         </column>
                         <column width="50%">
                             <lookupPickerField id="departmentField" property="department" editable="false"
@@ -160,18 +137,22 @@
                             <textField id="phoneNumberField" property="phoneNumber" editable="false"
                                        contextHelpText="msg://businessTripEdit.phoneNumber.contentHelp" width="100%"/>
                             <dateField id="endDateField" property="endDate" resolution="DAY"
-                                       contextHelpText="msg://businessTripEdit.dateField.contentHelp" width="100%" required="true">
+                                       contextHelpText="msg://businessTripEdit.dateField.contentHelp" width="100%"
+                                       required="true">
                             </dateField>
-                            <label/>
+                            <lookupField id="authorField" property="author" editable="false" width="100%"/>
+                            <textArea id="analyticsField" property="analytics" width="100%" required="true" rows="3"
+                                      contextHelpText="msg://businessTripEdit.analytic.contentHelp"/>
                             <checkBox id="visaField" property="visa" width="100%"/>
                         </column>
                     </form>
-                    <groupBox caption="msg://businessTripEdit.executorFields" colspan="2" collapsable="true" collapsed="false"
+                    <groupBox caption="msg://businessTripEdit.executorFields" colspan="2" collapsable="true"
+                              collapsed="false"
                               width="100%" spacing="false" id="bpmGroup">
                         <form id="bpmField" dataContainer="businessTripDc" width="100%" colspan="2" editable="false">
                             <column width="50%">
-                                <suggestionField  id="destinationField" property="destination" width="100%"
-                                           contextHelpText="msg://businessTripEdit.destination.contentHelp"/>
+                                <suggestionField id="destinationField" property="destination" width="100%"
+                                                 contextHelpText="msg://businessTripEdit.destination.contentHelp"/>
                                 <lookupField id="payCenterField" property="payCenter" width="100%"
                                              contextHelpText="msg://businessTripEdit.payCenter.contentHelp"/>
                                 <textField id="budgetField" property="budgetTrip" width="100%"
@@ -186,14 +167,11 @@
                             </column>
                         </form>
                     </groupBox>
-                    <form dataContainer="businessTripDc" width="100%">
-                        <column width="100%">
-                            <lookupField id="authorField" property="author" editable="false" width="100%"/>
-                        </column>
-                    </form>
-            </tab>
-            <tab id="otherTab" caption="msg://businessTripEdit.tasks.caption" margin="true,false,false,false">
-                    <groupTable dataContainer="procTasksDs" width="100%" minHeight="300px" height="100%">
+                </tab>
+                <tab id="otherTab" caption="msg://businessTripEdit.tasks.caption" margin="true,false,false,false"
+                     expand="procTasksTable">
+                    <groupTable id="procTasksTable" dataContainer="procTasksDs" width="100%"
+                                height="100%" presentations="true">
                         <columns>
                             <column id="locName" expandRatio="4" maxTextLength="40"/>
                             <column id="procActor" expandRatio="3" maxTextLength="40"/>
@@ -204,11 +182,12 @@
                         </columns>
                         <rows/>
                     </groupTable>
-            </tab>
-            <tab id="fileTab" caption="msg://businessTripEdit.files.caption" margin="true,false,false,false">
+                </tab>
+                <tab id="fileTab" caption="msg://businessTripEdit.files.caption" margin="true,false,false,false"
+                     expand="attachmentsTable">
                     <table id="attachmentsTable"
                            dataContainer="procAttachmentsDc"
-                           width="100%" minHeight="300px" height="100%">
+                           width="100%" height="100%" presentations="true">
                         <actions>
                             <action id="create" type="create"/>
                             <action id="edit" type="edit"/>
@@ -218,7 +197,7 @@
                             <button id="attachmentsTableCreate" action="attachmentsTable.create"/>
                         </buttonsPanel>
                         <columns>
-                            <column id="document.name"  caption="msg://fileDescriptor.name"/>
+                            <column id="document.name" caption="msg://fileDescriptor.name"/>
                             <column id="author"/>
                             <column id="document.size" caption="msg://fileDescriptor.size"/>
                             <column id="document.createDate" caption="msg://fileDescriptor.createDate"/>
@@ -226,39 +205,39 @@
                             <column id="comment" maxTextLength="50"/>
                         </columns>
                     </table>
-            </tab>
-            <tab id="messageTab" caption="msg://businessTripEdit.message.caption" margin="true,false,false,false">
-                <table id="messagesTable"
-                       width="100%"
-                       minHeight="300px"
-                       height="100%"
-                       dataContainer="messagesDc">
-                    <actions>
-                        <action id="create"
-                                caption="msg://businessTripEdit.newMessage"/>
-                        <action id="edit" type="edit" caption="mainMsg://actions.View" icon="font-icon:SEARCH">
-                            <properties>
-                                <property name="screenClass"
-                                          value="de.diedavids.cuba.userinbox.web.message.MessageDetails"/>
-                                <property name="openMode" value="DIALOG"/>
-                            </properties>
-                        </action>
-                    </actions>
-                    <columns>
-                        <column id="sender"/>
-                        <column id="subject"/>
-                        <column id="read"/>
-                        <column id="receivedAt" sort="DESCENDING"/>
-                    </columns>
-                    <rowsCount/>
-                    <buttonsPanel id="buttonsPanel"
-                                  alwaysVisible="true">
-                        <button id="createBtn" action="messagesTable.create"/>
-                        <button id="editBtn" action="messagesTable.edit"/>
-                    </buttonsPanel>
-                </table>
-            </tab>
-        </tabSheet>
+                </tab>
+                <tab id="messageTab" caption="msg://businessTripEdit.message.caption" margin="true,false,false,false" expand="messagesTable">
+                    <table id="messagesTable"
+                           width="100%"
+                           height="100%"
+                           presentations="true"
+                           dataContainer="messagesDc">
+                        <actions>
+                            <action id="create"
+                                    caption="msg://businessTripEdit.newMessage"/>
+                            <action id="edit" type="edit" caption="mainMsg://actions.View" icon="font-icon:SEARCH">
+                                <properties>
+                                    <property name="screenClass"
+                                              value="de.diedavids.cuba.userinbox.web.message.MessageDetails"/>
+                                    <property name="openMode" value="DIALOG"/>
+                                </properties>
+                            </action>
+                        </actions>
+                        <columns>
+                            <column id="sender"/>
+                            <column id="subject"/>
+                            <column id="read"/>
+                            <column id="receivedAt" sort="DESCENDING"/>
+                        </columns>
+                        <rowsCount/>
+                        <buttonsPanel id="buttonsPanel"
+                                      alwaysVisible="true">
+                            <button id="createBtn" action="messagesTable.create"/>
+                            <button id="editBtn" action="messagesTable.edit"/>
+                        </buttonsPanel>
+                    </table>
+                </tab>
+            </tabSheet>
         </hbox>
         <hbox id="editActions" spacing="true">
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>

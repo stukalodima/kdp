@@ -11,7 +11,6 @@ import com.haulmont.bpm.service.BpmEntitiesService;
 import com.haulmont.bpm.service.ProcessFormService;
 import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
-import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.entity.KeyValueEntity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
@@ -20,6 +19,7 @@ import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.app.core.file.FileDownloadHelper;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionLoader;
+import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceLoader;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.util.OperationResult;
@@ -70,8 +70,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private UniqueNumbersService uniqueNumbersService;
     @Inject
-    private Form formTransport;
-    @Inject
     private UserSession userSession;
     @Inject
     private GlobalConfig globalConfig;
@@ -88,7 +86,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private LookupPickerField<Employees> employeeField;
     @Inject
-    private TextField<String> detailsField;
+    private TextArea<String> detailsField;
     @Inject
     private LookupPickerField<Purpose> purposeField;
     @Inject
@@ -96,7 +94,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private CheckBox visaField;
     @Inject
-    private TextField<String> analyticsField;
+    private TextArea<String> analyticsField;
     @Inject
     private SuggestionField<String> destinationField;
     @Inject
@@ -138,8 +136,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     private CollectionLoader<Message> messagesDl;
     @Inject
     private CheckBoxGroup<Transport> transportOptionGroup;
-//    @Inject
-//    private CheckBoxGroup<Transport> transportOptionGroup;
+    @Inject
+    private DataContext dataContext;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -161,8 +159,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     private void updateVisible() {
         sendToApprove.setVisible(Objects.isNull(getEditedEntity().getProcInstance()));
         baseFormSetEditable(Objects.isNull(getEditedEntity().getProcInstance()));
-        formTransport.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
-//        transportOptionGroup.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
+        transportOptionGroup.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
         startDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         endDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         startPlaceField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
@@ -191,8 +188,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             }
             if (procTask.getActTaskDefinitionKey().equals("correction")) {
                 baseFormSetEditable(true);
-                formTransport.setEditable(true);
-//                transportOptionGroup.setEditable(true);
+                transportOptionGroup.setEditable(true);
                 detailsField.setEditable(true);
                 purposeField.setEditable(true);
                 analyticsField.setEditable(true);
@@ -246,6 +242,18 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         procTasksDl.load();
         messagesDl.setParameter("shareable", getEditedEntity());
         messagesDl.load();
+
+        List<Transport> transportList = new ArrayList<>();
+        Collection<Transport> transportCollection = new ArrayList<>();
+        getEditedEntity().getTransports().forEach(e -> {
+            transportList.add(e.getTransport());
+            if (Boolean.TRUE.equals(e.getCheckTransport())) {
+                transportCollection.add(e.getTransport());
+            }
+        });
+        transportList.sort(Comparator.comparing(Transport::getCaption));
+        transportOptionGroup.setOptionsList(transportList);
+        transportOptionGroup.setValue(transportCollection);
     }
 
     private void initClaimTaskUI() {
@@ -318,6 +326,10 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             getEditedEntity().setNumber(uniqueNumbersService.getNextNumber("trip"));
             getEditedEntity().setStatus("Проект заявки");
             getEditedEntity().setOnDate(timeSource.currentTimestamp());
+        }
+        Collection<Transport> transportList = transportOptionGroup.getValue();
+        if (transportList != null) {
+            getEditedEntity().getTransports().forEach(e -> e.setCheckTransport(transportList.contains(e.getTransport())));
         }
     }
 
@@ -400,19 +412,40 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<BusinessTrip> event) {
-        List<Employees> employees = dataManager.load(Employees.class)
-                .query("select e from kdp_Employees e where e.user = :user")
-                .parameter("user", userSession.getUser())
-                .view("employees-for-create-api")
-                .list();
-        if (employees.size() == 1) {
-            event.getEntity().setEmployee(employees.get(0));
-            event.getEntity().setAuthor(employees.get(0));
-        } else if (!employees.isEmpty()) {
-            chooseEmployee = true;
+        if (entityStates.isNew(event.getEntity())) {
+            List<Employees> employees = dataManager.load(Employees.class)
+                    .query("select e from kdp_Employees e where e.user = :user")
+                    .parameter("user", userSession.getUser())
+                    .view("employees-for-create-api")
+                    .list();
+            if (employees.size() == 1) {
+                event.getEntity().setEmployee(employees.get(0));
+                event.getEntity().setAuthor(employees.get(0));
+            } else if (!employees.isEmpty()) {
+                chooseEmployee = true;
+            }
+            getEditedEntity().setOnDate(timeSource.currentTimestamp());
+            event.getEntity().setPayCenter(PayCenterEnum.A);
+
+            List<Transport> transportList = dataManager.load(Transport.class)
+                    .query("e.active = TRUE")
+                    .view("_base")
+                    .list();
+
+            transportList.stream().sorted(Comparator.comparing(Transport::getCaption)).forEach(e -> {
+                BusinessTripTransport businessTripTransport = dataManager.create(BusinessTripTransport.class);
+                businessTripTransport.setBusinessTrip(event.getEntity());
+                businessTripTransport.setTransport(e);
+                businessTripTransport = dataContext.merge(businessTripTransport);
+                if (event.getEntity().getTransports() == null) {
+                    List<BusinessTripTransport> businessTripTransports = new ArrayList<>();
+                    businessTripTransports.add(businessTripTransport);
+                    event.getEntity().setTransports(businessTripTransports);
+                } else {
+                    event.getEntity().getTransports().add(businessTripTransport);
+                }
+            });
         }
-        getEditedEntity().setOnDate(timeSource.currentTimestamp());
-        event.getEntity().setPayCenter(PayCenterEnum.A);
     }
 
     @Subscribe("startDateField")
@@ -452,7 +485,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         screenBuilders.editor(SendMessageEntity.class, this)
                 .withScreenId(SHARE_NEW_MESSAGE_SCREEN_ID)
                 .withInitializer(message -> {
-                    Entity shareable = getEditedEntity();
+                    BusinessTrip shareable = getEditedEntity();
                     String currentUsername = userSessionSource.getUserSession().getCurrentOrSubstitutedUser().getName();
                     String entityCaption = messages.getTools().getEntityCaption(shareable.getMetaClass());
                     String shareableInstanceName = metadataTools.getInstanceName(shareable);
@@ -475,7 +508,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                     message.setShareable(shareable);
                 })
                 .withLaunchMode(OpenMode.DIALOG)
-                .show();
+                .show().addAfterCloseListener(e->messagesDl.load());
     }
 
     @Subscribe
@@ -494,14 +527,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                             .collect(Collectors.toList());
                 }
         );
-        List<Transport> transportList = dataManager.load(Transport.class)
-                .query("e.active = TRUE")
-                .view("_base")
-                .list();
-
-        Map<String, Transport> map = new LinkedHashMap<>();
-        transportList.forEach(e -> map.put(e.getName(), e));
-        transportOptionGroup.setOptionsMap(map);
     }
 
 }
