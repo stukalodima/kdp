@@ -1,21 +1,14 @@
 package com.itk.kdp.web.screens.businesstrip;
 
-import com.haulmont.bpm.BpmConstants;
 import com.haulmont.bpm.entity.ProcInstance;
 import com.haulmont.bpm.entity.ProcTask;
-import com.haulmont.bpm.form.ProcFormDefinition;
-import com.haulmont.bpm.gui.action.ClaimProcTaskAction;
-import com.haulmont.bpm.gui.action.CompleteProcTaskAction;
-import com.haulmont.bpm.gui.action.ProcAction;
 import com.haulmont.bpm.service.BpmEntitiesService;
-import com.haulmont.bpm.service.ProcessFormService;
 import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.KeyValueEntity;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
-import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.app.core.file.FileDownloadHelper;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionLoader;
@@ -30,7 +23,6 @@ import com.itk.kdp.service.EmployeeService;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import com.itk.kdp.web.screens.form.StandardEditorITK;
 import de.diedavids.cuba.userinbox.entity.Message;
-import de.diedavids.cuba.userinbox.entity.SendMessageEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -43,7 +35,6 @@ import java.util.stream.Collectors;
 @EditedEntityContainer("businessTripDc")
 @LoadDataBeforeShow
 public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
-    protected ProcTask procTask;
     @Inject
     private InstanceLoader<BusinessTrip> businessTripDl;
     @Inject
@@ -54,13 +45,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     private ProcessRuntimeService processRuntimeService;
     @Inject
     private Notifications notifications;
-    @Inject
-    private ProcessFormService processFormService;
-    private final List<CompleteProcTaskAction> completeProcTaskActions = new ArrayList<>();
-    @Inject
-    private MessageBundle messageBundle;
-    @Inject
-    private UiComponents uiComponents;
     @Inject
     private HBoxLayout actionsBox;
     @Inject
@@ -108,8 +92,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private EntityStates entityStates;
     @Inject
-    private Messages messages;
-    @Inject
     private ScreenValidation screenValidation;
     @Named("bodyTab.mainTab")
     private VBoxLayout mainTab;
@@ -125,14 +107,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private TextField<String> startPlaceField;
     @Inject
-    private UserSessionSource userSessionSource;
-    @Inject
-    private MetadataTools metadataTools;
-
-    String SHARE_SUBJECT_KEY = "share.subject";
-    String SHARE_TEXT_KEY = "share.text";
-    String SHARE_NEW_MESSAGE_SCREEN_ID = "ddcui$send-message";
-    @Inject
     private CollectionLoader<Message> messagesDl;
     @Inject
     private CheckBoxGroup<Transport> transportOptionGroup;
@@ -141,9 +115,11 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
-//        updateFormCaption();
         super.onAfterShow(event);
-        initProcAction();
+        if (getEditedEntity().getProcInstance() != null) {
+            initEntityByProcess(getEditedEntity().getProcInstance(), actionsBox, getUsersForCancelProc());
+            initFormByProcess();
+        }
         updateVisible();
         if (chooseEmployee) {
             EmployeesBrowse employeesBrowse = screenBuilders.lookup(employeeField)
@@ -154,6 +130,17 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         } else {
             fillParameterFromEmployee(getEditedEntity().getEmployee());
         }
+    }
+
+    private List<User> getUsersForCancelProc() {
+        List<User> userList = new ArrayList<>();
+        if (getEditedEntity().getEmployee() != null) {
+            userList.add(getEditedEntity().getEmployee().getUser());
+        }
+        if (getEditedEntity().getAuthor() != null) {
+            userList.add(getEditedEntity().getAuthor().getUser());
+        }
+        return userList;
     }
 
     private void updateVisible() {
@@ -218,18 +205,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         startPlaceField.setEditable(editable);
     }
 
-    private void initProcAction() {
-        if (!Objects.isNull(getEditedEntity().getProcInstance())) {
-            List<ProcTask> procTasks = bpmEntitiesService.findActiveProcTasksForCurrentUser(getEditedEntity().getProcInstance(), BpmConstants.Views.PROC_TASK_COMPLETE);
-            procTask = procTasks.isEmpty() ? null : procTasks.get(0);
-            if (procTask != null && procTask.getProcActor() != null) {
-                initCompleteTaskUI();
-            } else if (procTask != null && procTask.getProcActor() == null) {
-                initClaimTaskUI();
-            }
-        }
-    }
-
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
         FileDownloadHelper.initGeneratedColumn(attachmentsTable, "document");
@@ -254,70 +229,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         transportList.sort(Comparator.comparing(Transport::getCaption));
         transportOptionGroup.setOptionsList(transportList);
         transportOptionGroup.setValue(transportCollection);
-    }
-
-    private void initClaimTaskUI() {
-        Button claimTaskBtn = uiComponents.create(Button.class);
-        claimTaskBtn.setWidth("100%");
-        claimTaskBtn.setCaption(messages.getMainMessage("form.claimTaskBtn"));
-
-        ProcAction.AfterActionListener afterClaimTaskListener = () -> {
-            actionsBox.removeAll();
-            initProcAction();
-            updateVisible();
-        };
-
-        ClaimProcTaskAction claimProcTaskAction = new ClaimProcTaskAction(procTask);
-        claimTaskBtn.setAction(claimProcTaskAction);
-        claimProcTaskAction.addAfterActionListener(afterClaimTaskListener);
-        actionsBox.add(claimTaskBtn);
-    }
-
-    protected void initCompleteTaskUI() {
-        Map<String, ProcFormDefinition> outcomesWithForms = processFormService.getOutcomesWithForms(procTask);
-        if (!outcomesWithForms.isEmpty()) {
-            for (Map.Entry<String, ProcFormDefinition> entry : outcomesWithForms.entrySet()) {
-                ProcAction.BeforeActionPredicate beforeActionPredicate = () -> {
-                    boolean result;
-                    if (entry.getKey().equals("Погоджено")) {
-                        ValidationErrors validationErrors = screenValidation.validateUiComponents(mainTab);
-                        result = validationErrors.isEmpty();
-                        if (!result) {
-                            screenValidation.showValidationErrors(this, validationErrors);
-                        }
-                    } else {
-                        detailsField.setEditable(false);
-                        purposeField.setEditable(false);
-                        analyticsField.setEditable(false);
-                        bpmField.setEditable(false);
-                        destinationField.setRequired(false);
-                        companyNameField.setRequired(false);
-                        payCenterField.setRequired(false);
-                        budgetField.setRequired(false);
-                        isBudgetField.setRequired(false);
-                        result = true;
-                    }
-                    return result;
-                };
-                CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, entry.getKey(), entry.getValue());
-                action.setCaption(entry.getKey());
-                action.addBeforeActionPredicate(beforeActionPredicate);
-                completeProcTaskActions.add(action);
-            }
-        } else {
-            ProcFormDefinition form = processFormService.getDefaultCompleteTaskForm(getEditedEntity().getProcInstance().getProcDefinition());
-            CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, BpmConstants.DEFAULT_TASK_OUTCOME, form);
-            action.setCaption(messageBundle.getMessage("completeTask"));
-            completeProcTaskActions.add(action);
-        }
-
-        for (CompleteProcTaskAction completeProcTaskAction : completeProcTaskActions) {
-            completeProcTaskAction.addAfterActionListener(this::closeWithCommit);
-            Button actionBtn = uiComponents.create(Button.class);
-            actionBtn.setWidth("100%");
-            actionBtn.setAction(completeProcTaskAction);
-            actionsBox.add(actionBtn);
-        }
     }
 
     @Subscribe
@@ -357,7 +268,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Subscribe("sendToApprove")
     public void onSendToApproveClick(Button.ClickEvent event) {
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
-            getEditedEntity().setStatus("На погодженні");
             if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
 
                 List<Addressing> addressingList = dataManager.load(Addressing.class)
@@ -397,6 +307,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
                 ProcInstance procInstance = bpmEntitiesService.createProcInstance(procInstanceDetails);
 
+
                 HashMap<String, Object> processVariables = new HashMap<>();
                 processRuntimeService.startProcess(procInstance, "Process started programmatically", processVariables);
                 notifications.create()
@@ -405,6 +316,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                         .show();
                 businessTripDl.load();
                 getEditedEntity().setProcInstance(procInstance);
+                getEditedEntity().setStatus("На погодженні");
                 closeWithCommit();
             }
         }
@@ -482,33 +394,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
     @Subscribe("messagesTable.create")
     public void onMessagesTableCreate(Action.ActionPerformedEvent event) {
-        screenBuilders.editor(SendMessageEntity.class, this)
-                .withScreenId(SHARE_NEW_MESSAGE_SCREEN_ID)
-                .withInitializer(message -> {
-                    BusinessTrip shareable = getEditedEntity();
-                    String currentUsername = userSessionSource.getUserSession().getCurrentOrSubstitutedUser().getName();
-                    String entityCaption = messages.getTools().getEntityCaption(shareable.getMetaClass());
-                    String shareableInstanceName = metadataTools.getInstanceName(shareable);
-                    message.setSubject(
-                            messages.formatMainMessage(
-                                    SHARE_SUBJECT_KEY,
-                                    currentUsername,
-                                    entityCaption,
-                                    shareableInstanceName
-                            )
-                    );
-                    message.setText(
-                            messages.formatMainMessage(
-                                    SHARE_TEXT_KEY,
-                                    entityCaption,
-                                    shareableInstanceName,
-                                    currentUsername
-                            )
-                    );
-                    message.setShareable(shareable);
-                })
-                .withLaunchMode(OpenMode.DIALOG)
-                .show().addAfterCloseListener(e->messagesDl.load());
+        createMessagesForEntity();
     }
 
     @Subscribe
@@ -527,6 +413,28 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                             .collect(Collectors.toList());
                 }
         );
+
+        beforeActionPredicateApprove = () -> {
+            ValidationErrors validationErrors = screenValidation.validateUiComponents(mainTab);
+            boolean result = validationErrors.isEmpty();
+            if (!result) {
+                screenValidation.showValidationErrors(this, validationErrors);
+            }
+            return result;
+        };
+
+        afterClaimTaskListener = () -> {
+            actionsBox.removeAll();
+            initFormByProcess();
+            updateVisible();
+        };
+
+        afterCancelProcessListener = () -> {
+            getEditedEntity().setStatus("Скасована ініціатором");
+            closeWithCommit();
+        };
+
+        afterCloseMessagesListener = (e) -> messagesDl.load();
     }
 
 }
