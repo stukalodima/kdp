@@ -29,7 +29,7 @@ public class CompanyServiceBean implements CompanyService {
     @Override
     public void getCompanyListFromExternal() throws IOException {
         String connectString = restApiConfig.getRestApiCompanyService();
-        String jsonString = restClientService.callGetMethod(connectString);
+        String jsonString = restClientService.callGetMethod(connectString + "?all=1", true);
         if (!jsonString.isEmpty()) {
             parseJsonString(jsonString);
         }
@@ -75,7 +75,7 @@ public class CompanyServiceBean implements CompanyService {
     private void parseJsonString(String jsonString) {
         JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
         HashMap<String, String> companyMap = new HashMap<>();
-        for (JsonElement jsonElement:jsonArray) {
+        for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
 
             //from accounts
@@ -90,7 +90,7 @@ public class CompanyServiceBean implements CompanyService {
         }
     }
 
-    private void fillCompanyEntity(HashMap<String, String> companyMap){
+    private void fillCompanyEntity(HashMap<String, String> companyMap) {
         Organizations company = getCompanyById(companyMap.get("GUID"));
 
         if (Objects.isNull(company)) {

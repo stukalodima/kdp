@@ -41,23 +41,18 @@ public class Employees extends StandardEntity implements StandardEntityITK {
     @Column(name = "MIDDLE_NAME_UA")
     private String middleNameUa;
 
-    @NotNull
     @Column(name = "SURNAME_RU")
     private String surnameRu;
 
-    @NotNull
     @Column(name = "NAME_RU")
     private String nameRu;
 
-    @NotNull
     @Column(name = "MIDDLE_NAME_RU")
     private String middleNameRu;
 
-    @NotNull
     @Column(name = "SURNAME_EN")
     private String surnameEn;
 
-    @NotNull
     @Column(name = "NAME_EN")
     private String nameEn;
 
@@ -82,43 +77,31 @@ public class Employees extends StandardEntity implements StandardEntityITK {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_ID")
-    @OnDelete(DeletePolicy.DENY)
-    @OnDeleteInverse(DeletePolicy.UNLINK)
     private Organizations company;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DEPARTMENT_ID")
     private Departments department;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
     @NotNull
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POSITION_ID")
     private Position position;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MANAGER_ID")
     private Employees manager;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "APPROVAL_MANAGER_ID")
     private Employees approvalManager;
 
     @Lookup(type = LookupType.DROPDOWN, actions = {"lookup", "open", "clear"})
-    @OnDeleteInverse(DeletePolicy.UNLINK)
-    @OnDelete(DeletePolicy.DENY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "VACATION_MANAGER_ID")
     private Employees vacationManager;

@@ -7,11 +7,13 @@ import com.google.gson.JsonParser;
 import com.haulmont.cuba.core.global.DataManager;
 import com.itk.kdp.config.RestApiConfig;
 import com.itk.kdp.entity.Departments;
+import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.entity.Position;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -34,9 +36,11 @@ public class DepartmentServiceBean implements DepartmentService {
     @Override
     public void getDepartmentListFromExternal() throws IOException {
         String connectString = restApiConfig.getRestApiDepartmentService();
-        String jsonString = restClientService.callGetMethod(connectString);
-        if (!jsonString.isEmpty()) {
-            parseJsonString(jsonString);
+        for (Organizations organizations : companyService.getCompanyListByActive()) {
+            String jsonString = restClientService.callGetMethod(connectString+ "?companyId=" + organizations.getOrganizations1cId() + "&all=1", true);
+            if (!jsonString.isEmpty()) {
+                parseJsonString(jsonString);
+            }
         }
     }
 
