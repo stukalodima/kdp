@@ -12,4 +12,6 @@ public interface EmailService {
     void sendEmail(String address, String caption, String templateName, Map<String, Serializable> templateParameters);
 
     void sendEmail(String address, String caption, String body, EmailAttachment... attachment) throws EmailException;
+
+    void sendEmail(String address, String caption, String templateName, Map<String, Serializable> templateParameters, EmailAttachment... attachment);
 }

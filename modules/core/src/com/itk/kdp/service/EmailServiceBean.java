@@ -35,4 +35,17 @@ public class EmailServiceBean implements EmailService {
                 .build();
         emailService.sendEmailAsync(emailInfo);
     }
+
+    @Override
+    public void sendEmail(String address, String caption, String templateName, Map<String, Serializable> templateParameters, EmailAttachment... attachment) {
+        EmailInfo emailInfo = EmailInfoBuilder.create()
+                .setAddresses(address)
+                .setCaption(caption)
+                .setFrom(null)
+                .setTemplatePath("com/itk/kdp/templates/" + templateName)
+                .setTemplateParameters(templateParameters)
+                .setAttachments(attachment)
+                .build();
+        emailService.sendEmailAsync(emailInfo);
+    }
 }
