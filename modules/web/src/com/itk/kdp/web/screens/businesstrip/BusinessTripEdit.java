@@ -420,7 +420,11 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             if (!result) {
                 screenValidation.showValidationErrors(this, validationErrors);
             }
-            return result;
+            if (commitChanges() == OperationResult.success()) {
+                return result;
+            } else {
+                return false;
+            }
         };
 
         afterClaimTaskListener = () -> {

@@ -33,7 +33,7 @@ cuba {
         isSnapshot = true
     }
     tomcat {
-        port = '5050'
+        port = '5080'
         ajpPort = '5009'
         shutdownPort = '5005'
         debugPort = '5757'
