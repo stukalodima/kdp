@@ -33,10 +33,10 @@ cuba {
         isSnapshot = false
     }
     tomcat {
-        port = '80'
-        ajpPort = '5009'
-        shutdownPort = '5005'
-        debugPort = '5757'
+        port = '6080'
+        ajpPort = '6009'
+        shutdownPort = '6005'
+        debugPort = '6767'
     }
 }
 
@@ -205,32 +205,19 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
     }
 }
 
-task buildUberJar(type: CubaUberJarBuilding) {
-    webPort = 80
-    logbackConfigurationFile = 'etc/uber-jar-logback.xml'
-    singleJar = true
-    appProperties = ['cuba.automaticDatabaseUpdate': true,
-                     'cuba.dataSource.username'    : 'mviyqwfvfc',
-                     'cuba.dataSource.password'    : 'LfnfCghbyu2209!',
-                     'cuba.dataSource.dbName'      : 'kdp_test',
-                     'cuba.dataSource.host'        : 'test-kdp-dbserver.postgres.database.azure.com',
-                     'cuba.dataSource.port'        : '',
-                     'cuba.dataSourceProvider'     : 'application']
-}
 
 restart.finalizedBy start
 task buildWar(type: CubaWarBuilding) {
     includeJdbcDriver = true
     appProperties = ['cuba.automaticDatabaseUpdate': true,
-                     'cuba.dataSource.username'    : 'mviyqwfvfc',
-                     'cuba.dataSource.password'    : 'LfnfCghbyu2209!',
+                     'cuba.dataSource.username'    : 'postgres',
+                     'cuba.dataSource.password'    : 'FireBase2022',
                      'cuba.dataSource.dbName'      : 'kdp-test',
-                     'cuba.dataSource.host'        : 'test-kdp-dbserver.postgres.database.azure.com',
+                     'cuba.dataSource.host'        : 'smart-platform-data-base.postgres.database.azure.com',
                      'cuba.dataSource.port'        : '',
                      'cuba.dataSourceProvider'     : 'application',
-                     'cuba.webAppUrl'              : 'http://kdp-test.azurewebsites.net:80/kdp',
-                     'cuba.connectionUrlList'      : 'http://kdp-test.azurewebsites.net:80/kdp-core',
-                     'cuba.webPort'                : '80']
+                     'cuba.connectionUrlList'      : 'http://localhost:6080/kdp-core',
+                     'cuba.webPort'                : '6080']
     webXmlPath = 'modules/web/web/WEB-INF/single-war-web.xml'
     logbackConfigurationFile = 'etc/war-logback.xml'
 }
