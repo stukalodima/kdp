@@ -67,6 +67,11 @@
         <item id="screenProfiler"/>
         <item id="performanceStatistics"/>
     </menu>
+    <menu id="reports" icon="BINOCULARS" caption="mainMsg://menu_config.reports">
+        <item id="report$Report.browse"/>
+        <item id="report$ReportExecution.browse"/>
+        <item id="report$ReportGroup.browse"/>
+    </menu>
     <menu id="help" icon="font-icon:QUESTION">
         <item id="aboutWindow" openType="DIALOG"/>
         <item class="com.haulmont.cuba.web.app.domain.DomainProvider" id="printDomain"/>
