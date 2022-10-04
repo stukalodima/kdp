@@ -69,6 +69,7 @@
 <!--                <column id="uploadTo1C"/>-->
 <!--                <column id="comment"/>-->
                 <column id="coordinator"/>
+                <column id="initiator"/>
             </columns>
             <rowsCount/>
             <buttonsPanel id="buttonsPanel"
