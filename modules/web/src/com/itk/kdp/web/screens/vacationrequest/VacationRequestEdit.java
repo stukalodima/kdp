@@ -12,6 +12,7 @@ import com.haulmont.bpm.service.ProcessFormService;
 import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -27,6 +28,7 @@ import com.itk.kdp.config.ConsultationService;
 import com.itk.kdp.entity.*;
 import com.itk.kdp.service.EmployeeOrganizationService;
 import com.itk.kdp.service.VacationBalanceService;
+import com.itk.kdp.web.screens.addressing.AddressingEdit;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import de.diedavids.cuba.userinbox.entity.Message;
 import org.slf4j.Logger;
@@ -101,6 +103,8 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private Button sendToApprove;
     @Inject
     private VacationBalanceService vacationBalanceService;
+    @Inject
+    private Dialogs dialogs;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -309,6 +313,22 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
         }
         if (Objects.isNull(getEditedEntity().getStatus())) {
             getEditedEntity().setStatus("Проект заявки");
+        }
+
+        if (getEditedEntity().getStatus().equals("Проект заявки")) {
+            dialogs.createOptionDialog()
+                    .withCaption(messages.getMessage(VacationRequestEdit.class, "vacationRequestEditCommitChanges.notSentForApprovalCaption"))
+                    .withMessage(messages.getMessage(VacationRequestEdit.class, "vacationRequestEditCommitChanges.notSentForApprovalMessage"))
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES).withHandler(e -> {
+                                // Продовжуэмо збереження
+                                event.resume();
+                            }),
+                            new DialogAction(DialogAction.Type.NO)
+                    )
+                    .show();
+            // не зберігаємо
+            event.preventCommit();
         }
     }
 

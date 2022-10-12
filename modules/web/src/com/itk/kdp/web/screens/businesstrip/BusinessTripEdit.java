@@ -13,6 +13,7 @@ import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
 import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
@@ -26,6 +27,7 @@ import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.entity.*;
 import com.itk.kdp.service.EmployeeService;
+import com.itk.kdp.web.screens.addressing.AddressingEdit;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import com.itk.kdp.web.screens.form.StandardEditorITK;
 import de.diedavids.cuba.userinbox.entity.Message;
@@ -133,6 +135,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     String SHARE_NEW_MESSAGE_SCREEN_ID = "ddcui$send-message";
     @Inject
     private CollectionLoader<Message> messagesDl;
+    @Inject
+    private Dialogs dialogs;
 //    @Inject
 //    private CheckBoxGroup<Transport> transportOptionGroup;
 
@@ -313,6 +317,22 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             getEditedEntity().setNumber(uniqueNumbersService.getNextNumber("trip"));
             getEditedEntity().setStatus("Проект заявки");
             getEditedEntity().setOnDate(timeSource.currentTimestamp());
+        }
+
+        if (getEditedEntity().getStatus().equals("Проект заявки")) {
+            dialogs.createOptionDialog()
+                    .withCaption(messages.getMessage(BusinessTripEdit.class, "businessTripEditCommitChanges.notSentForApprovalCaption"))
+                    .withMessage(messages.getMessage(BusinessTripEdit.class, "businessTripEditCommitChanges.notSentForApprovalMessage"))
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES).withHandler(e -> {
+                                // Продовжуэмо збереження
+                                event.resume();
+                            }),
+                            new DialogAction(DialogAction.Type.NO)
+                    )
+                    .show();
+            // не зберігаємо
+            event.preventCommit();
         }
     }
 
