@@ -193,14 +193,14 @@
                     </form>
             </tab>
             <tab id="otherTab" caption="msg://businessTripEdit.tasks.caption" margin="true,false,false,false">
-                    <groupTable dataContainer="procTasksDs" width="100%" minHeight="300px" height="100%">
+                    <groupTable dataContainer="procTasksDs" width="100%" minHeight="600px" height="100%">
                         <columns>
                             <column id="locName" expandRatio="4" maxTextLength="40"/>
-                            <column id="procActor" expandRatio="3" maxTextLength="40"/>
+                            <column id="procActor"  expandRatio="4" generator="generateNameAllProcActors" maxTextLength="40"/>
                             <column id="startDate" expandRatio="2"/>
                             <column id="endDate" expandRatio="2"/>
                             <column id="locOutcome" caption="Результат" expandRatio="2"/>
-                            <column id="comment" maxTextLength="20" expandRatio="3"/>
+                            <column id="comment" maxTextLength="50" expandRatio="3"/>
                         </columns>
                         <rows/>
                     </groupTable>

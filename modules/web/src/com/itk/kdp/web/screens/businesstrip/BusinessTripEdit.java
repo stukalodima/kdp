@@ -484,5 +484,33 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 //        transportList.forEach(e->map.put(e.getName(),e));
 //        transportOptionGroup.setOptionsMap(map);
     }
+    public Component generateNameAllProcActors(ProcTask entity) {
+        String nameAllUsers;
+
+        Label<String> amountField = uiComponents.create(Label.TYPE_STRING);
+
+        if (Objects.isNull(entity.getProcActor())) {
+
+            entity = dataManager.reload(entity, ViewBuilder.of(ProcTask.class)
+                    .addAll("candidateUsers", "candidateUsers.name", "candidateUsers.login")
+                    .build());
+
+            nameAllUsers = "";
+            if (entity.getCandidateUsers() != null) {
+                Set<User> canditateUser = entity.getCandidateUsers();
+
+                int n = 0;
+                for (User cUser : canditateUser) {
+                    n++;
+                    nameAllUsers = nameAllUsers + metadataTools.getInstanceName(cUser) + (canditateUser.size() == n ? "" : ",\n");
+                }
+            }
+            amountField.setValue(nameAllUsers);
+
+        } else {
+            amountField.setValue(metadataTools.getInstanceName(entity.getProcActor()));
+        }
+        return amountField;
+    }
 
 }
