@@ -5,6 +5,7 @@ import com.haulmont.cuba.core.EntityManager;
 import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.global.AppBeans;
 import com.haulmont.cuba.core.global.Metadata;
+import com.itk.kdp.entity.BusinessTrip;
 import com.itk.kdp.entity.VacationRequest;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateTask;
@@ -33,7 +34,7 @@ public class EmailNotificationsServiceBean implements EmailNotificationsService 
 
         if (Objects.requireNonNull(metaClass).getJavaClass().equals(VacationRequest.class)) {
             return entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
-        } else if (Objects.requireNonNull(metaClass).getJavaClass().equals(VacationRequest.class)) {
+        } else if (Objects.requireNonNull(metaClass).getJavaClass().equals(BusinessTrip.class)) {
             return entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
         } else {
             return null;
