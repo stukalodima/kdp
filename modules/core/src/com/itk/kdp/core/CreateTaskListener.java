@@ -1,15 +1,11 @@
 package com.itk.kdp.core;
 
-import com.haulmont.chile.core.model.MetaClass;
-import com.haulmont.cuba.core.EntityManager;
-import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.entity.BusinessTrip;
-import com.itk.kdp.entity.VacationBalance;
 import com.itk.kdp.entity.VacationRequest;
+import com.itk.kdp.service.EmailNotificationsServiceBean;
 import com.itk.kdp.service.EmailService;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.task.IdentityLink;
@@ -30,28 +26,16 @@ public class CreateTaskListener implements TaskListener {
         EmailService emailService = AppBeans.get(EmailService.class);
         Messages messages = AppBeans.get(Messages.class);
         DataManager dataManager = AppBeans.get(DataManager.class);
-        Persistence persistence = AppBeans.get(Persistence.class);
-        Metadata metadata = AppBeans.get(Metadata.class);
-
-        RuntimeService runtimeService = delegateTask.getExecution().getEngineServices().getRuntimeService();
 
         Set<IdentityLink> users = delegateTask.getCandidates();
-
-        String executionId = delegateTask.getExecutionId();
-        UUID entityId = (UUID) runtimeService.getVariable(executionId, "entityId");
-        String entityName = (String) runtimeService.getVariable(executionId, "entityName");
-
-        MetaClass metaClass = metadata.getClass(entityName);
-
-        EntityManager entityManager = persistence.getEntityManager();
         BusinessTrip businessTrip = null;
         VacationRequest vacationRequest = null;
-        if (Objects.requireNonNull(metaClass).getJavaClass().equals(BusinessTrip.class)) {
-            businessTrip = entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
-        } else if (Objects.requireNonNull(metaClass).getJavaClass().equals(VacationRequest.class)) {
-            vacationRequest = entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
-        } else {
-            return;
+
+        Object object = EmailNotificationsServiceBean.getObjectFromDelegateTask(delegateTask);
+        if (object.getClass().equals(BusinessTrip.class)) {
+            businessTrip = (BusinessTrip) object;
+        } else if (object.getClass().equals(VacationRequest.class)) {
+            vacationRequest = (VacationRequest) object;
         }
 
         if (users.isEmpty()) {
@@ -189,11 +173,11 @@ public class CreateTaskListener implements TaskListener {
                 mapParam);
     }
 
-    private String checkStringIsEmpty(StringBuilder stringBuilder) {
+    String checkStringIsEmpty(StringBuilder stringBuilder) {
         return stringBuilder.toString().isEmpty() ? "" : "/";
     }
 
-    private String checkStringFieldIsEmpty(String field, String emptyString) {
+    String checkStringFieldIsEmpty(String field, String emptyString) {
         return Objects.isNull(field) ? emptyString : field;
     }
 }
