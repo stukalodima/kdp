@@ -29,15 +29,13 @@ import com.itk.kdp.service.EmployeeOrganizationService;
 import com.itk.kdp.service.VacationBalanceService;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import de.diedavids.cuba.userinbox.entity.Message;
-import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Formatter;
-import java.util.logging.SimpleFormatter;
+import java.util.*;
 
 @UiController("kdp_VacationRequest.edit")
 @UiDescriptor("vacation-request-edit.xml")
@@ -395,6 +393,13 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     @Subscribe("sendToApprove")
     public void onSendToApproveClick(Button.ClickEvent event) {
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
+            if(getEditedEntity().getEmployee().getVacationManager() == null) {
+                notifications.create()
+                        .withCaption(messages.getMessage(VacationRequestEdit.class, "message.startProcess.error"))
+                        .withType(Notifications.NotificationType.ERROR)
+                        .show();
+                return;
+            }
             getEditedEntity().setStatus("На погодженні");
             if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
 

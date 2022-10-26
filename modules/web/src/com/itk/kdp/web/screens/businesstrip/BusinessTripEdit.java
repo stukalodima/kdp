@@ -340,6 +340,13 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Subscribe("sendToApprove")
     public void onSendToApproveClick(Button.ClickEvent event) {
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
+            if(getEditedEntity().getEmployee().getApprovalManager() == null) {
+                notifications.create()
+                        .withCaption(messages.getMessage(BusinessTripEdit.class, "message.startProcess.error"))
+                        .withType(Notifications.NotificationType.ERROR)
+                        .show();
+                return;
+            }
             getEditedEntity().setStatus("На погодженні");
             if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
 
