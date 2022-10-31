@@ -29,7 +29,7 @@ apply(plugin: 'cuba')
 cuba {
     artifact {
         group = 'com.itk.kdp'
-        version = '0.1.1'
+        version = '0.2'
         isSnapshot = false
     }
     tomcat {
@@ -207,17 +207,3 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
 
 
 restart.finalizedBy start
-task buildWar(type: CubaWarBuilding) {
-    includeJdbcDriver = true
-    appProperties = ['cuba.automaticDatabaseUpdate': true,
-                     'cuba.dataSource.username'    : 'postgres',
-                     'cuba.dataSource.password'    : 'FireBase2022',
-                     'cuba.dataSource.dbName'      : 'kdp-test',
-                     'cuba.dataSource.host'        : 'smart-platform-data-base.postgres.database.azure.com',
-                     'cuba.dataSource.port'        : '',
-                     'cuba.dataSourceProvider'     : 'application',
-                     'cuba.connectionUrlList'      : 'http://localhost:6080/kdp-core',
-                     'cuba.webPort'                : '6080']
-    webXmlPath = 'modules/web/web/WEB-INF/single-war-web.xml'
-    logbackConfigurationFile = 'etc/war-logback.xml'
-}
