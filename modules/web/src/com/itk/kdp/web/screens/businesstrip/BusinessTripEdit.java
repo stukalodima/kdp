@@ -284,7 +284,11 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                         isBudgetField.setRequired(false);
                         result = true;
                     }
-                    return result;
+                    if (commitChanges() == OperationResult.success()) {
+                        return result;
+                    } else {
+                        return false;
+                    }
                 };
                 CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, entry.getKey(), entry.getValue());
                 action.setCaption(entry.getKey());
