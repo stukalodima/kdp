@@ -12,8 +12,8 @@ import com.itk.kdp.entity.BusinessTrip;
 import com.itk.kdp.entity.BusinessTripFiles;
 import com.itk.kdp.entity.VacationBalance;
 import com.itk.kdp.entity.VacationRequest;
+import com.itk.kdp.service.EmailNotificationsServiceBean;
 import com.itk.kdp.service.EmailService;
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
@@ -48,22 +48,14 @@ public class CreateTaskListener implements TaskListener {
         RuntimeService runtimeService = delegateTask.getExecution().getEngineServices().getRuntimeService();
 
         Set<IdentityLink> users = delegateTask.getCandidates();
-
-        String executionId = delegateTask.getExecutionId();
-        UUID entityId = (UUID) runtimeService.getVariable(executionId, "entityId");
-        String entityName = (String) runtimeService.getVariable(executionId, "entityName");
-
-        MetaClass metaClass = metadata.getClass(entityName);
-
-        EntityManager entityManager = persistence.getEntityManager();
         BusinessTrip businessTrip = null;
         VacationRequest vacationRequest = null;
-        if (Objects.requireNonNull(metaClass).getJavaClass().equals(BusinessTrip.class)) {
-            businessTrip = entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
-        } else if (Objects.requireNonNull(metaClass).getJavaClass().equals(VacationRequest.class)) {
-            vacationRequest = entityManager.find(Objects.requireNonNull(metaClass).getJavaClass(), entityId);
-        } else {
-            return;
+
+        Object object = EmailNotificationsServiceBean.getObjectFromDelegateTask(delegateTask);
+        if (object.getClass().equals(BusinessTrip.class)) {
+            businessTrip = (BusinessTrip) object;
+        } else if (object.getClass().equals(VacationRequest.class)) {
+            vacationRequest = (VacationRequest) object;
         }
 
         if (sendFileValue) {
@@ -243,11 +235,11 @@ public class CreateTaskListener implements TaskListener {
         }
     }
 
-    private String checkStringIsEmpty(StringBuilder stringBuilder) {
+    String checkStringIsEmpty(StringBuilder stringBuilder) {
         return stringBuilder.toString().isEmpty() ? "" : "/";
     }
 
-    private String checkStringFieldIsEmpty(String field, String emptyString) {
+    String checkStringFieldIsEmpty(String field, String emptyString) {
         return Objects.isNull(field) ? emptyString : field;
     }
 }
