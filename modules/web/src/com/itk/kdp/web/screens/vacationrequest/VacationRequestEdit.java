@@ -31,7 +31,6 @@ import com.itk.kdp.service.VacationBalanceService;
 import com.itk.kdp.web.screens.addressing.AddressingEdit;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import de.diedavids.cuba.userinbox.entity.Message;
-import org.slf4j.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -39,7 +38,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Formatter;
-import java.util.logging.SimpleFormatter;
 
 @UiController("kdp_VacationRequest.edit")
 @UiDescriptor("vacation-request-edit.xml")
@@ -105,6 +103,8 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
     private VacationBalanceService vacationBalanceService;
     @Inject
     private Dialogs dialogs;
+    @Inject
+    private MetadataTools metadataTools;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
@@ -466,6 +466,35 @@ public class VacationRequestEdit extends StandardEditor<VacationRequest> {
                 closeWithCommit();
             }
         }
+    }
+    public Component generateNameAllProcActors(ProcTask entity) {
+        String nameAllUsers;
+
+        Label<String> amountField = uiComponents.create(Label.TYPE_STRING);
+
+        if (Objects.isNull(entity.getProcActor())) {
+
+            entity = dataManager.reload(entity, ViewBuilder.of(ProcTask.class)
+                    .addAll("candidateUsers", "candidateUsers.name", "candidateUsers.login")
+                    .build());
+
+            nameAllUsers = "";
+            if (entity.getCandidateUsers() != null) {
+                Set<User> canditateUser = entity.getCandidateUsers();
+
+                int n = 0;
+                for (User cUser : canditateUser) {
+                    n++;
+                    nameAllUsers = nameAllUsers + metadataTools.getInstanceName(cUser) + (canditateUser.size() == n ? "" : ",\n");
+                }
+            }
+            amountField.setValue(nameAllUsers);
+
+        } else {
+          amountField.setValue(metadataTools.getInstanceName(entity.getProcActor()));
+        }
+
+        return amountField;
     }
 }
 
