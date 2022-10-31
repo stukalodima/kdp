@@ -40,7 +40,10 @@
                 <property name="vacationType" view="_base"/>
                 <property name="initiator" view="_base">
                 </property>
-                <property name="documents" view="_local"/>
+                <property name="documents" view="_local">
+                    <property name="document" view="browse"/>
+                    <property name="author" view="_local"/>
+                </property>
                 <property name="procInstance" view="procInstance-full"/>
             </view>
             <loader id="vacationRequestDl"/>
@@ -171,6 +174,7 @@
                         <textField id="vacationDaysField" property="vacationDays" editable="false" colspan="2"
                                    width="100%"/>
                         <textArea id="note" rows="5" colspan="2" property="note" width="100%"/>
+                        <lookupField id="initiatorField" property="initiator" editable="false" width="100%" colspan="2"/>
                     </column>
                     <column width="50%">
                         <lookupPickerField id="departmentField" optionsContainer="departmentsDc" property="department"
