@@ -8,7 +8,7 @@
         <file>${logDir}/app.log</file>
 
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
+            <level>ERROR</level>
         </filter>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -26,7 +26,7 @@
 
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>OFF</level>
         </filter>
 
         <encoder>
@@ -41,61 +41,61 @@
 
     <!-- Begin CUBA -->
 
-    <logger name="com.haulmont.cuba" level="DEBUG"/>
+    <logger name="com.haulmont.cuba" level="ERROR"/>
 
-    <logger name="com.haulmont.cuba.core.sys" level="INFO"/>
+    <logger name="com.haulmont.cuba.core.sys" level="ERROR"/>
 
-    <logger name="com.haulmont.cuba.core.sys.CubaDefaultListableBeanFactory" level="WARN"/>
+    <logger name="com.haulmont.cuba.core.sys.CubaDefaultListableBeanFactory" level="ERROR"/>
     
-    <logger name="com.haulmont.cuba.core.app.scheduling" level="INFO"/>
+    <logger name="com.haulmont.cuba.core.app.scheduling" level="ERROR"/>
 
-    <logger name="com.haulmont.cuba.web.sys" level="INFO"/>
+    <logger name="com.haulmont.cuba.web.sys" level="ERROR"/>
 
-    <logger name="com.haulmont.cuba.portal" level="INFO"/>
+    <logger name="com.haulmont.cuba.portal" level="ERROR"/>
 
-    <logger name="com.haulmont.restapi.sys" level="INFO"/>
+    <logger name="com.haulmont.restapi.sys" level="ERROR"/>
 
-    <logger name="com.haulmont.cuba.core.app.LockManager" level="INFO"/>
+    <logger name="com.haulmont.cuba.core.app.LockManager" level="ERROR"/>
 
     <!-- End CUBA -->
 
-    <logger name="eclipselink" level="WARN"/>
+    <logger name="eclipselink" level="ERROR"/>
 
-    <logger name="eclipselink.sql" level="INFO"/>
+    <logger name="eclipselink.sql" level="ERROR"/>
 
-    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework" level="ERROR"/>
 
-    <logger name="com.vaadin" level="WARN"/>
+    <logger name="com.vaadin" level="ERROR"/>
 
-    <logger name="org.atmosphere" level="WARN"/>
+    <logger name="org.atmosphere" level="ERROR"/>
 
-    <logger name="org.activiti" level="INFO"/>
+    <logger name="org.activiti" level="ERROR"/>
 
-    <logger name="org.jgroups" level="INFO"/>
+    <logger name="org.jgroups" level="ERROR"/>
     
-    <logger name="freemarker" level="INFO"/>
+    <logger name="freemarker" level="ERROR"/>
 
-    <logger name="org.thymeleaf.TemplateEngine" level="INFO"/>
+    <logger name="org.thymeleaf.TemplateEngine" level="ERROR"/>
 
-    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="com.zaxxer.hikari" level="ERROR"/>
 
-    <logger name="org.docx4j" level="WARN"/>
+    <logger name="org.docx4j" level="ERROR"/>
     
-	<logger name="org.xlsx4j" level="WARN"/>
+	<logger name="org.xlsx4j" level="ERROR"/>
 
-    <logger name="org.apache.fop.apps.FOUserAgent" level="WARN"/>
+    <logger name="org.apache.fop.apps.FOUserAgent" level="ERROR"/>
 
-    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate" level="ERROR"/>
 
-    <logger name="sun" level="INFO"/>
+    <logger name="sun" level="ERROR"/>
 
-    <logger name="com.sun" level="INFO"/>
+    <logger name="com.sun" level="ERROR"/>
 
-    <logger name="javax" level="INFO"/>
+    <logger name="javax" level="ERROR"/>
 
-    <logger name="org.apache" level="INFO"/>
+    <logger name="org.apache" level="ERROR"/>
 
-    <logger name="org.eclipse.jetty" level="INFO"/>
+    <logger name="org.eclipse.jetty" level="ERROR"/>
 
     <logger name="org.docx4j.utils.ResourceUtils" level="ERROR"/>
 
@@ -153,11 +153,11 @@
         <appender-ref ref="UIPerfStatFile"/>
     </appender>
 
-    <logger name="org.perf4j.TimingLogger" additivity="false" level="INFO">
+    <logger name="org.perf4j.TimingLogger" additivity="false" level="ERROR">
         <appender-ref ref="CoalescingStatistics"/>
     </logger>
 
-    <logger name="com.haulmont.cuba.gui.logging.UIPerformanceLogger" additivity="false" level="INFO">
+    <logger name="com.haulmont.cuba.gui.logging.UIPerformanceLogger" additivity="false" level="ERROR">
         <appender-ref ref="UICoalescingStatistics"/>
     </logger>
 
