@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Table(name = "KDP_TRANSPORT")
 @Entity(name = "kdp_Transport")
-@NamePattern("%s | nameUa, nameEn, nameRu")
+@NamePattern("#getCaption | nameUa, nameEn, nameRu")
 public class Transport extends StandardEntity implements StandardEntityITK {
     private static final long serialVersionUID = -3424446988148684893L;
 

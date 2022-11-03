@@ -1,34 +1,28 @@
 package com.itk.kdp.web.screens.desktop;
 
-import com.google.common.base.Strings;
 import com.haulmont.bpm.entity.ProcInstance;
 import com.haulmont.bpm.entity.ProcTask;
-import com.haulmont.bpm.gui.proctask.ProcTaskBrowse;
 import com.haulmont.chile.core.model.MetaClass;
 import com.haulmont.cuba.core.entity.Entity;
-import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.core.global.DataManager;
+import com.haulmont.cuba.core.global.LoadContext;
+import com.haulmont.cuba.core.global.Metadata;
+import com.haulmont.cuba.core.global.ReferenceToEntitySupport;
 import com.haulmont.cuba.gui.Route;
 import com.haulmont.cuba.gui.ScreenBuilders;
 import com.haulmont.cuba.gui.UiComponents;
-import com.haulmont.cuba.gui.WindowManager;
 import com.haulmont.cuba.gui.components.*;
-import com.haulmont.cuba.gui.components.actions.ItemTrackingAction;
-import com.haulmont.cuba.gui.config.WindowConfig;
 import com.haulmont.cuba.gui.model.CollectionLoader;
 import com.haulmont.cuba.gui.screen.Screen;
 import com.haulmont.cuba.gui.screen.Subscribe;
 import com.haulmont.cuba.gui.screen.UiController;
 import com.haulmont.cuba.gui.screen.UiDescriptor;
-import com.haulmont.cuba.gui.xml.layout.ComponentsFactory;
 import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.entity.BusinessTrip;
 import com.itk.kdp.entity.VacationRequest;
 
 import javax.inject.Inject;
-import java.util.Map;
 import java.util.Objects;
-
-import static com.haulmont.cuba.gui.components.Window.COMMIT_ACTION_ID;
 
 @UiController("kdp_DesktopTable")
 @UiDescriptor("desktop-table.xml")

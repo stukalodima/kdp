@@ -26,40 +26,67 @@ import java.util.*;
 @Service(EmployeeService.NAME)
 public class EmployeeServiceBean implements EmployeeService {
 
+    @SuppressWarnings("all")
     @Inject
     private RestClientService restClientService;
+    @SuppressWarnings("all")
     @Inject
     private DataManager dataManager;
+    @SuppressWarnings("all")
     @Inject
     private CompanyService companyService;
+    @SuppressWarnings("all")
     @Inject
     private DepartmentService departmentService;
+    @SuppressWarnings("all")
     @Inject
     private PositionService positionService;
+    @SuppressWarnings("all")
     @Inject
     private Metadata metadata;
+    @SuppressWarnings("all")
     @Inject
     private FileLoader fileLoader;
+    @SuppressWarnings("all")
     @Inject
     private UserManagementService userManagementService;
+    @SuppressWarnings("all")
     @Inject
     private MessageTools messageTools;
+    @SuppressWarnings("all")
     @Inject
     private RestApiConfig restApiConfig;
+    @SuppressWarnings("all")
+    @Inject
+    private UserSessionSource userSessionSource;
+    @SuppressWarnings("all")
+    @Inject
+    private TimeSource timeSource;
 
     @Override
     public void getEmployeeListFromExternal() throws IOException {
         String connectString = restApiConfig.getRestApiEmployeeService();
-        for (Organizations organizations : companyService.getCompanyListByActive()) {
-            String jsonString = restClientService.callGetMethod(connectString+ "?companyId=" + organizations.getOrganizations1cId() + "&all=1", true);
+        List<Organizations> organizationsList = companyService.getCompanyListByActive();
+        callRestApi(connectString, organizationsList);
+        connectString = restApiConfig.getRestApiExtEmployeeService();
+        callRestApi(connectString, companyService.getCompanyListByActive(), true);
+    }
+
+    private void callRestApi(String connectString, List<Organizations> organizationsList, boolean extStaff) throws IOException {
+        for (Organizations organizations : organizationsList) {
+            String jsonString = restClientService.callGetMethod(connectString + "?companyId=" + organizations.getOrganizations1cId() + "&all=1", true);
             if (!jsonString.isEmpty()) {
                 try {
-                    parseJsonString(jsonString);
+                    parseJsonString(jsonString, extStaff);
                 } catch (ParseException e) {
                     throw new IOException(e);
                 }
             }
         }
+    }
+
+    private void callRestApi(String connectString, List<Organizations> organizationsList) throws IOException {
+        callRestApi(connectString, organizationsList, false);
     }
 
     @Override
@@ -106,49 +133,70 @@ public class EmployeeServiceBean implements EmployeeService {
         return employeesList.get(0);
     }
 
-    private void parseJsonString(String jsonString) throws ParseException {
+    private void parseJsonString(String jsonString, boolean extStaff) throws ParseException {
         JsonArray jsonArray = JsonParser.parseString(jsonString).getAsJsonArray();
         HashMap<String, String> employeeMap = new HashMap<>();
         for (JsonElement jsonElement : jsonArray) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
 
-            //from accounts
+            if (!extStaff) {
+                employeeMap.put("nameUa", jsonObject.getAsJsonPrimitive("nameUa").getAsString());
+                employeeMap.put("surnameUa", jsonObject.getAsJsonPrimitive("surnameUa").getAsString());
+                employeeMap.put("middleNameUa", jsonObject.getAsJsonPrimitive("middleNameUa").getAsString());
+                employeeMap.put("nameRu", jsonObject.getAsJsonPrimitive("nameRu").getAsString());
+                employeeMap.put("surnameRu", jsonObject.getAsJsonPrimitive("surnameRu").getAsString());
+                employeeMap.put("middleNameRu", jsonObject.getAsJsonPrimitive("middleNameRu").getAsString());
+                employeeMap.put("loginName", jsonObject.getAsJsonPrimitive("loginName").getAsString());
+                employeeMap.put("workEmail", jsonObject.getAsJsonPrimitive("workEmail").getAsString());
+                employeeMap.put("otherEmail", jsonObject.getAsJsonPrimitive("otherEmail").getAsString());
+                employeeMap.put("workPhone", jsonObject.getAsJsonPrimitive("workPhone").getAsString());
+                employeeMap.put("mobilePhone", jsonObject.getAsJsonPrimitive("mobilePhone").getAsString());
+                employeeMap.put("departmentId", jsonObject.getAsJsonPrimitive("departmentId").getAsString());
+                employeeMap.put("positionId", jsonObject.getAsJsonPrimitive("positionId").getAsString());
+                employeeMap.put("managerId", jsonObject.getAsJsonPrimitive("managerId").getAsString());
+                employeeMap.put("approvalManager", jsonObject.getAsJsonPrimitive("approvalManager").getAsString());
+                employeeMap.put("vacationManager", jsonObject.getAsJsonPrimitive("vacationManager").getAsString());
+                employeeMap.put("GUID", jsonObject.getAsJsonPrimitive("GUID").getAsString());
+                employeeMap.put("photo", jsonObject.getAsJsonPrimitive("photo").getAsString());
+                employeeMap.put("formEmployment", jsonObject.getAsJsonPrimitive("formEmployment").getAsString());
+                employeeMap.put("birthday", jsonObject.getAsJsonPrimitive("birthday").getAsString());
+                employeeMap.put("employmentDate", jsonObject.getAsJsonPrimitive("employmentDate").getAsString());
+            }
+
             employeeMap.put("companyId", jsonObject.getAsJsonPrimitive("companyId").getAsString());
             employeeMap.put("employee1cId", jsonObject.getAsJsonPrimitive("employeeId").getAsString());
-            employeeMap.put("nameUa", jsonObject.getAsJsonPrimitive("nameUa").getAsString());
-            employeeMap.put("surnameUa", jsonObject.getAsJsonPrimitive("surnameUa").getAsString());
-            employeeMap.put("middleNameUa", jsonObject.getAsJsonPrimitive("middleNameUa").getAsString());
-            employeeMap.put("nameRu", jsonObject.getAsJsonPrimitive("nameRu").getAsString());
-            employeeMap.put("surnameRu", jsonObject.getAsJsonPrimitive("surnameRu").getAsString());
-            employeeMap.put("middleNameRu", jsonObject.getAsJsonPrimitive("middleNameRu").getAsString());
-            employeeMap.put("loginName", jsonObject.getAsJsonPrimitive("loginName").getAsString());
-            employeeMap.put("workEmail", jsonObject.getAsJsonPrimitive("workEmail").getAsString());
-            employeeMap.put("otherEmail", jsonObject.getAsJsonPrimitive("otherEmail").getAsString());
-            employeeMap.put("workPhone", jsonObject.getAsJsonPrimitive("workPhone").getAsString());
-            employeeMap.put("mobilePhone", jsonObject.getAsJsonPrimitive("mobilePhone").getAsString());
-            employeeMap.put("departmentId", jsonObject.getAsJsonPrimitive("departmentId").getAsString());
-            employeeMap.put("positionId", jsonObject.getAsJsonPrimitive("positionId").getAsString());
-            employeeMap.put("managerId", jsonObject.getAsJsonPrimitive("managerId").getAsString());
-            employeeMap.put("approvalManager", jsonObject.getAsJsonPrimitive("approvalManager").getAsString());
-            employeeMap.put("vacationManager", jsonObject.getAsJsonPrimitive("vacationManager").getAsString());
-            employeeMap.put("GUID", jsonObject.getAsJsonPrimitive("GUID").getAsString());
-            employeeMap.put("photo", jsonObject.getAsJsonPrimitive("photo").getAsString());
-            employeeMap.put("formEmployment", jsonObject.getAsJsonPrimitive("formEmployment").getAsString());
-            employeeMap.put("birthday", jsonObject.getAsJsonPrimitive("birthday").getAsString());
-            employeeMap.put("employmentDate", jsonObject.getAsJsonPrimitive("employmentDate").getAsString());
 
-            fillCompanyEntity(employeeMap);
+            if (extStaff) {
+                fireEmployee(employeeMap);
+            } else {
+                fillEmployeeEntity(employeeMap);
+            }
         }
     }
 
-    private void fillCompanyEntity(HashMap<String, String> employeeMap) throws ParseException {
+    private void fireEmployee(HashMap<String, String> employeeMap) {
+        Employees employees = getEmployeeByCode(employeeMap.get("employee1cId"));
+
+        if (!Objects.isNull(employees)) {
+            employees.setDeletedBy(userSessionSource.getUserSession().getUser().getLogin());
+            employees.setDeleteTs(timeSource.currentTimestamp());
+            User user = employees.getUser();
+            user.setActive(false);
+            user.setDeletedBy(userSessionSource.getUserSession().getUser().getLogin());
+            user.setDeleteTs(timeSource.currentTimestamp());
+            dataManager.commit(user);
+            dataManager.commit(employees);
+        }
+    }
+
+    private void fillEmployeeEntity(HashMap<String, String> employeeMap) throws ParseException {
         Employees employees = getEmployeeByCode(employeeMap.get("employee1cId"));
 
         if (Objects.isNull(employees)) {
             employees = dataManager.create(Employees.class);
         }
 
-        String format = "d/MM/yyyy hh:mm:ss aaa";
+        String format = "MM/dd/yyyy hh:mm:ss aaa";
         Date birthday = null;
         Date employmentDate = null;
         if (!StringUtil.isBlank(employeeMap.get("birthday"))) {
@@ -184,63 +232,71 @@ public class EmployeeServiceBean implements EmployeeService {
         CommitContext commitContext = new CommitContext();
 
         if (!StringUtil.isBlank(employeeMap.get("photo"))) {
-            FileDescriptor fileDescriptor = metadata.create(FileDescriptor.class);
+            FileDescriptor fileDescriptor;
+            if (employees.getPhoto() != null) {
+                fileDescriptor = employees.getPhoto();
+            } else {
+                fileDescriptor = metadata.create(FileDescriptor.class);
+            }
             byte[] bytes = Base64.decodeBase64(employeeMap.get("photo"));
             fileDescriptor.setName("ava.png");
             fileDescriptor.setExtension("png");
             fileDescriptor.setSize((long) bytes.length);
-            fileDescriptor.setCreateDate(new Date());
+            fileDescriptor.setCreateDate(timeSource.currentTimestamp());
             try {
+                if (fileLoader.fileExists(fileDescriptor)) {
+                    fileLoader.removeFile(fileDescriptor);
+                }
                 fileLoader.saveStream(fileDescriptor, () -> new ByteArrayInputStream(bytes));
             } catch (FileStorageException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Error save fd to file storage", e);
             }
             employees.setPhoto(fileDescriptor);
 
             commitContext.addInstanceToCommit(fileDescriptor);
         }
-        if (!Objects.isNull(employees.getLoginName()) && !StringUtil.isBlank(employees.getLoginName())) {
-            String login = employees.getLoginName();
-            int index = login.indexOf('@');
-            login = login.substring(0, index);
+        if (employees.getUser() == null) {
+            if (!Objects.isNull(employees.getLoginName()) && !StringUtil.isBlank(employees.getLoginName())) {
+                String login = employees.getLoginName();
+                int index = login.indexOf('@');
+                login = login.substring(0, index);
 
-            employees.setLoginName(login);
+                employees.setLoginName(login);
 
-            List<User> userList = dataManager.load(User.class)
-                    .query("select e from sec$User e where LOWER(e.login) = LOWER(:login)")
-                    .parameter("login", login)
-                    .view("user.edit")
-                    .list();
-            User user;
-            if (userList.isEmpty()) {
-                user = metadata.create(User.class);
-            } else {
-                user = userList.get(0);
+                List<User> userList = dataManager.load(User.class)
+                        .query("select e from sec$User e where LOWER(e.login) = LOWER(:login)")
+                        .parameter("login", login)
+                        .view("user.edit")
+                        .list();
+                User user;
+                if (userList.isEmpty()) {
+                    user = metadata.create(User.class);
+                } else {
+                    user = userList.get(0);
+                }
+
+                List<Group> groupList = dataManager.load(Group.class)
+                        .query("select e from sec$Group e where e.name = :group")
+                        .parameter("group", "Company")
+                        .list();
+
+                user.setLogin(employees.getLoginName());
+                user.setName(employees.getCaption(false));
+                user.setFirstName(employees.getNameUa());
+                user.setMiddleName(employees.getMiddleNameUa());
+                user.setLastName(employees.getSurnameUa());
+                user.setEmail(employees.getWorkEmail());
+                user.setPosition(employees.getPosition().getCaption());
+                user.setTimeZoneAuto(true);
+                user.setLanguage(messageTools.getDefaultLocale().getLanguage());
+                if (!groupList.isEmpty()) {
+                    user.setGroup(groupList.get(0));
+                }
+                user.setActive(true);
+
+                employees.setUser(user);
+                commitContext.addInstanceToCommit(user);
             }
-
-            List<Group> groupList = dataManager.load(Group.class)
-                    .query("select e from sec$Group e where e.name = :group")
-                    .parameter("group", "Company")
-                    .list();
-
-            user.setLogin(employees.getLoginName());
-            user.setName(employees.getCaption(false));
-            user.setFirstName(employees.getNameUa());
-            user.setMiddleName(employees.getMiddleNameUa());
-            user.setLastName(employees.getSurnameUa());
-            user.setEmail(employees.getWorkEmail());
-            user.setPosition(employees.getPosition().getCaption());
-            user.setTimeZoneAuto(true);
-            user.setLanguage(messageTools.getDefaultLocale().getLanguage());
-            if (!groupList.isEmpty()) {
-                user.setGroup(groupList.get(0));
-            }
-            user.setActive(true);
-
-            employees.setUser(user);
-
-            commitContext.addInstanceToCommit(user);
-
         }
         commitContext.addInstanceToCommit(employees);
 

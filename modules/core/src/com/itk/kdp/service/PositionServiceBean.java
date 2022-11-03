@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.haulmont.cuba.core.global.DataManager;
 import com.itk.kdp.config.RestApiConfig;
+import com.itk.kdp.entity.Organizations;
 import com.itk.kdp.entity.Position;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +32,11 @@ public class PositionServiceBean implements PositionService {
     @Override
     public void getPositionListFromExternal() throws IOException {
         String connectString = restApiConfig.getRestApiPositionService();
-        String jsonString = restClientService.callGetMethod(connectString);
-        if (!jsonString.isEmpty()) {
-            parseJsonString(jsonString);
+        for (Organizations organizations : companyService.getCompanyListByActive()) {
+            String jsonString = restClientService.callGetMethod(connectString+ "?companyId=" + organizations.getOrganizations1cId() + "&all=1", true);
+            if (!jsonString.isEmpty()) {
+                parseJsonString(jsonString);
+            }
         }
     }
 

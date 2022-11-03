@@ -1,13 +1,14 @@
 package com.itk.kdp.web.screens.businesstrip;
 
 import com.haulmont.cuba.gui.Route;
-import com.haulmont.cuba.gui.components.ButtonsPanel;
-import com.haulmont.cuba.gui.components.GroupTable;
-import com.haulmont.cuba.gui.components.Table;
+import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.data.GroupInfo;
 import com.haulmont.cuba.gui.screen.*;
+import com.haulmont.cuba.gui.screen.LookupComponent;
 import com.itk.kdp.entity.BusinessTrip;
 import de.diedavids.cuba.userinbox.web.WithEntitySharingSupport;
+
+import com.haulmont.reports.gui.actions.list.ListPrintFormAction;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -22,6 +23,10 @@ public class BusinessTripBrowse extends StandardLookup<BusinessTrip> implements 
     private GroupTable<BusinessTrip> businessTripsTable;
     @Inject
     private ButtonsPanel buttonsPanel;
+    @Inject
+    private Button listPrintBtn;
+    @Inject
+    private Actions actions;
 
     @Subscribe
     public void onInit(InitEvent event) {
@@ -45,6 +50,10 @@ public class BusinessTripBrowse extends StandardLookup<BusinessTrip> implements 
                 return null;
             }
         });
+
+        ListPrintFormAction listPrintFormAction = actions.create(ListPrintFormAction.class, "listPrint");
+        businessTripsTable.addAction(listPrintFormAction);
+        listPrintBtn.setAction(listPrintFormAction);
     }
 
     @Override
@@ -56,4 +65,6 @@ public class BusinessTripBrowse extends StandardLookup<BusinessTrip> implements 
     public ButtonsPanel getButtonsPanel() {
         return buttonsPanel;
     }
+
+
 }

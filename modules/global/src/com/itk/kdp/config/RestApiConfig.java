@@ -11,19 +11,22 @@ import com.haulmont.cuba.core.global.Secret;
 public interface RestApiConfig extends Config {
 
     @Property("REST-API.COMPANY_SERVICE")
-    @Default("http://localhost:6060/vacation/VAADIN/company.json")
+    @Default("http://172.29.32.4/sbs_zup/hs/portal/getCompany")
     String getRestApiCompanyService();
 
     @Property("REST-API.DEPARTMENT_SERVICE")
-    @Default("http://localhost:6060/vacation/VAADIN/department.json")
+    @Default("http://172.29.32.4/sbs_zup/hs/portal/getDivision")
     String getRestApiDepartmentService();
 
     @Property("REST-API.EMPLOYEE_SERVICE")
     @Default("http://172.29.32.4/sbs_zup/hs/portal/getEmployee")
     String getRestApiEmployeeService();
+    @Property("REST-API.EMPLOYEE_SERVICE_EXT_STAFF")
+    @Default("http://172.29.32.4/sbs_zup/hs/portal/getArrayExStaff")
+    String getRestApiExtEmployeeService();
 
     @Property("REST-API.POSITION_SERVICE")
-    @Default("http://localhost:6060/vacation/VAADIN/position.json")
+    @Default("http://172.29.32.4/sbs_zup/hs/portal/getPosition")
     String getRestApiPositionService();
 
     @Property("REST-API.VACATION_TYPE_SERVICE")

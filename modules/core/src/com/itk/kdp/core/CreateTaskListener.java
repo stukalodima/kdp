@@ -10,7 +10,6 @@ import com.haulmont.cuba.core.global.*;
 import com.haulmont.cuba.security.entity.User;
 import com.itk.kdp.entity.BusinessTrip;
 import com.itk.kdp.entity.BusinessTripFiles;
-import com.itk.kdp.entity.VacationBalance;
 import com.itk.kdp.entity.VacationRequest;
 import com.itk.kdp.service.EmailService;
 import org.activiti.engine.RuntimeService;
@@ -32,11 +31,12 @@ public class CreateTaskListener implements TaskListener {
     private Expression procRole;
     private Expression sendFile;
     private EmailAttachment[] emailAttachments;
+
     @Override
     public void notify(DelegateTask delegateTask) {
 
         String procRoleCode = procRole != null ? (String) procRole.getValue(delegateTask) : "";
-        boolean sendFileValue = sendFile != null ? "true".equals(sendFile.getValue(delegateTask)) : false;
+        boolean sendFileValue = sendFile != null && "true".equals(sendFile.getValue(delegateTask));
 
         EmailService emailService = AppBeans.get(EmailService.class);
         Messages messages = AppBeans.get(Messages.class);
@@ -48,7 +48,6 @@ public class CreateTaskListener implements TaskListener {
         RuntimeService runtimeService = delegateTask.getExecution().getEngineServices().getRuntimeService();
 
         Set<IdentityLink> users = delegateTask.getCandidates();
-
         String executionId = delegateTask.getExecutionId();
         UUID entityId = (UUID) runtimeService.getVariable(executionId, "entityId");
         String entityName = (String) runtimeService.getVariable(executionId, "entityName");
@@ -87,13 +86,14 @@ public class CreateTaskListener implements TaskListener {
             }
 
             List<EmailAttachment> emailAttachmentList = new ArrayList<>();
-            for (BusinessTripFiles businessTripFiles : businessTrip.getDocuments()
-            ) {
-                if (!Objects.isNull(businessTripFiles.getAuthor()) && userList.contains(businessTripFiles.getAuthor().getUser())) {
-                    try {
-                        emailAttachmentList.add(new EmailAttachment(fileStorageAPI.loadFile(businessTripFiles.getDocument()), businessTripFiles.getDocument().getName()));
-                    } catch (FileStorageException e) {
-                        continue;
+            if (businessTrip != null && businessTrip.getDocuments() != null) {
+                for (BusinessTripFiles businessTripFiles : businessTrip.getDocuments()
+                ) {
+                    if (!Objects.isNull(businessTripFiles.getAuthor()) && userList.contains(businessTripFiles.getAuthor().getUser())) {
+                        try {
+                            emailAttachmentList.add(new EmailAttachment(fileStorageAPI.loadFile(businessTripFiles.getDocument()), businessTripFiles.getDocument().getName()));
+                        } catch (FileStorageException ignored) {
+                        }
                     }
                 }
             }
@@ -230,7 +230,7 @@ public class CreateTaskListener implements TaskListener {
         mapParam.put("approve", messages.getMessage(CreateTaskListener.class, "mail.approve"));
         mapParam.put("terminate", messages.getMessage(CreateTaskListener.class, "mail.terminate"));
 
-        if(Objects.isNull(emailAttachments)) {
+        if (Objects.isNull(emailAttachments)) {
             emailService.sendEmail(user.getEmail(),
                     messages.getMessage(CreateTaskListener.class, "mail.createTaskListenerEmailCaption"),
                     messages.getMessage(CreateTaskListener.class, "mail.createTaskListenerEmailTemplate"),
@@ -243,11 +243,11 @@ public class CreateTaskListener implements TaskListener {
         }
     }
 
-    private String checkStringIsEmpty(StringBuilder stringBuilder) {
+    String checkStringIsEmpty(StringBuilder stringBuilder) {
         return stringBuilder.toString().isEmpty() ? "" : "/";
     }
 
-    private String checkStringFieldIsEmpty(String field, String emptyString) {
+    String checkStringFieldIsEmpty(String field, String emptyString) {
         return Objects.isNull(field) ? emptyString : field;
     }
 }

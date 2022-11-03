@@ -1,18 +1,25 @@
 package com.itk.kdp.web.screens.businesstrip;
 
+import com.haulmont.bpm.BpmConstants;
 import com.haulmont.bpm.entity.ProcInstance;
 import com.haulmont.bpm.entity.ProcTask;
+import com.haulmont.bpm.form.ProcFormDefinition;
+import com.haulmont.bpm.gui.action.ClaimProcTaskAction;
+import com.haulmont.bpm.gui.action.CompleteProcTaskAction;
+import com.haulmont.bpm.gui.action.ProcAction;
 import com.haulmont.bpm.service.BpmEntitiesService;
+import com.haulmont.bpm.service.ProcessFormService;
 import com.haulmont.bpm.service.ProcessRuntimeService;
 import com.haulmont.cuba.core.app.UniqueNumbersService;
-import com.haulmont.cuba.core.entity.KeyValueEntity;
+import com.haulmont.cuba.core.entity.Entity;
 import com.haulmont.cuba.core.global.*;
+import com.haulmont.cuba.gui.Dialogs;
 import com.haulmont.cuba.gui.Notifications;
 import com.haulmont.cuba.gui.ScreenBuilders;
+import com.haulmont.cuba.gui.UiComponents;
 import com.haulmont.cuba.gui.app.core.file.FileDownloadHelper;
 import com.haulmont.cuba.gui.components.*;
 import com.haulmont.cuba.gui.model.CollectionLoader;
-import com.haulmont.cuba.gui.model.DataContext;
 import com.haulmont.cuba.gui.model.InstanceLoader;
 import com.haulmont.cuba.gui.screen.*;
 import com.haulmont.cuba.gui.util.OperationResult;
@@ -20,21 +27,22 @@ import com.haulmont.cuba.security.entity.User;
 import com.haulmont.cuba.security.global.UserSession;
 import com.itk.kdp.entity.*;
 import com.itk.kdp.service.EmployeeService;
+import com.itk.kdp.web.screens.addressing.AddressingEdit;
 import com.itk.kdp.web.screens.employees.EmployeesBrowse;
 import com.itk.kdp.web.screens.form.StandardEditorITK;
 import de.diedavids.cuba.userinbox.entity.Message;
-import org.apache.commons.lang3.StringUtils;
+import de.diedavids.cuba.userinbox.entity.SendMessageEntity;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @UiController("kdp_BusinessTrip.edit")
 @UiDescriptor("business-trip-edit.xml")
 @EditedEntityContainer("businessTripDc")
 @LoadDataBeforeShow
 public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
+    protected ProcTask procTask;
     @Inject
     private InstanceLoader<BusinessTrip> businessTripDl;
     @Inject
@@ -46,6 +54,13 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private Notifications notifications;
     @Inject
+    private ProcessFormService processFormService;
+    private final List<CompleteProcTaskAction> completeProcTaskActions = new ArrayList<>();
+    @Inject
+    private MessageBundle messageBundle;
+    @Inject
+    private UiComponents uiComponents;
+    @Inject
     private HBoxLayout actionsBox;
     @Inject
     private Button sendToApprove;
@@ -53,6 +68,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     private TimeSource timeSource;
     @Inject
     private UniqueNumbersService uniqueNumbersService;
+    @Inject
+    private Form formTransport;
     @Inject
     private UserSession userSession;
     @Inject
@@ -70,7 +87,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private LookupPickerField<Employees> employeeField;
     @Inject
-    private TextArea<String> detailsField;
+    private TextField<String> detailsField;
     @Inject
     private LookupPickerField<Purpose> purposeField;
     @Inject
@@ -78,9 +95,9 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private CheckBox visaField;
     @Inject
-    private TextArea<String> analyticsField;
+    private TextField<String> analyticsField;
     @Inject
-    private SuggestionField<String> destinationField;
+    private TextField<String> destinationField;
     @Inject
     private TextField<String> companyNameField;
     @Inject
@@ -91,6 +108,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     private TextField<String> isBudgetField;
     @Inject
     private EntityStates entityStates;
+    @Inject
+    private Messages messages;
     @Inject
     private ScreenValidation screenValidation;
     @Named("bodyTab.mainTab")
@@ -107,19 +126,25 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Inject
     private TextField<String> startPlaceField;
     @Inject
+    private UserSessionSource userSessionSource;
+    @Inject
+    private MetadataTools metadataTools;
+
+    String SHARE_SUBJECT_KEY = "share.subject";
+    String SHARE_TEXT_KEY = "share.text";
+    String SHARE_NEW_MESSAGE_SCREEN_ID = "ddcui$send-message";
+    @Inject
     private CollectionLoader<Message> messagesDl;
     @Inject
-    private CheckBoxGroup<Transport> transportOptionGroup;
-    @Inject
-    private DataContext dataContext;
+    private Dialogs dialogs;
+//    @Inject
+//    private CheckBoxGroup<Transport> transportOptionGroup;
 
     @Subscribe
     public void onAfterShow(AfterShowEvent event) {
+//        updateFormCaption();
         super.onAfterShow(event);
-        if (getEditedEntity().getProcInstance() != null) {
-            initEntityByProcess(getEditedEntity().getProcInstance(), actionsBox, getUsersForCancelProc());
-            initFormByProcess();
-        }
+        initProcAction();
         updateVisible();
         if (chooseEmployee) {
             EmployeesBrowse employeesBrowse = screenBuilders.lookup(employeeField)
@@ -132,21 +157,11 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         }
     }
 
-    private List<User> getUsersForCancelProc() {
-        List<User> userList = new ArrayList<>();
-        if (getEditedEntity().getEmployee() != null) {
-            userList.add(getEditedEntity().getEmployee().getUser());
-        }
-        if (getEditedEntity().getAuthor() != null) {
-            userList.add(getEditedEntity().getAuthor().getUser());
-        }
-        return userList;
-    }
-
     private void updateVisible() {
         sendToApprove.setVisible(Objects.isNull(getEditedEntity().getProcInstance()));
         baseFormSetEditable(Objects.isNull(getEditedEntity().getProcInstance()));
-        transportOptionGroup.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
+        formTransport.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
+//        transportOptionGroup.setEditable(Objects.isNull(getEditedEntity().getProcInstance()));
         startDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         endDateField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
         startPlaceField.setRequired(Objects.isNull(getEditedEntity().getProcInstance()));
@@ -175,7 +190,8 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             }
             if (procTask.getActTaskDefinitionKey().equals("correction")) {
                 baseFormSetEditable(true);
-                transportOptionGroup.setEditable(true);
+                formTransport.setEditable(true);
+//                transportOptionGroup.setEditable(true);
                 detailsField.setEditable(true);
                 purposeField.setEditable(true);
                 analyticsField.setEditable(true);
@@ -205,6 +221,18 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         startPlaceField.setEditable(editable);
     }
 
+    private void initProcAction() {
+        if (!Objects.isNull(getEditedEntity().getProcInstance())) {
+            List<ProcTask> procTasks = bpmEntitiesService.findActiveProcTasksForCurrentUser(getEditedEntity().getProcInstance(), BpmConstants.Views.PROC_TASK_COMPLETE);
+            procTask = procTasks.isEmpty() ? null : procTasks.get(0);
+            if (procTask != null && procTask.getProcActor() != null) {
+                initCompleteTaskUI();
+            } else if (procTask != null && procTask.getProcActor() == null) {
+                initClaimTaskUI();
+            }
+        }
+    }
+
     @Subscribe
     public void onBeforeShow(BeforeShowEvent event) {
         FileDownloadHelper.initGeneratedColumn(attachmentsTable, "document");
@@ -217,18 +245,74 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         procTasksDl.load();
         messagesDl.setParameter("shareable", getEditedEntity());
         messagesDl.load();
+    }
 
-        List<Transport> transportList = new ArrayList<>();
-        Collection<Transport> transportCollection = new ArrayList<>();
-        getEditedEntity().getTransports().forEach(e -> {
-            transportList.add(e.getTransport());
-            if (Boolean.TRUE.equals(e.getCheckTransport())) {
-                transportCollection.add(e.getTransport());
+    private void initClaimTaskUI() {
+        Button claimTaskBtn = uiComponents.create(Button.class);
+        claimTaskBtn.setWidth("100%");
+        claimTaskBtn.setCaption(messages.getMainMessage("form.claimTaskBtn"));
+
+        ProcAction.AfterActionListener afterClaimTaskListener = () -> {
+            actionsBox.removeAll();
+            initProcAction();
+            updateVisible();
+        };
+
+        ClaimProcTaskAction claimProcTaskAction = new ClaimProcTaskAction(procTask);
+        claimTaskBtn.setAction(claimProcTaskAction);
+        claimProcTaskAction.addAfterActionListener(afterClaimTaskListener);
+        actionsBox.add(claimTaskBtn);
+    }
+
+    protected void initCompleteTaskUI() {
+        Map<String, ProcFormDefinition> outcomesWithForms = processFormService.getOutcomesWithForms(procTask);
+        if (!outcomesWithForms.isEmpty()) {
+            for (Map.Entry<String, ProcFormDefinition> entry : outcomesWithForms.entrySet()) {
+                ProcAction.BeforeActionPredicate beforeActionPredicate = () -> {
+                    boolean result;
+                    if (entry.getKey().equals("Погоджено")) {
+                        ValidationErrors validationErrors = screenValidation.validateUiComponents(mainTab);
+                        result = validationErrors.isEmpty();
+                        if (!result) {
+                            screenValidation.showValidationErrors(this, validationErrors);
+                        }
+                    } else {
+                        detailsField.setEditable(false);
+                        purposeField.setEditable(false);
+                        analyticsField.setEditable(false);
+                        bpmField.setEditable(false);
+                        destinationField.setRequired(false);
+                        companyNameField.setRequired(false);
+                        payCenterField.setRequired(false);
+                        budgetField.setRequired(false);
+                        isBudgetField.setRequired(false);
+                        result = true;
+                    }
+                    if (commitChanges() == OperationResult.success()) {
+                        return result;
+                    } else {
+                        return false;
+                    }
+                };
+                CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, entry.getKey(), entry.getValue());
+                action.setCaption(entry.getKey());
+                action.addBeforeActionPredicate(beforeActionPredicate);
+                completeProcTaskActions.add(action);
             }
-        });
-        transportList.sort(Comparator.comparing(Transport::getCaption));
-        transportOptionGroup.setOptionsList(transportList);
-        transportOptionGroup.setValue(transportCollection);
+        } else {
+            ProcFormDefinition form = processFormService.getDefaultCompleteTaskForm(getEditedEntity().getProcInstance().getProcDefinition());
+            CompleteProcTaskAction action = new CompleteProcTaskAction(procTask, BpmConstants.DEFAULT_TASK_OUTCOME, form);
+            action.setCaption(messageBundle.getMessage("completeTask"));
+            completeProcTaskActions.add(action);
+        }
+
+        for (CompleteProcTaskAction completeProcTaskAction : completeProcTaskActions) {
+            completeProcTaskAction.addAfterActionListener(this::closeWithCommit);
+            Button actionBtn = uiComponents.create(Button.class);
+            actionBtn.setWidth("100%");
+            actionBtn.setAction(completeProcTaskAction);
+            actionsBox.add(actionBtn);
+        }
     }
 
     @Subscribe
@@ -238,9 +322,21 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
             getEditedEntity().setStatus("Проект заявки");
             getEditedEntity().setOnDate(timeSource.currentTimestamp());
         }
-        Collection<Transport> transportList = transportOptionGroup.getValue();
-        if (transportList != null) {
-            getEditedEntity().getTransports().forEach(e -> e.setCheckTransport(transportList.contains(e.getTransport())));
+
+        if (getEditedEntity().getStatus().equals("Проект заявки")) {
+            dialogs.createOptionDialog()
+                    .withCaption(messages.getMessage(BusinessTripEdit.class, "businessTripEditCommitChanges.notSentForApprovalCaption"))
+                    .withMessage(messages.getMessage(BusinessTripEdit.class, "businessTripEditCommitChanges.notSentForApprovalMessage"))
+                    .withActions(
+                            new DialogAction(DialogAction.Type.YES).withHandler(e -> {
+                                // Продовжуэмо збереження
+                                event.resume();
+                            }),
+                            new DialogAction(DialogAction.Type.NO)
+                    )
+                    .show();
+            // не зберігаємо
+            event.preventCommit();
         }
     }
 
@@ -268,6 +364,14 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
     @Subscribe("sendToApprove")
     public void onSendToApproveClick(Button.ClickEvent event) {
         if (Objects.isNull(getEditedEntity().getProcInstance())) {
+            if(getEditedEntity().getEmployee().getApprovalManager() == null) {
+                notifications.create()
+                        .withCaption(messages.getMessage(BusinessTripEdit.class, "message.startProcess.error"))
+                        .withType(Notifications.NotificationType.ERROR)
+                        .show();
+                return;
+            }
+            getEditedEntity().setStatus("На погодженні");
             if (commitChanges().getStatus() == OperationResult.Status.SUCCESS) {
 
                 List<Addressing> addressingList = dataManager.load(Addressing.class)
@@ -307,7 +411,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
                 ProcInstance procInstance = bpmEntitiesService.createProcInstance(procInstanceDetails);
 
-
                 HashMap<String, Object> processVariables = new HashMap<>();
                 processRuntimeService.startProcess(procInstance, "Process started programmatically", processVariables);
                 notifications.create()
@@ -316,7 +419,6 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
                         .show();
                 businessTripDl.load();
                 getEditedEntity().setProcInstance(procInstance);
-                getEditedEntity().setStatus("На погодженні");
                 closeWithCommit();
             }
         }
@@ -324,40 +426,19 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<BusinessTrip> event) {
-        if (entityStates.isNew(event.getEntity())) {
-            List<Employees> employees = dataManager.load(Employees.class)
-                    .query("select e from kdp_Employees e where e.user = :user")
-                    .parameter("user", userSession.getUser())
-                    .view("employees-for-create-api")
-                    .list();
-            if (employees.size() == 1) {
-                event.getEntity().setEmployee(employees.get(0));
-                event.getEntity().setAuthor(employees.get(0));
-            } else if (!employees.isEmpty()) {
-                chooseEmployee = true;
-            }
-            getEditedEntity().setOnDate(timeSource.currentTimestamp());
-            event.getEntity().setPayCenter(PayCenterEnum.A);
-
-            List<Transport> transportList = dataManager.load(Transport.class)
-                    .query("e.active = TRUE")
-                    .view("_base")
-                    .list();
-
-            transportList.stream().sorted(Comparator.comparing(Transport::getCaption)).forEach(e -> {
-                BusinessTripTransport businessTripTransport = dataManager.create(BusinessTripTransport.class);
-                businessTripTransport.setBusinessTrip(event.getEntity());
-                businessTripTransport.setTransport(e);
-                businessTripTransport = dataContext.merge(businessTripTransport);
-                if (event.getEntity().getTransports() == null) {
-                    List<BusinessTripTransport> businessTripTransports = new ArrayList<>();
-                    businessTripTransports.add(businessTripTransport);
-                    event.getEntity().setTransports(businessTripTransports);
-                } else {
-                    event.getEntity().getTransports().add(businessTripTransport);
-                }
-            });
+        List<Employees> employees = dataManager.load(Employees.class)
+                .query("select e from kdp_Employees e where e.user = :user")
+                .parameter("user", userSession.getUser())
+                .view("employees-for-create-api")
+                .list();
+        if (employees.size() == 1) {
+            event.getEntity().setEmployee(employees.get(0));
+            event.getEntity().setAuthor(employees.get(0));
+        } else if (!employees.isEmpty()) {
+            chooseEmployee = true;
         }
+        getEditedEntity().setOnDate(timeSource.currentTimestamp());
+        event.getEntity().setPayCenter(PayCenterEnum.A);
     }
 
     @Subscribe("startDateField")
@@ -386,7 +467,7 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
         if (!Objects.isNull(endDate) && !Objects.isNull(getEditedEntity().getStartDate())) {
             if (endDate.before(getEditedEntity().getStartDate())) {
                 notifications.create().withCaption("Увага!!!")
-                        .withDescription("Дата закінчення не може бути меншою за дату початку!")
+                        .withDescription("Дата початку відрядження не може бути менше дати закінчення!")
                         .show();
             }
         }
@@ -394,51 +475,73 @@ public class BusinessTripEdit extends StandardEditorITK<BusinessTrip> {
 
     @Subscribe("messagesTable.create")
     public void onMessagesTableCreate(Action.ActionPerformedEvent event) {
-        createMessagesForEntity();
+        screenBuilders.editor(SendMessageEntity.class, this)
+                .withScreenId(SHARE_NEW_MESSAGE_SCREEN_ID)
+                .withInitializer(message -> {
+                    Entity shareable = getEditedEntity();
+                    String currentUsername = userSessionSource.getUserSession().getCurrentOrSubstitutedUser().getName();
+                    String entityCaption = messages.getTools().getEntityCaption(shareable.getMetaClass());
+                    String shareableInstanceName = metadataTools.getInstanceName(shareable);
+                    message.setSubject(
+                            messages.formatMainMessage(
+                                    SHARE_SUBJECT_KEY,
+                                    currentUsername,
+                                    entityCaption,
+                                    shareableInstanceName
+                            )
+                    );
+                    message.setText(
+                            messages.formatMainMessage(
+                                    SHARE_TEXT_KEY,
+                                    entityCaption,
+                                    shareableInstanceName,
+                                    currentUsername
+                            )
+                    );
+                    message.setShareable(shareable);
+                })
+                .withLaunchMode(OpenMode.DIALOG)
+                .show();
     }
 
     @Subscribe
     public void onInit(InitEvent event) {
-        List<KeyValueEntity> list = dataManager.loadValues("select o.destination as destination from kdp_BusinessTrip o group by o.destination")
-                .properties("destination")
-                .list();
-        List<String> strings = new ArrayList<>();
-        for (KeyValueEntity keyValueEntity : list) {
-            strings.add(keyValueEntity.getValue("destination"));
-        }
-        destinationField.setSearchExecutor((searchString, searchParams) -> {
-                    strings.add(searchString);
-                    return strings.stream()
-                            .filter(str -> StringUtils.containsIgnoreCase(str, searchString))
-                            .collect(Collectors.toList());
+//        List<Transport> transportList = dataManager.load(Transport.class)
+//                .query("e.active = TRUE")
+//                .view("_base")
+//                .list();
+//
+//        Map<String, Transport> map = new LinkedHashMap<>();
+//        transportList.forEach(e->map.put(e.getName(),e));
+//        transportOptionGroup.setOptionsMap(map);
+    }
+    public Component generateNameAllProcActors(ProcTask entity) {
+        String nameAllUsers;
+
+        Label<String> amountField = uiComponents.create(Label.TYPE_STRING);
+
+        if (Objects.isNull(entity.getProcActor())) {
+
+            entity = dataManager.reload(entity, ViewBuilder.of(ProcTask.class)
+                    .addAll("candidateUsers", "candidateUsers.name", "candidateUsers.login")
+                    .build());
+
+            nameAllUsers = "";
+            if (entity.getCandidateUsers() != null) {
+                Set<User> canditateUser = entity.getCandidateUsers();
+
+                int n = 0;
+                for (User cUser : canditateUser) {
+                    n++;
+                    nameAllUsers = nameAllUsers + metadataTools.getInstanceName(cUser) + (canditateUser.size() == n ? "" : ",\n");
                 }
-        );
-
-        beforeActionPredicateApprove = () -> {
-            ValidationErrors validationErrors = screenValidation.validateUiComponents(mainTab);
-            boolean result = validationErrors.isEmpty();
-            if (!result) {
-                screenValidation.showValidationErrors(this, validationErrors);
             }
-            if (commitChanges() == OperationResult.success()) {
-                return result;
-            } else {
-                return false;
-            }
-        };
+            amountField.setValue(nameAllUsers);
 
-        afterClaimTaskListener = () -> {
-            actionsBox.removeAll();
-            initFormByProcess();
-            updateVisible();
-        };
-
-        afterCancelProcessListener = () -> {
-            getEditedEntity().setStatus("Скасована ініціатором");
-            closeWithCommit();
-        };
-
-        afterCloseMessagesListener = (e) -> messagesDl.load();
+        } else {
+            amountField.setValue(metadataTools.getInstanceName(entity.getProcActor()));
+        }
+        return amountField;
     }
 
 }

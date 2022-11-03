@@ -7,5 +7,9 @@ build/*
 deploy/*
 modules/*/build/*
 .idea/*
+.idea
 out
 test-run
+/docker-compose-kdp/db/*
+/docker-compose-kdp/dump.sql
+/docker-compose-kdp/db

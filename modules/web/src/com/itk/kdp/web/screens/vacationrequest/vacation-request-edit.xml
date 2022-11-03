@@ -40,7 +40,10 @@
                 <property name="vacationType" view="_base"/>
                 <property name="initiator" view="_base">
                 </property>
-                <property name="documents" view="_local"/>
+                <property name="documents" view="_local">
+                    <property name="document" view="browse"/>
+                    <property name="author" view="_local"/>
+                </property>
                 <property name="procInstance" view="procInstance-full"/>
             </view>
             <loader id="vacationRequestDl"/>
@@ -122,7 +125,7 @@
                 forceDialog="true"/>
     <layout expand="editActions" spacing="true" width="100%">
         <tabSheet id="body">
-            <tab id="mainTab" caption="msg://request" spacing="true" margin="true,false,false,false">
+            <tab id="mainTab" caption="Заявка" spacing="true" margin="true,false,false,false">
                 <form id="form" dataContainer="vacationRequestDc" width="100%">
                     <column width="50%">
                         <lookupPickerField id="employeeField" optionsContainer="employeesDc" property="employee"
@@ -171,6 +174,7 @@
                         <textField id="vacationDaysField" property="vacationDays" editable="false" colspan="2"
                                    width="100%"/>
                         <textArea id="note" rows="5" colspan="2" property="note" width="100%"/>
+                        <lookupField id="initiatorField" property="initiator" editable="false" width="100%" colspan="2"/>
                     </column>
                     <column width="50%">
                         <lookupPickerField id="departmentField" optionsContainer="departmentsDc" property="department"
@@ -188,12 +192,12 @@
                     </column>
                 </form>
             </tab>
-            <tab id="otherTab" caption="msg://approval_progress" margin="true,false,false,false" expand="procTaskScroll">
+            <tab id="otherTab" caption="Ход согласования" margin="true,false,false,false" expand="procTaskScroll">
                 <scrollBox id="procTaskScroll" width="100%" height="100%" contentMinHeight="400px">
                     <groupTable dataContainer="procTasksDs" width="100%" height="400">
                         <columns>
-                            <column id="locName" caption="msg://process_step" expandRatio="4" maxTextLength="40"/>
-                            <column id="procActor" caption="msg://executor" expandRatio="3" maxTextLength="40"/>
+                            <column id="locName" caption="Этап процесса" expandRatio="4" maxTextLength="40"/>
+                            <column id="procActor" caption="Исполнитель" expandRatio="4" maxTextLength="40" generator="generateNameAllProcActors"/>
                             <column id="startDate" expandRatio="2"/>
                             <column id="endDate" expandRatio="2"/>
                             <column id="locOutcome" caption="Результат" expandRatio="2"/>
@@ -203,7 +207,7 @@
                     </groupTable>
                 </scrollBox>
             </tab>
-            <tab id="fileTab" margin="true,false,false,false" caption="msg://files">
+            <tab id="fileTab" caption="Файлы" margin="true,false,false,false">
                 <scrollBox
                         height="AUTO"
                         spacing="true"
@@ -223,17 +227,17 @@
                             <button id="attachmentsTableCreate" action="attachmentsTable.create"/>
                         </buttonsPanel>
                         <columns>
-                            <column id="document.name" caption="msg://fileDescriptor.name"/>
+                            <column id="document.name"/>
                             <column id="author"/>
-                            <column id="document.size" caption="msg://fileDescriptor.size"/>
-                            <column id="document.createDate" caption="msg://fileDescriptor.createDate"/>
+                            <column id="document.size"/>
+                            <column id="document.createDate"/>
                             <column id="task" maxTextLength="100"/>
                             <column id="comment" maxTextLength="100"/>
                         </columns>
                     </table>
                 </scrollBox>
             </tab>
-            <tab id="messageTab" caption="msg://messages" margin="true,false,false,false">
+            <tab id="messageTab" caption="Сообщения" margin="true,false,false,false">
                 <table id="messagesTable"
                        width="100%"
                        height="400"
@@ -268,7 +272,7 @@
             <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
             <button id="commitBtn" action="windowCommit"/>
             <button id="closeBtn" action="windowClose"/>
-            <button id="sendToApprove" caption="msg://send_for_approval"/>
+            <button id="sendToApprove" caption="mainMsg://form.sendToApprove"/>
             <hbox id="actionsBox" spacing="true"/>
         </hbox>
     </layout>
