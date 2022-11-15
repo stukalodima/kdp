@@ -31,7 +31,7 @@
                     rowspan="3"
                     dataContainer="ideasDc"
                     multiselect="true"
-                    presentations="true">
+                    presentations="true" multiLineCells="true">
             <actions>
                 <action id="create" type="create"/>
                 <action id="edit" type="edit"/>
