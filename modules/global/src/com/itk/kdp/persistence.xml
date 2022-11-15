@@ -21,5 +21,6 @@
         <class>com.itk.kdp.entity.VacationBalance</class>
         <class>com.itk.kdp.entity.UsersFpmnt</class>
         <class>com.itk.kdp.entity.OperatorAccessRequest</class>
+        <class>com.itk.kdp.entity.Idea</class>
     </persistence-unit>
 </persistence>

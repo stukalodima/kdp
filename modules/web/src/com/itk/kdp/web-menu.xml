@@ -16,6 +16,7 @@
         <item screen="kdp_AccessRequest.browse" caption="mainMsg://menu_config.kdp_AccessRequest.browse"/>
         <item screen="kdp_OperatorAccessRequest.browse"
               caption="mainMsg://menu_config.kdp_OperatorAccessRequest.browse"/>
+        <item screen="kdp_Idea.browse" caption="mainMsg://menu_config.kdp_Idea.browse"/>
     </menu>
     <menu id="application-kdp" insertBefore="admin-service" caption="mainMsg://menu_config.application-kdp"
     icon="ADDRESS_BOOK">
