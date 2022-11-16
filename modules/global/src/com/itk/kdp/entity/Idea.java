@@ -1,12 +1,15 @@
 package com.itk.kdp.entity;
 
+import com.haulmont.chile.core.annotations.Composition;
 import com.haulmont.chile.core.annotations.NamePattern;
 import com.haulmont.cuba.core.entity.StandardEntity;
+import com.haulmont.cuba.core.entity.annotation.OnDelete;
 import com.haulmont.cuba.core.entity.annotation.OnDeleteInverse;
 import com.haulmont.cuba.core.global.DeletePolicy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Table(name = "KDP_IDEA")
 @Entity(name = "kdp_Idea")
@@ -57,6 +60,19 @@ public class Idea extends StandardEntity {
     @JoinColumn(name = "EXECUTOR_ID")
     @OnDeleteInverse(DeletePolicy.DENY)
     private Employees executor;
+
+    @Composition
+    @OnDelete(DeletePolicy.CASCADE)
+    @OneToMany(mappedBy = "idea")
+    private List<IdeaAttachments> attachments;
+
+    public List<IdeaAttachments> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<IdeaAttachments> attachments) {
+        this.attachments = attachments;
+    }
 
     public Employees getAuthor() {
         return author;

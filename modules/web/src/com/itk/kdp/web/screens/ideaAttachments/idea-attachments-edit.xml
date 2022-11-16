@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://ideaAttachmentsEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.ideaAttachments">
+    <data>
+        <instance id="ideaAttachmentsDc"
+                  class="com.itk.kdp.entity.IdeaAttachments">
+            <view extends="_local">
+                <property name="document" view="_minimal"/>
+                <property name="author" view="_minimal"/>
+                <property name="idea" view="_minimal"/>
+            </view>
+            <loader/>
+        </instance>
+    </data>
+    <dialogMode height="AUTO"
+                width="AUTO"
+                modal="true"
+                forceDialog="true"/>
+    <layout expand="editActions" spacing="true">
+        <form id="form" dataContainer="ideaAttachmentsDc">
+            <column width="400px">
+                <upload id="documentField" fileStoragePutMode="IMMEDIATE" property="document" showFileName="true"/>
+                <pickerField id="authorField" property="author">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </pickerField>
+                <textArea id="commentField" property="comment" rows="5"/>
+                <pickerField id="ideaField" property="idea">
+                    <actions>
+                        <action id="lookup" type="picker_lookup"/>
+                        <action id="clear" type="picker_clear"/>
+                    </actions>
+                </pickerField>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

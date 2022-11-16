@@ -22,5 +22,6 @@
         <class>com.itk.kdp.entity.UsersFpmnt</class>
         <class>com.itk.kdp.entity.OperatorAccessRequest</class>
         <class>com.itk.kdp.entity.Idea</class>
+        <class>com.itk.kdp.entity.IdeaAttachments</class>
     </persistence-unit>
 </persistence>

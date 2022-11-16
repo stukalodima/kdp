@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        xmlns:c="http://schemas.haulmont.com/cuba/screen/jpql_condition.xsd"
+        caption="msg://ideaAttachmentsBrowse.caption"
+        focusComponent="ideaAttachmentsTable"
+        messagesPack="com.itk.kdp.web.screens.ideaAttachments">
+    <data readOnly="true">
+        <collection id="ideaAttachmentsDc"
+                    class="com.itk.kdp.entity.IdeaAttachments">
+            <view extends="_local">
+                <property name="document" view="_minimal"/>
+                <property name="author" view="_minimal"/>
+                <property name="idea" view="_minimal"/>
+            </view>
+            <loader id="ideaAttachmentsDl">
+                <query>
+                    <![CDATA[select e from kdp_IdeaAttachments e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="ideaAttachmentsTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="ideaAttachmentsTable"
+                dataLoader="ideaAttachmentsDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="ideaAttachmentsTable"
+                    width="100%"
+                    dataContainer="ideaAttachmentsDc"
+                    multiselect="true"
+                    presentations="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="document"/>
+                <column id="author"/>
+                <column id="comment"/>
+                <column id="idea"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="ideaAttachmentsTable.create"/>
+                <button id="editBtn" action="ideaAttachmentsTable.edit"/>
+                <button id="removeBtn" action="ideaAttachmentsTable.remove"/>
+                <button id="excelBtn" action="ideaAttachmentsTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>
