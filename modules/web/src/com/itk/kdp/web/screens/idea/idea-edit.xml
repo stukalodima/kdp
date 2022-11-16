@@ -7,13 +7,13 @@
         <instance id="ideaDc"
                   class="com.itk.kdp.entity.Idea">
             <view extends="_local">
-                <property name="author" view="employees-view"/>
-                <property name="manager" view="employees-view"/>
-                <property name="executor" view="employees-view"/>
+                <property name="author" view="_minimal"/>
+                <property name="manager" view="_minimal"/>
+                <property name="executor" view="_minimal"/>
                 <property name="attachments" view="_local">
                     <property name="document" view="browse">
                     </property>
-                    <property name="author" view="employees-view"/>
+                    <property name="author" view="_minimal"/>
                     <property name="idea" view="_minimal"/>
                 </property>
             </view>
