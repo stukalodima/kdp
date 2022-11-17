@@ -16,7 +16,7 @@ create table KDP_POSITION (
     ORGANIZATIONS_ID_ID uuid not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_POSITION
 -- begin KDP_VACATION_REQUEST
 create table KDP_VACATION_REQUEST (
@@ -51,7 +51,7 @@ create table KDP_VACATION_REQUEST (
     PHONE_NUMBER varchar(255),
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_REQUEST
 -- begin KDP_ORGANIZATIONS
 create table KDP_ORGANIZATIONS (
@@ -77,7 +77,7 @@ create table KDP_ORGANIZATIONS (
     ACTIVE boolean,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ORGANIZATIONS
 -- begin KDP_EMPLOYEES
 create table KDP_EMPLOYEES (
@@ -118,7 +118,7 @@ create table KDP_EMPLOYEES (
     USER_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_EMPLOYEES
 -- begin KDP_RECONCILIATION_STATUSES
 create table KDP_RECONCILIATION_STATUSES (
@@ -158,7 +158,7 @@ create table KDP_DEPARTMENTS (
     MANAGER_ID_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_DEPARTMENTS
 -- begin KDP_VACATION_TYPE
 create table KDP_VACATION_TYPE (
@@ -242,7 +242,7 @@ create table KDP_BUSINESS_TRIP (
     PROC_INSTANCE_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_BUSINESS_TRIP
 -- begin KDP_PURPOSE
 create table KDP_PURPOSE (
@@ -299,7 +299,7 @@ create table KDP_ADDRESSING (
     COMPANY_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ADDRESSING
 -- begin KDP_ADDRESSING_DETAIL
 create table KDP_ADDRESSING_DETAIL (
@@ -320,7 +320,7 @@ create table KDP_ADDRESSING_DETAIL (
     ADDRESSING_ID uuid not null,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ADDRESSING_DETAIL
 -- begin KDP_BUSINESS_TRIP_FILES
 create table KDP_BUSINESS_TRIP_FILES (
@@ -340,7 +340,7 @@ create table KDP_BUSINESS_TRIP_FILES (
     AUTHOR_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_BUSINESS_TRIP_FILES
 -- begin KDP_ACCESS_REQUEST
 create table KDP_ACCESS_REQUEST (
@@ -364,7 +364,7 @@ create table KDP_ACCESS_REQUEST (
     PROC_INSTANCE uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_ACCESS_REQUEST
 -- begin KDP_VACATION_FILES
 create table KDP_VACATION_FILES (
@@ -384,7 +384,7 @@ create table KDP_VACATION_FILES (
     AUTHOR_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_FILES
 -- begin KDP_VACATION_BALANCE
 create table KDP_VACATION_BALANCE (
@@ -402,7 +402,7 @@ create table KDP_VACATION_BALANCE (
     days integer,
     --
     primary key (ID)
-);
+)^
 -- end KDP_VACATION_BALANCE
 -- begin KDP_USERS_FPMNT
 create table KDP_USERS_FPMNT (
@@ -442,7 +442,7 @@ create table KDP_OPERATOR_ACCESS_REQUEST (
     COMMENT text,
     --
     primary key (ID)
-);
+)^
 -- end KDP_OPERATOR_ACCESS_REQUEST
 -- begin KDP_IDEA
 create table KDP_IDEA (
@@ -466,7 +466,7 @@ create table KDP_IDEA (
     EXECUTOR_ID uuid,
     --
     primary key (ID)
-);
+)^
 -- end KDP_IDEA
 -- begin KDP_IDEA_ATTACHMENTS
 create table KDP_IDEA_ATTACHMENTS (

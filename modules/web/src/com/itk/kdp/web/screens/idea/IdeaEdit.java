@@ -50,6 +50,8 @@ public class IdeaEdit extends StandardEditor<Idea> {
     private Notifications notifications;
     @Inject
     private DataManager dataManager;
+    @Inject
+    private DataContext dataContext;
 
     @Subscribe
     public void onInitEntity(InitEntityEvent<Idea> event) {
@@ -78,19 +80,17 @@ public class IdeaEdit extends StandardEditor<Idea> {
                     } catch (FileStorageException e) {
                         throw new RuntimeException(messages.getMessage(IdeaEdit.class,"ideaBrowse.errorUploadToStorage"), e);
                     }
-                    commitContext.addInstanceToCommit(fd);
-                    IdeaAttachments ideaAttachments = metadata.create(IdeaAttachments.class);
+                    fd = dataContext.merge(fd);
+//                    commitContext.addInstanceToCommit(fd);
+                    IdeaAttachments ideaAttachments = dataContext.create(IdeaAttachments.class);
                     initNewEntity(ideaAttachments, fd);
                     ideaAttachments.setIdea(getEditedEntity());
-                    commitContext.addInstanceToCommit(ideaAttachments);
                     attachmentsDc.getMutableItems().add(ideaAttachments);
 
                 }
             }
-            dataManager.commit(commitContext);
+//            dataManager.commit(commitContext);
             multiUploadField.clearUploads();
-
-            FileDownloadHelper.initGeneratedColumn(attachmentsTable, "document");
 
         });
 
