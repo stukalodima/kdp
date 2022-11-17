@@ -3,22 +3,9 @@
 <!--    <item insertBefore="application-kdp" screen="bpm$ProcTask.lookup" icon="font-icon:TASKS"-->
 <!--          id="desktop" caption="mainMsg://menu_config.bpm$ProcTask.lookup"/>-->
     <separator/>
-    <menu id="admin-service" insertBefore="hr-service" caption="mainMsg://menu_config.admin-service"
-    icon="font-icon:BOOK">
-        <item screen="kdp_BusinessTrip.browse" caption="mainMsg://menu_config.kdp_BusinessTrip.browse"/>
-    </menu>
-    <menu id="hr-service" insertBefore="it-service" caption="mainMsg://menu_config.hr-service"
-          icon="font-icon:BOOK">
-        <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
-    </menu>
-    <menu id="it-service" insertBefore="administration" caption="mainMsg://menu_config.it-service"
-          icon="font-icon:BOOK">
-        <item screen="kdp_AccessRequest.browse" caption="mainMsg://menu_config.kdp_AccessRequest.browse"/>
-        <item screen="kdp_OperatorAccessRequest.browse"
-              caption="mainMsg://menu_config.kdp_OperatorAccessRequest.browse"/>
-    </menu>
+    <item screen="kdp_Idea.browse" caption="mainMsg://menu_config.kdp_Idea.browse" icon="font-icon:LIGHTBULB_O"/>
     <menu id="application-kdp" insertBefore="admin-service" caption="mainMsg://menu_config.application-kdp"
-    icon="ADDRESS_BOOK">
+          icon="ADDRESS_BOOK">
         <item screen="kdp_Organizations.browse" caption="mainMsg://menu_config.kdp_Organizations.browse"/>
         <item screen="kdp_Departments.browse" caption="mainMsg://menu_config.kdp_Department.browse"/>
         <separator/>
@@ -38,7 +25,20 @@
         <item screen="kdp_UsersFpmnt.browse" caption="mainMsg://menu_config.kdp_UsersFpmnt.browse"
               description="mainMsg://menu_config.kdp_UsersFpmnt.browse"/>
     </menu>
-    <menu id="bpm" icon="font-icon:AREA_CHART" caption="mainMsg://menu_config.bpm">
+    <menu id="admin-service" caption="mainMsg://menu_config.admin-service" icon="font-icon:BOOK"
+          insertBefore="hr-service">
+        <item screen="kdp_BusinessTrip.browse" caption="mainMsg://menu_config.kdp_BusinessTrip.browse"/>
+    </menu>
+    <menu id="hr-service" caption="mainMsg://menu_config.hr-service" icon="font-icon:BOOK" insertBefore="it-service">
+        <item screen="kdp_VacationRequest.browse" caption="mainMsg://menu_config.kdp_VacationRequest.browse"/>
+    </menu>
+    <menu id="it-service" caption="mainMsg://menu_config.it-service" icon="font-icon:BOOK"
+          insertBefore="administration">
+        <item screen="kdp_AccessRequest.browse" caption="mainMsg://menu_config.kdp_AccessRequest.browse"/>
+        <item screen="kdp_OperatorAccessRequest.browse"
+              caption="mainMsg://menu_config.kdp_OperatorAccessRequest.browse"/>
+    </menu>
+    <menu id="bpm" caption="mainMsg://menu_config.bpm" icon="font-icon:AREA_CHART">
         <item id="bpm$ProcModel.lookup"/>
         <item id="bpm$ProcDefinition.lookup"/>
         <item id="bpm$ProcInstance.lookup"/>
@@ -67,22 +67,23 @@
         <item id="screenProfiler"/>
         <item id="performanceStatistics"/>
     </menu>
-    <menu id="reports" icon="BINOCULARS" caption="mainMsg://menu_config.reports">
+    <menu id="reports" caption="mainMsg://menu_config.reports" icon="BINOCULARS">
         <item id="report$Report.browse"/>
         <item id="report$ReportGroup.browse"/>
         <item id="report$Report.run"/>
     </menu>
+    <menu id="application-ldap" icon="font-icon:Y_COMBINATOR" insertBefore="help">
+        <item screen="ldap$LdapPropertiesConfig.edit"/>
+        <item screen="ldap$matchingRuleScreen"/>
+        <item screen="ldap$UserSynchronizationLog.browse"/>
+    </menu>
     <menu id="help" icon="font-icon:QUESTION">
+        <item id="kdp_DesktopTable" caption="mainMsg://menu_config.kdp_myTasks" />
+        <separator/>
         <item id="aboutWindow" openType="DIALOG"/>
         <item class="com.haulmont.cuba.web.app.domain.DomainProvider" id="printDomain"/>
         <separator/>
         <item id="settings"/>
         <item screen="helium_ThemeSettingsScreen"/>
-    </menu>
-    <menu id="application-ldap" icon="font-icon:Y_COMBINATOR"
-          insertBefore="help">
-        <item screen="ldap$LdapPropertiesConfig.edit"/>
-        <item screen="ldap$matchingRuleScreen"/>
-        <item screen="ldap$UserSynchronizationLog.browse"/>
     </menu>
 </menu-config>

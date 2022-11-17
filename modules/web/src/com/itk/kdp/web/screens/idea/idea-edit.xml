@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://ideaEdit.caption"
+        focusComponent="form"
+        messagesPack="com.itk.kdp.web.screens.idea">
+    <data>
+        <instance id="ideaDc"
+                  class="com.itk.kdp.entity.Idea">
+            <view extends="_local">
+                <property name="author" view="_minimal"/>
+                <property name="manager" view="_minimal"/>
+                <property name="executor" view="_minimal"/>
+                <property name="attachments" view="_local">
+                    <property name="document" view="browse">
+                    </property>
+                    <property name="author" view="_minimal"/>
+                    <property name="idea" view="_minimal"/>
+                </property>
+            </view>
+            <loader/>
+            <collection id="attachmentsDc" property="attachments"/>
+        </instance>
+    </data>
+    <dialogMode height="75%"
+                width="80%"
+                modal="true"
+                resizable="true"
+                forceDialog="true"/>
+    <layout expand="tabSheet" spacing="true">
+        <tabSheet id="tabSheet" stylename="compact-tabbar">
+            <tab id="baseInfoTab" spacing="true" margin="true,false,false,false" caption="msg://tabSheet.caption">
+                <hbox width="100%" height="100%">
+                    <form id="form" dataContainer="ideaDc" width="100%">
+                        <column id="firstColumn" width="30%">
+                            <textField id="nameField" property="name" description="msg://nameField.description"
+                                       inputPrompt="msg://nameField.inputPrompt"
+                                       width="100%" colspan="3"/>
+                            <textArea id="descriptionField" property="description" rows="5" width="100%"
+                                      description="msg://descriptionField.description"
+                                      inputPrompt="msg://descriptionField.inputPrompt" colspan="2"/>
+
+                            <textArea id="benefitsField" property="benefits" rows="5" width="100%"
+                                      description="msg://benefitsField.description"
+                                      inputPrompt="msg://benefitsField.inputPrompt"
+                                      captionAsHtml="true" caption="msg://benefitsField.caption" colspan="2"/>
+
+                            <pickerField id="authorField" property="author" width="100%" colspan="2">
+                                <actions>
+                                    <action id="lookup" type="picker_lookup"/>
+                                    <action id="clear" type="picker_clear"/>
+                                </actions>
+                            </pickerField>
+
+                            <pickerField id="executorField" property="executor" width="100%" captionAsHtml="true"
+                                         caption="msg://executorField.caption" visible="false" colspan="2">
+                                <actions>
+                                    <action id="lookup" type="picker_lookup"/>
+                                    <action id="clear" type="picker_clear"/>
+                                </actions>
+                            </pickerField>
+                        </column>
+                        <column id="secondColumn" width="30%">
+
+                        </column>
+                        <column id="thirdColumn" width="30%">
+                            <textArea id="problemSolveField" property="problemSolve" rows="5" width="100%"
+                                      description="msg://problemSolveField.description"
+                                      inputPrompt="msg://problemSolveField.inputPrompt" captionAsHtml="true"
+                                      caption="msg://problemSolveField.caption" colspan="2"/>
+                            <textArea id="resourcesField" property="resources" rows="5" width="100%"
+                                      description="msg://resourcesField.description" descriptionAsHtml="true"
+                                      inputPrompt="msg://resourcesField.inputPrompt"
+                                      caption="msg://resourcesField.caption"
+                                      captionAsHtml="true" colspan="2"/>
+                            <pickerField id="managerField" property="manager" width="100%" colspan="2">
+                                <actions>
+                                    <action id="lookup" type="picker_lookup"/>
+                                    <action id="clear" type="picker_clear"/>
+                                </actions>
+                            </pickerField>
+                        </column>
+                        <column id="forthColumn" width="10%">
+                            <checkBox id="automationField" property="automation" width="100%"/>
+                        </column>
+                    </form>
+                </hbox>
+            </tab>
+            <tab id="attachmentsTab" spacing="true" margin="true,false,false,false"
+                 caption="msg://attachmentsTab.caption">
+                <hbox id="attachmentsTableDropZone" width="100%" height="100%">
+                    <table id="attachmentsTable" dataContainer="attachmentsDc" width="100%" height="100%">
+                        <actions>
+                            <action id="edit" type="edit"/>
+                            <action id="remove" type="remove"/>
+                        </actions>
+                        <columns>
+                            <column id="document.name" caption="msg://document.name.caption"/>
+                            <column id="document.extension" caption="msg://document.extension.caption"/>
+                            <column id="document.size" caption="msg://document.size.caption"/>
+                            <column id="document.createDate" caption="msg://document.createDate.caption"/>
+                            <column id="author" caption="msg://author.caption"/>
+                            <column id="comment" caption="msg://comment.caption"/>
+                        </columns>
+                        <buttonsPanel>
+                            <multiUpload id="multiUploadField"
+                                         dropZone="attachmentsTableDropZone" caption="msg://multiUploadField.caption"/>
+                            <button action="attachmentsTable.edit"/>
+                            <button action="attachmentsTable.remove"/>
+                        </buttonsPanel>
+                    </table>
+                </hbox>
+            </tab>
+        </tabSheet>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

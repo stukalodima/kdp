@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/screen/window.xsd"
+        caption="msg://ideaBrowse.caption"
+        focusComponent="ideasTable"
+        messagesPack="com.itk.kdp.web.screens.idea">
+    <data readOnly="true">
+        <collection id="ideasDc"
+                    class="com.itk.kdp.entity.Idea">
+            <view extends="_local">
+                <property name="author" view="_minimal"/>
+                <property name="manager" view="_minimal"/>
+            </view>
+            <loader id="ideasDl">
+                <query>
+                    <![CDATA[select e from kdp_Idea e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <dialogMode height="75"
+                width="90"/>
+    <layout expand="ideasTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="ideasTable"
+                dataLoader="ideasDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="ideasTable"
+                    width="100%"
+                    rowspan="3"
+                    dataContainer="ideasDc"
+                    multiselect="true"
+                    presentations="true" multiLineCells="true">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+                <action id="excel" type="excel"/>
+            </actions>
+            <columns>
+                <column id="name" maxTextLength="50"/>
+                <column id="problemSolve" maxTextLength="30"/>
+                <column id="benefits" maxTextLength="30"/>
+                <column id="automation"/>
+                <column id="author"/>
+                <column id="manager"/>
+            </columns>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="ideasTable.create"/>
+                <button id="editBtn" action="ideasTable.edit"/>
+                <button id="removeBtn" action="ideasTable.remove"/>
+                <button id="excelBtn" action="ideasTable.excel"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

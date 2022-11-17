@@ -13,3 +13,4 @@ test-run
 /docker-compose-kdp/db/*
 /docker-compose-kdp/dump.sql
 /docker-compose-kdp/db
+/studio-intellij.xml
